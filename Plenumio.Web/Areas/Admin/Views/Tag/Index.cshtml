@@ -1,0 +1,28 @@
+﻿@model List<Tag>
+
+<h2>Tag List</h2>
+<table class="table table-bordered table-striped">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Displayed Name</th>
+            <th>Status</th>
+            <th>Connected To</th>
+            <th>Created</th>
+            <th>[ADD TAG]</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach(Tag tag in Model)
+        {
+        <tr>
+            <td>@tag.Name</td>
+            <td>@tag.DisplayedName</td>
+            <td>@(tag.IsCanonical ? "Plenumio Tag" : "User Tag")</td>
+            <td>@(tag.IsCanonical ? "Default" : (tag.Parent?.Name ?? "None"))</td>
+            <td>@tag.createdAt</td>
+            <td></td>
+        </tr>
+        }
+    </tbody>
+</table>

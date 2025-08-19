@@ -1,0 +1,22 @@
+﻿@{
+    ViewData["Title"] = "Admin";
+}
+
+<h1 class="text-center mb-4">Admin</h1>
+
+<div class="container">
+    <div class="row justify-content-center text-center">
+        <div class="col-6 col-md-3 mb-3">
+            <a class="btn btn-primary w-100" asp-area="Admin" asp-controller="Tag" asp-action="Index">Tags</a>
+        </div>
+        <div class="col-6 col-md-3 mb-3">
+            <a class="btn btn-primary w-100" href="~/Admin/Posts">Posts</a>
+        </div>
+        <div class="col-6 col-md-3 mb-3">
+            <a class="btn btn-primary w-100" href="~/Admin/Users">Users</a>
+        </div>
+        <div class="col-6 col-md-3 mb-3">
+            <a class="btn btn-primary w-100" href="~/Admin/Images">Images</a>
+        </div>
+    </div>
+</div>

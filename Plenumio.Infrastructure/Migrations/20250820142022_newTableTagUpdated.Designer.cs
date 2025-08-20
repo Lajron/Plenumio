@@ -12,8 +12,8 @@ using Plenumio.Infrastructure.Data;
 namespace Plenumio.Infrastructure.Migrations
 {
     [DbContext(typeof(PlenumioDbContext))]
-    [Migration("20250819234332_updateTagTableAndSeed")]
-    partial class updateTagTableAndSeed
+    [Migration("20250820142022_newTableTagUpdated")]
+    partial class newTableTagUpdated
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -33,11 +33,14 @@ namespace Plenumio.Infrastructure.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<DateTimeOffset>("CreatedAt")
+                        .HasColumnType("datetimeoffset");
+
                     b.Property<string>("DisplayedName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<bool>("IsCanonical")
+                    b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
                     b.Property<string>("Name")
@@ -47,8 +50,11 @@ namespace Plenumio.Infrastructure.Migrations
                     b.Property<int?>("ParentId")
                         .HasColumnType("int");
 
-                    b.Property<DateTime>("createdAt")
-                        .HasColumnType("datetime2");
+                    b.Property<int>("Type")
+                        .HasColumnType("int");
+
+                    b.Property<DateTimeOffset>("UpdatedAt")
+                        .HasColumnType("datetimeoffset");
 
                     b.HasKey("Id");
 
@@ -60,42 +66,52 @@ namespace Plenumio.Infrastructure.Migrations
                         new
                         {
                             Id = 1,
+                            CreatedAt = new DateTimeOffset(new DateTime(2025, 8, 20, 14, 20, 21, 139, DateTimeKind.Unspecified).AddTicks(9457), new TimeSpan(0, 0, 0, 0, 0)),
                             DisplayedName = "Technology",
-                            IsCanonical = true,
+                            IsDeleted = false,
                             Name = "technology",
-                            createdAt = new DateTime(2025, 8, 19, 23, 43, 31, 328, DateTimeKind.Utc).AddTicks(5306)
+                            Type = 0,
+                            UpdatedAt = new DateTimeOffset(new DateTime(2025, 8, 20, 14, 20, 21, 139, DateTimeKind.Unspecified).AddTicks(9458), new TimeSpan(0, 0, 0, 0, 0))
                         },
                         new
                         {
                             Id = 2,
+                            CreatedAt = new DateTimeOffset(new DateTime(2025, 8, 20, 14, 20, 21, 139, DateTimeKind.Unspecified).AddTicks(9461), new TimeSpan(0, 0, 0, 0, 0)),
                             DisplayedName = "Life",
-                            IsCanonical = true,
+                            IsDeleted = false,
                             Name = "life",
-                            createdAt = new DateTime(2025, 8, 19, 23, 43, 31, 328, DateTimeKind.Utc).AddTicks(5309)
+                            Type = 0,
+                            UpdatedAt = new DateTimeOffset(new DateTime(2025, 8, 20, 14, 20, 21, 139, DateTimeKind.Unspecified).AddTicks(9461), new TimeSpan(0, 0, 0, 0, 0))
                         },
                         new
                         {
                             Id = 3,
+                            CreatedAt = new DateTimeOffset(new DateTime(2025, 8, 20, 14, 20, 21, 139, DateTimeKind.Unspecified).AddTicks(9464), new TimeSpan(0, 0, 0, 0, 0)),
                             DisplayedName = "Science",
-                            IsCanonical = true,
+                            IsDeleted = false,
                             Name = "science",
-                            createdAt = new DateTime(2025, 8, 19, 23, 43, 31, 328, DateTimeKind.Utc).AddTicks(5311)
+                            Type = 0,
+                            UpdatedAt = new DateTimeOffset(new DateTime(2025, 8, 20, 14, 20, 21, 139, DateTimeKind.Unspecified).AddTicks(9464), new TimeSpan(0, 0, 0, 0, 0))
                         },
                         new
                         {
                             Id = 4,
+                            CreatedAt = new DateTimeOffset(new DateTime(2025, 8, 20, 14, 20, 21, 139, DateTimeKind.Unspecified).AddTicks(9467), new TimeSpan(0, 0, 0, 0, 0)),
                             DisplayedName = "Art",
-                            IsCanonical = true,
+                            IsDeleted = false,
                             Name = "art",
-                            createdAt = new DateTime(2025, 8, 19, 23, 43, 31, 328, DateTimeKind.Utc).AddTicks(5312)
+                            Type = 0,
+                            UpdatedAt = new DateTimeOffset(new DateTime(2025, 8, 20, 14, 20, 21, 139, DateTimeKind.Unspecified).AddTicks(9467), new TimeSpan(0, 0, 0, 0, 0))
                         },
                         new
                         {
                             Id = 5,
+                            CreatedAt = new DateTimeOffset(new DateTime(2025, 8, 20, 14, 20, 21, 139, DateTimeKind.Unspecified).AddTicks(9469), new TimeSpan(0, 0, 0, 0, 0)),
                             DisplayedName = "Gaming",
-                            IsCanonical = true,
+                            IsDeleted = false,
                             Name = "gaming",
-                            createdAt = new DateTime(2025, 8, 19, 23, 43, 31, 328, DateTimeKind.Utc).AddTicks(5314)
+                            Type = 0,
+                            UpdatedAt = new DateTimeOffset(new DateTime(2025, 8, 20, 14, 20, 21, 139, DateTimeKind.Unspecified).AddTicks(9470), new TimeSpan(0, 0, 0, 0, 0))
                         });
                 });
 

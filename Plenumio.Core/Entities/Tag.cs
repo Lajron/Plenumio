@@ -1,18 +1,18 @@
 ﻿
+using Plenumio.Core.Enums;
 using System.ComponentModel.DataAnnotations;
 
 namespace Plenumio.Core.Entities {
-    public class Tag {
-        [Key]
-        public int Id { get; set; }
-        public string Name { get; set; } = string.Empty;
-        [Required]
+    public class Tag: BaseIdEntity {
+
+        public required string Name { get; set; }
         public required string DisplayedName { get; set; }
-        public bool IsCanonical { get; set; } = false;
-        public DateTime createdAt { get; set; } = DateTime.UtcNow;
+        public TagType Type { get; set; } = TagType.User;
 
         public int? ParentId { get; set; }
         public Tag? Parent { get; set; }
         public ICollection<Tag> Children { get; set; } = [];
+
+        public ICollection<PostTag> PostTag { get; set; } = [];
     }
 }

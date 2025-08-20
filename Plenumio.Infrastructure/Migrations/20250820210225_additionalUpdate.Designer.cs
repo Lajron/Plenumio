@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Plenumio.Infrastructure.Data;
 
@@ -11,9 +12,11 @@ using Plenumio.Infrastructure.Data;
 namespace Plenumio.Infrastructure.Migrations
 {
     [DbContext(typeof(PlenumioDbContext))]
-    partial class PlenumioDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250820210225_additionalUpdate")]
+    partial class additionalUpdate
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

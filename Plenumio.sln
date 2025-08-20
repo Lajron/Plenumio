@@ -4,12 +4,39 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 VisualStudioVersion = 17.14.36408.4
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Plenumio.Web", "Plenumio.Web\Plenumio.Web.csproj", "{942909DE-213B-4F2F-9A9F-DE68BD5226F9}"
+	ProjectSection(ProjectDependencies) = postProject
+		{14CB3E85-5290-4A7C-B58A-9D33D091E1A0} = {14CB3E85-5290-4A7C-B58A-9D33D091E1A0}
+		{2C3EE33D-3BFF-429A-8005-B0CC091015E2} = {2C3EE33D-3BFF-429A-8005-B0CC091015E2}
+		{539F2257-C0F5-425E-B706-A7331C7EF051} = {539F2257-C0F5-425E-B706-A7331C7EF051}
+		{8E710BDC-9F9C-4007-963E-D3340F165E1D} = {8E710BDC-9F9C-4007-963E-D3340F165E1D}
+		{AE65B421-F980-4D8A-BBF6-0D29E4C84CFA} = {AE65B421-F980-4D8A-BBF6-0D29E4C84CFA}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Plenumio.Infrastructure", "Plenumio.Infrastructure\Plenumio.Infrastructure.csproj", "{2C3EE33D-3BFF-429A-8005-B0CC091015E2}"
+	ProjectSection(ProjectDependencies) = postProject
+		{539F2257-C0F5-425E-B706-A7331C7EF051} = {539F2257-C0F5-425E-B706-A7331C7EF051}
+		{8E710BDC-9F9C-4007-963E-D3340F165E1D} = {8E710BDC-9F9C-4007-963E-D3340F165E1D}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Plenumio.Core", "Plenumio.Core\Plenumio.Core.csproj", "{8E710BDC-9F9C-4007-963E-D3340F165E1D}"
+	ProjectSection(ProjectDependencies) = postProject
+		{539F2257-C0F5-425E-B706-A7331C7EF051} = {539F2257-C0F5-425E-B706-A7331C7EF051}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Plenumio.Application", "Plenumio.Application\Plenumio.Application.csproj", "{14CB3E85-5290-4A7C-B58A-9D33D091E1A0}"
+	ProjectSection(ProjectDependencies) = postProject
+		{539F2257-C0F5-425E-B706-A7331C7EF051} = {539F2257-C0F5-425E-B706-A7331C7EF051}
+		{8E710BDC-9F9C-4007-963E-D3340F165E1D} = {8E710BDC-9F9C-4007-963E-D3340F165E1D}
+		{AE65B421-F980-4D8A-BBF6-0D29E4C84CFA} = {AE65B421-F980-4D8A-BBF6-0D29E4C84CFA}
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Plenumio.Contracts", "Plenumio.Contracts\Plenumio.Contracts.csproj", "{AE65B421-F980-4D8A-BBF6-0D29E4C84CFA}"
+	ProjectSection(ProjectDependencies) = postProject
+		{539F2257-C0F5-425E-B706-A7331C7EF051} = {539F2257-C0F5-425E-B706-A7331C7EF051}
+		{8E710BDC-9F9C-4007-963E-D3340F165E1D} = {8E710BDC-9F9C-4007-963E-D3340F165E1D}
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Plenumio.Common", "Plenumio.Common\Plenumio.Common.csproj", "{539F2257-C0F5-425E-B706-A7331C7EF051}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +60,14 @@ Global
 		{14CB3E85-5290-4A7C-B58A-9D33D091E1A0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{14CB3E85-5290-4A7C-B58A-9D33D091E1A0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{14CB3E85-5290-4A7C-B58A-9D33D091E1A0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AE65B421-F980-4D8A-BBF6-0D29E4C84CFA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AE65B421-F980-4D8A-BBF6-0D29E4C84CFA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AE65B421-F980-4D8A-BBF6-0D29E4C84CFA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AE65B421-F980-4D8A-BBF6-0D29E4C84CFA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{539F2257-C0F5-425E-B706-A7331C7EF051}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{539F2257-C0F5-425E-B706-A7331C7EF051}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{539F2257-C0F5-425E-B706-A7331C7EF051}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{539F2257-C0F5-425E-B706-A7331C7EF051}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

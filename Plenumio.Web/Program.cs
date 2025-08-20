@@ -1,5 +1,9 @@
 using Microsoft.EntityFrameworkCore;
+using Plenumio.Core.Interfaces;
 using Plenumio.Infrastructure.Data;
+using Plenumio.Infrastructure.Extensions;
+using Plenumio.Application.Extensions;
+using Plenumio.Contracts.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -9,6 +13,12 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddDbContext<PlenumioDbContext>(options => {
     options.UseSqlServer(builder.Configuration.GetConnectionString("SqlConnection"));
 });
+
+builder.Services.AddUnitOfWork();
+builder.Services.AddApplicationServices();
+
+builder.Services.AddAutoMapperProfiles();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

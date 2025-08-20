@@ -8,14 +8,11 @@
 
   <ItemGroup>
     <PackageReference Include="AutoMapper" Version="15.0.1" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.19" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\Plenumio.Common\Plenumio.Common.csproj" />
-    <ProjectReference Include="..\Plenumio.Contracts\Plenumio.Contracts.csproj" />
     <ProjectReference Include="..\Plenumio.Core\Plenumio.Core.csproj" />
-    <ProjectReference Include="..\Plenumio.Infrastructure\Plenumio.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>

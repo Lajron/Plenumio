@@ -18,9 +18,9 @@
         <tr>
             <td>@tag.Name</td>
             <td>@tag.DisplayedName</td>
-            <td>@(tag.IsCanonical ? "Plenumio Tag" : "User Tag")</td>
-            <td>@(tag.IsCanonical ? "Default" : (tag.Parent?.Name ?? "None"))</td>
-            <td>@tag.createdAt</td>
+            <td>@tag.Type.ToString()</td>
+            <td>@(tag.Type == TagType.Default ? "Plenumio Tag" : (tag.Parent?.Name ?? "None"))</td>
+            <td>@tag.CreatedAt</td>
             <td></td>
         </tr>
         }

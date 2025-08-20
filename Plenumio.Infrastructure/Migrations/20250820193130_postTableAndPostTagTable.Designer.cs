@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Plenumio.Infrastructure.Data;
 
@@ -11,9 +12,11 @@ using Plenumio.Infrastructure.Data;
 namespace Plenumio.Infrastructure.Migrations
 {
     [DbContext(typeof(PlenumioDbContext))]
-    partial class PlenumioDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250820193130_postTableAndPostTagTable")]
+    partial class postTableAndPostTagTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -52,19 +55,7 @@ namespace Plenumio.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Posts");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            CreatedAt = new DateTimeOffset(new DateTime(2025, 8, 20, 21, 2, 24, 700, DateTimeKind.Unspecified).AddTicks(5766), new TimeSpan(0, 0, 0, 0, 0)),
-                            Description = "Ovo je moj prvi post na Plenumio-u! Veoma sam uzbuđen što sam ovde.",
-                            IsDeleted = false,
-                            PrivacyType = 0,
-                            Slug = "prvi-post-na-plenumio",
-                            UpdatedAt = new DateTimeOffset(new DateTime(2025, 8, 20, 21, 2, 24, 700, DateTimeKind.Unspecified).AddTicks(5767), new TimeSpan(0, 0, 0, 0, 0))
-                        });
+                    b.ToTable("Post");
                 });
 
             modelBuilder.Entity("Plenumio.Core.Entities.PostTag", b =>
@@ -80,23 +71,6 @@ namespace Plenumio.Infrastructure.Migrations
                     b.HasIndex("TagId");
 
                     b.ToTable("PostTag");
-
-                    b.HasData(
-                        new
-                        {
-                            PostId = 1,
-                            TagId = 1
-                        },
-                        new
-                        {
-                            PostId = 1,
-                            TagId = 2
-                        },
-                        new
-                        {
-                            PostId = 1,
-                            TagId = 3
-                        });
                 });
 
             modelBuilder.Entity("Plenumio.Core.Entities.Tag", b =>
@@ -140,52 +114,52 @@ namespace Plenumio.Infrastructure.Migrations
                         new
                         {
                             Id = 1,
-                            CreatedAt = new DateTimeOffset(new DateTime(2025, 8, 20, 21, 2, 24, 700, DateTimeKind.Unspecified).AddTicks(5294), new TimeSpan(0, 0, 0, 0, 0)),
+                            CreatedAt = new DateTimeOffset(new DateTime(2025, 8, 20, 19, 31, 29, 281, DateTimeKind.Unspecified).AddTicks(6379), new TimeSpan(0, 0, 0, 0, 0)),
                             DisplayedName = "Technology",
                             IsDeleted = false,
                             Name = "technology",
                             Type = 0,
-                            UpdatedAt = new DateTimeOffset(new DateTime(2025, 8, 20, 21, 2, 24, 700, DateTimeKind.Unspecified).AddTicks(5295), new TimeSpan(0, 0, 0, 0, 0))
+                            UpdatedAt = new DateTimeOffset(new DateTime(2025, 8, 20, 19, 31, 29, 281, DateTimeKind.Unspecified).AddTicks(6380), new TimeSpan(0, 0, 0, 0, 0))
                         },
                         new
                         {
                             Id = 2,
-                            CreatedAt = new DateTimeOffset(new DateTime(2025, 8, 20, 21, 2, 24, 700, DateTimeKind.Unspecified).AddTicks(5298), new TimeSpan(0, 0, 0, 0, 0)),
+                            CreatedAt = new DateTimeOffset(new DateTime(2025, 8, 20, 19, 31, 29, 281, DateTimeKind.Unspecified).AddTicks(6384), new TimeSpan(0, 0, 0, 0, 0)),
                             DisplayedName = "Life",
                             IsDeleted = false,
                             Name = "life",
                             Type = 0,
-                            UpdatedAt = new DateTimeOffset(new DateTime(2025, 8, 20, 21, 2, 24, 700, DateTimeKind.Unspecified).AddTicks(5299), new TimeSpan(0, 0, 0, 0, 0))
+                            UpdatedAt = new DateTimeOffset(new DateTime(2025, 8, 20, 19, 31, 29, 281, DateTimeKind.Unspecified).AddTicks(6384), new TimeSpan(0, 0, 0, 0, 0))
                         },
                         new
                         {
                             Id = 3,
-                            CreatedAt = new DateTimeOffset(new DateTime(2025, 8, 20, 21, 2, 24, 700, DateTimeKind.Unspecified).AddTicks(5302), new TimeSpan(0, 0, 0, 0, 0)),
+                            CreatedAt = new DateTimeOffset(new DateTime(2025, 8, 20, 19, 31, 29, 281, DateTimeKind.Unspecified).AddTicks(6387), new TimeSpan(0, 0, 0, 0, 0)),
                             DisplayedName = "Science",
                             IsDeleted = false,
                             Name = "science",
                             Type = 0,
-                            UpdatedAt = new DateTimeOffset(new DateTime(2025, 8, 20, 21, 2, 24, 700, DateTimeKind.Unspecified).AddTicks(5303), new TimeSpan(0, 0, 0, 0, 0))
+                            UpdatedAt = new DateTimeOffset(new DateTime(2025, 8, 20, 19, 31, 29, 281, DateTimeKind.Unspecified).AddTicks(6388), new TimeSpan(0, 0, 0, 0, 0))
                         },
                         new
                         {
                             Id = 4,
-                            CreatedAt = new DateTimeOffset(new DateTime(2025, 8, 20, 21, 2, 24, 700, DateTimeKind.Unspecified).AddTicks(5431), new TimeSpan(0, 0, 0, 0, 0)),
+                            CreatedAt = new DateTimeOffset(new DateTime(2025, 8, 20, 19, 31, 29, 281, DateTimeKind.Unspecified).AddTicks(6390), new TimeSpan(0, 0, 0, 0, 0)),
                             DisplayedName = "Art",
                             IsDeleted = false,
                             Name = "art",
                             Type = 0,
-                            UpdatedAt = new DateTimeOffset(new DateTime(2025, 8, 20, 21, 2, 24, 700, DateTimeKind.Unspecified).AddTicks(5432), new TimeSpan(0, 0, 0, 0, 0))
+                            UpdatedAt = new DateTimeOffset(new DateTime(2025, 8, 20, 19, 31, 29, 281, DateTimeKind.Unspecified).AddTicks(6391), new TimeSpan(0, 0, 0, 0, 0))
                         },
                         new
                         {
                             Id = 5,
-                            CreatedAt = new DateTimeOffset(new DateTime(2025, 8, 20, 21, 2, 24, 700, DateTimeKind.Unspecified).AddTicks(5435), new TimeSpan(0, 0, 0, 0, 0)),
+                            CreatedAt = new DateTimeOffset(new DateTime(2025, 8, 20, 19, 31, 29, 281, DateTimeKind.Unspecified).AddTicks(6394), new TimeSpan(0, 0, 0, 0, 0)),
                             DisplayedName = "Gaming",
                             IsDeleted = false,
                             Name = "gaming",
                             Type = 0,
-                            UpdatedAt = new DateTimeOffset(new DateTime(2025, 8, 20, 21, 2, 24, 700, DateTimeKind.Unspecified).AddTicks(5436), new TimeSpan(0, 0, 0, 0, 0))
+                            UpdatedAt = new DateTimeOffset(new DateTime(2025, 8, 20, 19, 31, 29, 281, DateTimeKind.Unspecified).AddTicks(6394), new TimeSpan(0, 0, 0, 0, 0))
                         });
                 });
 

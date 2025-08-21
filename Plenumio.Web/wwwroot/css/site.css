@@ -20,3 +20,53 @@ html {
 body {
   margin-bottom: 60px;
 }
+
+/* HOVER - ACTIVE */
+.action-icons .nav-link {
+    transition: background-color 0.2s, transform 0.2s;
+}
+
+.action-icons .nav-link:hover {
+    background-color: rgba(255, 255, 255, 0.1); 
+}
+
+.bg-dark-custom {
+    background-color: #1c1c1c;
+    color: #f8f9fa; 
+}
+
+.trending-tag a:hover {
+    color: #ffffff; 
+    text-decoration: underline;
+}
+
+.trending-tag .btn-outline-light:hover {
+    background-color: #ffffff22;
+    border-color: #ffffff;
+    color: #fff;
+}
+
+.trending-user:hover {
+    background-color: #ffffff15;
+    border-radius: 0.25rem;
+}
+
+.trending-user .btn-outline-light:hover {
+    background-color: #ffffff22;
+    border-color: #ffffff;
+    color: #fff;
+}
+
+.recent-post:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+    cursor: pointer;
+}
+
+.card-body a:hover {
+    background-color: rgba(255,255,255,0.1); 
+    color: #fff;
+}
+
+.card-body a.active {
+    background-color: rgba(255,255,255,0.2); 
+}

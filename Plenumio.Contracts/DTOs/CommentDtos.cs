@@ -5,10 +5,11 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace Plenumio.Contracts.DTOs {
-    public record UserDto(
+    public record CommentDto(
         int Id,
-        string Username,
-        string? AvatarUrl
+        string Content,
+        DateTime CreatedAt,
+        UserDto Author,
+        int PostId
     );
-    
 }

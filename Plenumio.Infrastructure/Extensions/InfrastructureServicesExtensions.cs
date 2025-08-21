@@ -6,7 +6,7 @@ using Plenumio.Infrastructure.Persistance;
 
 namespace Plenumio.Infrastructure.Extensions {
 
-    public static class InfrastructureCollectionExtensions {
+    public static class InfrastructureServicesExtensions {
         public static IServiceCollection AddRepositories(this IServiceCollection services) {
             services.AddScoped<ITagRepository, TagRepository>();
 

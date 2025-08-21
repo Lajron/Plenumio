@@ -2,9 +2,9 @@
 
 namespace Plenumio.Web.Controllers {
     public class PostController : Controller {
-        private readonly ILogger<HomeController> _logger;
+        private readonly ILogger<PostController> _logger;
 
-        public PostController(ILogger<HomeController> logger) {
+        public PostController(ILogger<PostController> logger) {
             _logger = logger;
         }
 

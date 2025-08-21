@@ -18,7 +18,12 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="ViewModels\" />
+    <Folder Include="Models\Post\" />
+    <Folder Include="Models\Profile\" />
+    <Folder Include="Models\Search\" />
+    <Folder Include="Views\Search\" />
+    <Folder Include="Views\Profile\" />
+    <Folder Include="Views\Post\" />
   </ItemGroup>
 
   <ItemGroup>

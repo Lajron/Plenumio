@@ -1,0 +1,24 @@
+﻿@{
+    ViewData["Title"] = "Feed";
+}
+
+
+<div class="col-2 pt-4 ps-0 pe-2 border-end border-secondary position-sticky overflow-auto">
+    <partial name="_FeedsCard" />
+</div>
+
+<div class="col-7 pt-4">
+    <vc:post-feed></vc:post-feed>
+</div>
+
+<div class="col-3 d-flex flex-column pt-4 gap-2 h-100">
+
+    <vc:trending-tags-card></vc:trending-tags-card>
+
+    <vc:trending-users-card></vc:trending-users-card>
+
+    <vc:recently-viewed-posts></vc:recently-viewed-posts>
+
+    <partial name="_Footer" />
+
+</div>

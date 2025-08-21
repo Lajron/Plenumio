@@ -15,6 +15,7 @@ namespace Plenumio.Contracts.DTOs {
         UserDto Author,
         IEnumerable<TagDto> Tags,
         IEnumerable<ImageDto> Images,
+        IEnumerable<CommentDto> Comments,
         int CommentsCount,
         int LikesCount
     );

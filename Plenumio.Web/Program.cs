@@ -16,6 +16,7 @@ builder.Services.AddDbContext<PlenumioDbContext>(options => {
 
 builder.Services.AddUnitOfWork();
 builder.Services.AddApplicationServices();
+builder.Services.AddFeedStrategyServices();
 
 builder.Services.AddAutoMapperProfiles();
 
@@ -38,11 +39,11 @@ app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "areas",
-    pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}"
+    pattern: "{area:exists}/{controller=Feed}/{action=Index}/{id?}"
 );
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}"
+    pattern: "{controller=Feed}/{action=Index}/{id?}"
 );
 
 app.Run();

@@ -8,6 +8,6 @@ namespace Plenumio.Core.Enums {
     public enum PrivacyType {
         Public = 0,
         Private = 1,
-        FollowersOnly = 2
+        Followers = 2
     }
 }

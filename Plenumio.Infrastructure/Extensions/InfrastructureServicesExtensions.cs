@@ -3,6 +3,7 @@ using Plenumio.Core.Interfaces;
 using Plenumio.Core.Interfaces.Repositories;
 using Plenumio.Infrastructure.Repositories;
 using Plenumio.Infrastructure.Persistance;
+using Plenumio.Infrastructure.Services;
 
 namespace Plenumio.Infrastructure.Extensions {
 
@@ -18,6 +19,10 @@ namespace Plenumio.Infrastructure.Extensions {
             return services;
         }
 
+        public static IServiceCollection AddEmailSender(this IServiceCollection services) {
+            services.AddTransient<IEmailSender, EmailSender>();
+            return services;
+        }
 
 
     }

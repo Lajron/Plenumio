@@ -17,11 +17,15 @@ builder.Services.AddDbContext<ApplicationDbContext>(options => {
     options.UseSqlServer(builder.Configuration.GetConnectionString("SqlConnection"));
 });
 
-builder.Services.AddIdentity<IdentityUser, IdentityRole>().AddEntityFrameworkStores<ApplicationDbContext>();
+builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options => options.SignIn.RequireConfirmedAccount = false)
+                .AddEntityFrameworkStores<ApplicationDbContext>()
+                .AddDefaultTokenProviders();
 builder.Services.AddRazorPages();
+
 builder.Services.AddUnitOfWork();
 builder.Services.AddApplicationServices();
 builder.Services.AddFeedStrategyServices();
+builder.Services.AddEmailSender();
 
 builder.Services.AddCoreAutoMapperProfiles();
 

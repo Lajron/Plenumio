@@ -21,6 +21,7 @@
 
   <ItemGroup>
     <Folder Include="Areas\Identity\Data\" />
+    <Folder Include="Extensions\" />
     <Folder Include="Models\Post\" />
     <Folder Include="Models\Profile\" />
     <Folder Include="Models\Search\" />

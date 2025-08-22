@@ -4,6 +4,7 @@ using Plenumio.Infrastructure.Data;
 using Plenumio.Infrastructure.Extensions;
 using Plenumio.Application.Extensions;
 using Plenumio.Contracts.Extensions;
+using Microsoft.AspNetCore.Identity;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -13,6 +14,8 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddDbContext<PlenumioDbContext>(options => {
     options.UseSqlServer(builder.Configuration.GetConnectionString("SqlConnection"));
 });
+
+builder.Services.AddDefaultIdentity<IdentityUser>().AddEntityFrameworkStores<PlenumioDbContext>();
 
 builder.Services.AddUnitOfWork();
 builder.Services.AddApplicationServices();
@@ -35,6 +38,7 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllerRoute(

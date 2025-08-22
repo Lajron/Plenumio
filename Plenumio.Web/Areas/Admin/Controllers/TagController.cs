@@ -5,7 +5,7 @@ using Plenumio.Infrastructure.Data;
 
 namespace Plenumio.Web.Areas.Admin.Controllers {
     [Area("Admin")]
-    public class TagController(PlenumioDbContext db) : Controller {
+    public class TagController(ApplicationDbContext db) : Controller {
 
         public async Task<IActionResult> Index() {
             List<Tag> tags = await db.Tags.ToListAsync();

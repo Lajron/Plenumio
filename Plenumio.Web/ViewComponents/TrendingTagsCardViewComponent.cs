@@ -13,7 +13,7 @@ namespace Plenumio.Web.ViewComponents {
                 new TagDto(5, "ASP.NET")
             };
 
-            return View(tags);
+            return View("TrendingTagsCard", tags);
         }
     } 
 }

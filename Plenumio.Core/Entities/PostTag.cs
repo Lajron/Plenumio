@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 namespace Plenumio.Core.Entities {
     public class PostTag {
         public int PostId { get; set; }
-        public Post Post { get; set; }
+        public Post? Post { get; set; }
 
         public int TagId { get; set; }
-        public Tag Tag { get; set; }
+        public Tag? Tag { get; set; }
     }
 }

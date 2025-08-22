@@ -2,6 +2,11 @@
 @using Plenumio.Web.Models
 @using Plenumio.Core.Entities
 @using Plenumio.Contracts.DTOs
+@using Microsoft.AspNetCore.Identity
+
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 @addTagHelper *, Plenumio.Web
+
+@inject SignInManager<IdentityUser> SignInManager
+@inject UserManager<IdentityUser> UserManager
 

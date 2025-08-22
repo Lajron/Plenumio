@@ -8,7 +8,7 @@ using Plenumio.Infrastructure.Data;
 using Plenumio.Contracts.DTOs;
 
 namespace Plenumio.Application.Services {
-    public class PostService(PlenumioDbContext db) : IPostService {
+    public class PostService(ApplicationDbContext db) : IPostService {
         
 
         public async Task<IEnumerable<PostDto>> GetPostsAsync() {

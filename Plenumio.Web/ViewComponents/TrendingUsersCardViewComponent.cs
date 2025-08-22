@@ -16,7 +16,7 @@ namespace Plenumio.Web.ViewComponents {
 
             var trendingUsers = mockUsers.Take(count);
 
-            return View(trendingUsers);
+            return View("TrendingUsersCard", trendingUsers);
         }
     }
 }

@@ -9,7 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace Plenumio.Infrastructure.Repositories {
-    public class Repository<T>(PlenumioDbContext db) : IRepository<T> where T : class {
+    public class Repository<T>(ApplicationDbContext db) : IRepository<T> where T : class {
         protected DbSet<T> dbSet = db.Set<T>();
         public async Task AddAsync(T entity) {
             await dbSet.AddAsync(entity);

@@ -11,7 +11,7 @@ using Plenumio.Infrastructure.Data;
 
 namespace Plenumio.Infrastructure.Migrations
 {
-    [DbContext(typeof(PlenumioDbContext))]
+    [DbContext(typeof(ApplicationDbContext))]
     [Migration("20250820142022_newTableTagUpdated")]
     partial class newTableTagUpdated
     {

@@ -5,23 +5,25 @@ using Plenumio.Infrastructure.Extensions;
 using Plenumio.Application.Extensions;
 using Plenumio.Contracts.Extensions;
 using Microsoft.AspNetCore.Identity;
+using Plenumio.Core.Entities;
+using Microsoft.Extensions.DependencyInjection;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
-builder.Services.AddDbContext<PlenumioDbContext>(options => {
+builder.Services.AddDbContext<ApplicationDbContext>(options => {
     options.UseSqlServer(builder.Configuration.GetConnectionString("SqlConnection"));
 });
 
-builder.Services.AddDefaultIdentity<IdentityUser>().AddEntityFrameworkStores<PlenumioDbContext>();
-
+builder.Services.AddIdentity<IdentityUser, IdentityRole>().AddEntityFrameworkStores<ApplicationDbContext>();
+builder.Services.AddRazorPages();
 builder.Services.AddUnitOfWork();
 builder.Services.AddApplicationServices();
 builder.Services.AddFeedStrategyServices();
 
-builder.Services.AddAutoMapperProfiles();
+builder.Services.AddCoreAutoMapperProfiles();
 
 var app = builder.Build();
 
@@ -40,6 +42,8 @@ app.UseRouting();
 
 app.UseAuthentication();
 app.UseAuthorization();
+
+app.MapRazorPages();
 
 app.MapControllerRoute(
     name: "areas",

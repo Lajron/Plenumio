@@ -10,7 +10,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace Plenumio.Infrastructure.Persistance {
-    public class UnitOfWork(PlenumioDbContext db) : IUnitOfWork {
+    public class UnitOfWork(ApplicationDbContext db) : IUnitOfWork {
         private bool disposedValue;
 
         private readonly ITagRepository _tagRepository = new TagRepository(db);

@@ -8,6 +8,6 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace Plenumio.Infrastructure.Repositories {
-    public class TagRepository(PlenumioDbContext db) : Repository<Tag>(db), ITagRepository  {
+    public class TagRepository(ApplicationDbContext db) : Repository<Tag>(db), ITagRepository  {
     }
 }

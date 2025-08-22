@@ -84,7 +84,7 @@ namespace Plenumio.Web.ViewComponents {
                 ),
             };
 
-            return View(mockPosts.Take(count));
+            return View("RecentlyViewedPosts", mockPosts.Take(count));
         }
     }
 }

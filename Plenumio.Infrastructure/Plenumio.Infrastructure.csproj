@@ -17,7 +17,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Plenumio.Common\Plenumio.Common.csproj" />
     <ProjectReference Include="..\Plenumio.Core\Plenumio.Core.csproj" />
   </ItemGroup>
 

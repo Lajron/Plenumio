@@ -79,7 +79,7 @@ namespace Plenumio.Web.ViewComponents {
             };
             
             
-            return View(mockPosts);
+            return View("PostFeed", mockPosts);
         }
     }
 }

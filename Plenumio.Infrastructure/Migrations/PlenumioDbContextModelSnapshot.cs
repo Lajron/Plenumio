@@ -10,7 +10,7 @@ using Plenumio.Infrastructure.Data;
 
 namespace Plenumio.Infrastructure.Migrations
 {
-    [DbContext(typeof(PlenumioDbContext))]
+    [DbContext(typeof(ApplicationDbContext))]
     partial class PlenumioDbContextModelSnapshot : ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)

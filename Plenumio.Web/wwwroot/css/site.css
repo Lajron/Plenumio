@@ -21,6 +21,27 @@ body {
   margin-bottom: 60px;
 }
 
+:root {
+    --bs-border-radius: 0.125rem;
+    --bs-border-radius-sm: 0.125rem;
+    --bs-border-radius-lg: 0.125rem;
+    --bs-border-radius-xl: 0.125rem;
+    --bs-border-radius-2xl: 0.125rem;
+    --bs-border-radius-pill: 0.125rem;
+
+    /* Tamne/modern boje za dark theme */
+    --bs-primary: green; /* svetloplava, kontrast na tamnoj pozadini */
+    --bs-secondary: #2f2f2f; /* tamno siva */
+    --bs-success: #3cb371; /* medium green */
+    --bs-info: #00bcd4; /* cyan/light blue */
+    --bs-warning: #f0a500; /* tamno žuta/oranž */
+    --bs-danger: #e57373; /* soft crvena */
+    /* Ako želiš, možeš podesiti i subtle bg i border varijante */
+    --bs-primary-bg-subtle: #0a1a2a;
+    --bs-secondary-bg-subtle: #1a1a1a;
+    --bs-border-color: #333;
+}
+
 /* HOVER - ACTIVE */
 .action-icons .nav-link {
     transition: background-color 0.2s, transform 0.2s;
@@ -31,7 +52,7 @@ body {
 }
 
 .bg-dark-custom {
-    background-color: #1c1c1c;
+    background-color: #1c1c1c !important;
     color: #f8f9fa; 
 }
 

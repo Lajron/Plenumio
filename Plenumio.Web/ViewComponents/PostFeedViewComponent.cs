@@ -1,6 +1,6 @@
 ﻿
 using Microsoft.AspNetCore.Mvc;
-using Plenumio.Contracts.DTOs;
+using Plenumio.Application.DTOs;
 namespace Plenumio.Web.ViewComponents {
     public class PostFeedViewComponent: ViewComponent {
         public async Task<IViewComponentResult> InvokeAsync() {
@@ -79,7 +79,7 @@ namespace Plenumio.Web.ViewComponents {
             };
             
             
-            return View("PostFeed", mockPosts);
+            return View(mockPosts);
         }
     }
 }

@@ -1,33 +1,35 @@
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc.Razor;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
+using Plenumio.Application.Extensions;
+using Plenumio.Core.Entities;
 using Plenumio.Core.Interfaces;
 using Plenumio.Infrastructure.Data;
 using Plenumio.Infrastructure.Extensions;
-using Plenumio.Application.Extensions;
-using Plenumio.Contracts.Extensions;
-using Microsoft.AspNetCore.Identity;
-using Plenumio.Core.Entities;
-using Microsoft.Extensions.DependencyInjection;
+using Plenumio.Web.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-builder.Services.AddControllersWithViews();
+builder.Services.AddControllersWithViews()
+                .AddRazorOptions(options => { options.ViewLocationExpanders.Add(new CustomViewLocationExpander());});
 
 builder.Services.AddDbContext<ApplicationDbContext>(options => {
     options.UseSqlServer(builder.Configuration.GetConnectionString("SqlConnection"));
 });
 
-builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options => options.SignIn.RequireConfirmedAccount = false)
+builder.Services.AddIdentity<ApplicationUser, IdentityRole<Guid>>(options => options.SignIn.RequireConfirmedAccount = false)
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddDefaultTokenProviders();
+
 builder.Services.AddRazorPages();
 
 builder.Services.AddUnitOfWork();
 builder.Services.AddApplicationServices();
 builder.Services.AddFeedStrategyServices();
 builder.Services.AddEmailSender();
-
-builder.Services.AddCoreAutoMapperProfiles();
+builder.Services.AddApplicationMapperProfileServices();
 
 var app = builder.Build();
 

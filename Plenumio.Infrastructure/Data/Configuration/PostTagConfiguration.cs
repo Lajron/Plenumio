@@ -14,26 +14,16 @@ namespace Plenumio.Infrastructure.Data.Configuration {
 
             builder.HasOne(pt => pt.Post)
                 .WithMany(p => p.PostTag)
-                .HasForeignKey(pt => pt.PostId);
+                .HasForeignKey(pt => pt.PostId)
+                .OnDelete(DeleteBehavior.Cascade);
+
 
             builder.HasOne(pt => pt.Tag)
                 .WithMany(t => t.PostTag)
-                .HasForeignKey(pt => pt.TagId);
+                .HasForeignKey(pt => pt.TagId)
+                .OnDelete(DeleteBehavior.Cascade);
 
-            builder.HasData(
-                new PostTag {
-                    PostId = 1,
-                    TagId = 1
-                },
-                new PostTag {
-                    PostId = 1,
-                    TagId = 2
-                },
-                new PostTag {
-                    PostId = 1,
-                    TagId = 3
-                }
-            );
+            builder.HasData();
         }
     }
 }

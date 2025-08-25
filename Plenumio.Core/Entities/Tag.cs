@@ -1,4 +1,5 @@
 ﻿
+using Plenumio.Core.Entities.Base;
 using Plenumio.Core.Enums;
 using System.ComponentModel.DataAnnotations;
 
@@ -14,5 +15,7 @@ namespace Plenumio.Core.Entities {
         public ICollection<Tag> Children { get; set; } = [];
 
         public ICollection<PostTag> PostTag { get; set; } = [];
+        public ICollection<ApplicationUserTag> UserTags { get; set; } = [];
+
     }
 }

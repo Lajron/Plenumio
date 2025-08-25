@@ -1,0 +1,13 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Plenumio.Core.Enums {
+    public enum PostType {
+        Standard = 0,
+        Article,
+        Media
+    }
+}

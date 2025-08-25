@@ -7,6 +7,9 @@ using System.Reflection.Emit;
 namespace Plenumio.Infrastructure.Data.Configuration {
     public class TagConfiguration : IEntityTypeConfiguration<Tag> {
         public void Configure(EntityTypeBuilder<Tag> builder) {
+            builder.Property(t => t.Type)
+                .HasConversion<string>();
+
             builder.HasOne(t => t.Parent)
                 .WithMany(t => t.Children)
                 .HasForeignKey(t => t.ParentId)

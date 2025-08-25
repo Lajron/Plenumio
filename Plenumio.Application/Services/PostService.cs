@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Plenumio.Infrastructure.Data;
-using Plenumio.Contracts.DTOs;
+using Plenumio.Application.DTOs;
 
 namespace Plenumio.Application.Services {
     public class PostService(ApplicationDbContext db) : IPostService {

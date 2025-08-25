@@ -1,5 +1,5 @@
 ﻿using Plenumio.Application.Interfaces;
-using Plenumio.Contracts.DTOs;
+using Plenumio.Application.DTOs;
 using Plenumio.Core.Enums;
 using System;
 using System.Collections.Generic;

@@ -6,18 +6,45 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace Plenumio.Core.Interfaces.Repositories {
-    public interface IRepository<T> where T: class {
-        Task AddAsync(T entity);
+    public interface IRepository<TEntity> where TEntity: class {
+        Task<TEntity?> GetAsync(
+            Expression<Func<TEntity, bool>> filter,
+            params Expression<Func<TEntity, object>>[] includes
+        );
 
-        Task<T?> GetByIdAsync(int id);
-        Task<IEnumerable<T>> GetAllAsync();
-        Task<IEnumerable<T>> FilterAsync(Expression<Func<T, bool>> predicate);
-        Task<T?> FirstOrDefaultAsync(Expression<Func<T, bool>> predicate);
-        Task Update(T entity);
-        Task Patch(T entity);
-        Task Remove(T entity);
-        Task RemoveById(int id);
-        Task RemoveRange(IEnumerable<T> entities);
+        Task<TResult?> GetAsync<TResult>(
+            Expression<Func<TEntity, bool>> filter,
+            Expression<Func<TEntity, TResult>> selector,
+            params Expression<Func<TEntity, object>>[] includes
+        );
+
+        Task<IEnumerable<TEntity>> FilterAsync(
+            Expression<Func<TEntity, bool>> filter,
+            params Expression<Func<TEntity, object>>[] includes
+        );
+
+        Task<IEnumerable<TResult>> FilterAsync<TResult>(
+            Expression<Func<TEntity, bool>> filter,
+            Expression<Func<TEntity, TResult>> selector,
+            params Expression<Func<TEntity, object>>[] includes
+        );
+
+        Task<IEnumerable<TResult>> FilterPagedAsync<TResult>(
+            Expression<Func<TEntity, bool>> filter,
+            Expression<Func<TEntity, TResult>> selector,
+            int skip,
+            int take,
+            params Expression<Func<TEntity, object>>[] includes
+        );
+
+        Task AddAsync(TEntity entity);
+        Task AddRangeAsync(IEnumerable<TEntity> entities);
+
+        void Update(TEntity entity); 
+
+        void Remove(TEntity entity);
+        Task RemoveByIdAsync(int id);
+        void RemoveRange(IEnumerable<TEntity> entities);
 
 
     }

@@ -8,6 +8,6 @@ using System.Threading.Tasks;
 namespace Plenumio.Core.Entities.Base {
     public class BaseIdEntity: BaseEntity {
         [Key]
-        public int Id { get; set; }
+        public Guid Id { get; set; }
     }
 }

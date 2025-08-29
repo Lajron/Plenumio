@@ -12,6 +12,8 @@ namespace Plenumio.Application.Extensions {
         public static IServiceCollection AddApplicationServices(this IServiceCollection services) {
             services.AddScoped<ITagService, TagService>();
             services.AddScoped<IPostService, PostService>();
+            services.AddScoped<IUserService, UserService>();
+            services.AddScoped<ICommentService, CommentService>();
 
             return services;
         }

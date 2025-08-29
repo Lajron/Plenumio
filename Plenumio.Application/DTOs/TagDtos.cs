@@ -6,7 +6,8 @@ using System.Threading.Tasks;
 
 namespace Plenumio.Application.DTOs {
     public record TagDto(
-        int Id,
-        string Name
+        Guid Id,
+        string Name,
+        string DisplayedName
     );
 }

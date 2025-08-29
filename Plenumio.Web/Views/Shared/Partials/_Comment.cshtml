@@ -1,0 +1,46 @@
+﻿@model CommentViewModel
+
+<div class="comment-item mb-2" data-comment-id="@Model.Id" id="comment-@Model.Id">
+    <div class="d-flex align-items-start gap-2 position-relative">
+        <div class="d-flex flex-column align-items-center flex-shrink-0 position-relative">
+            <img src="@(Model.User.AvatarUrl?.Trim() ?? "https://picsum.photos/50")"
+                 alt="@Model.User.DisplayedName"
+                 class="rounded-circle border border-2 border-secondary"
+                 width="40" height="40" />
+           
+        </div>
+
+        <div class="flex-grow-1 p-2 bg-dark">
+            <div class="d-flex justify-content-between">
+                <strong>@Model.User.DisplayedName</strong>
+                <small class="text-muted">@Model.CreatedAt.ToString("dd.MM.yyyy HH:mm")</small>
+            </div>
+            <div class="mt-1">@Model.Content</div>
+
+            <div class="mt-2 d-flex gap-2">
+                <button class="btn btn-link btn-sm text-muted p-0 reply-btn" data-comment-id="@Model.Id">
+                    <i class="fas fa-reply"></i> Reply
+                </button>
+
+                @if (Model.HasChildren) {
+                    <button class="btn btn-link btn-sm text-primary p-0 load-replies-btn" data-comment-id="@Model.Id">
+                        <i class="fas fa-chevron-down"></i> Load replies
+                    </button>
+                }
+            </div>
+        </div>
+    </div>
+
+    <!-- Reply form (hidden initially) -->
+    <div class="reply-form-container ms-5 mt-2" id="reply-form-@Model.Id" style="display: none;">
+        @await Html.PartialAsync("_CreateCommentReply", new CreateCommentViewModel {
+        PostId = Model.PostId,
+                ParentId = Model.Id // this will be updated dynamically via JS
+                })
+    </div>
+
+    <!-- Children container -->
+    <div class="children-container ms-5" id="children-@Model.Id" style="display:none;">
+        @* Child comments will be loaded via AJAX *@
+    </div>
+</div>

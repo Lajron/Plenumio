@@ -1,0 +1,9 @@
+﻿@model IEnumerable<TagViewModel>
+
+@if (Model.Any()) {
+    <div class="post-tags mb-2">
+        @foreach (var tag in Model) {
+            <span class="badge bg-secondary me-1">@tag.Name</span>
+        }
+    </div>
+}

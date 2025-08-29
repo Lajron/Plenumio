@@ -6,6 +6,6 @@ using System.Threading.Tasks;
 
 namespace Plenumio.Application.DTOs {
     public record ReactionDto(
-        string name
+        string Name
     );
 }

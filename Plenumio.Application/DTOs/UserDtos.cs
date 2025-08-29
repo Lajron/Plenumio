@@ -5,10 +5,17 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace Plenumio.Application.DTOs {
+    public record UserSummaryDto(
+        Guid Id,
+        string DisplayedName,
+        string AvatarUrl,
+        bool IsVerified
+    );
+
     public record UserDto(
         int Id,
         string Username,
-        string? AvatarUrl
+        string AvatarUrl
     );
-    
+
 }

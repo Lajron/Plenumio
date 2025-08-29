@@ -1,0 +1,159 @@
+﻿@model PostViewModel
+
+<div class="col-8 d-flex flex-column">
+    <partial name="_PostDetails" model="@Model" />
+</div>
+
+<div class="col-4 d-flex flex-column gap-2">
+
+    <vc:trending-tags-card></vc:trending-tags-card>
+
+    <vc:trending-users-card></vc:trending-users-card>
+
+    <vc:recently-viewed-posts></vc:recently-viewed-posts>
+
+    <partial name="_Footer" />
+
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function() {
+            // Toggle reply form
+            $(document).on('click', '.reply-btn', function(e) {
+                e.preventDefault();
+                const button = $(this);
+                const commentId = button.data('comment-id');
+                const replyForm = $(`#reply-form-${commentId}`);
+
+                if (replyForm.is(':visible')) {
+                    replyForm.slideUp();
+                    button.html('<i class="fas fa-reply"></i> Reply');
+                } else {
+                    $('.reply-form-container:visible').slideUp();
+                    $('.reply-btn').html('<i class="fas fa-reply"></i> Reply');
+
+                    replyForm.slideDown();
+                    button.html('<i class="fas fa-times"></i> Cancel');
+                    replyForm.find('textarea').focus();
+                    replyForm.find('input[name="ParentId"]').val(commentId);
+                }
+            });
+
+            // Submit reply via AJAX
+            $(document).on('submit', '.reply-form-container form', function(e) {
+                e.preventDefault();
+                const form = $(this);
+                const submitButton = form.find('button[type="submit"]');
+                const originalText = submitButton.text();
+                const formData = new FormData(form[0]);
+
+                submitButton.prop('disabled', true).text('Posting...');
+
+                $.ajax({
+                    url: form.attr('action'),
+                    method: 'POST',
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    success: function(html) {
+                        form[0].reset();
+                        form.closest('.reply-form-container').slideUp();
+
+                        const parentId = form.find('input[name="ParentId"]').val();
+                        const childrenContainer = $(`#children-${parentId}`);
+                        childrenContainer.prepend(html).slideDown();
+
+                        const replyBtn = $(`.reply-btn[data-comment-id="${parentId}"]`);
+                        replyBtn.html('<i class="fas fa-reply"></i> Reply');
+
+                        const parentCommentItem = $(`#comment-${parentId}`);
+                        const buttonsContainer = parentCommentItem.find('.mt-2.d-flex.gap-2');
+                        if (!parentCommentItem.find('.collapse-replies-btn, .load-replies-btn').length) {
+                            buttonsContainer.append(`
+                                <button class="btn btn-link btn-sm text-primary p-0 collapse-replies-btn" data-comment-id="${parentId}">
+                                    <i class="fas fa-chevron-up"></i> Collapse replies
+                                </button>
+                            `);
+                        }
+
+                        showNotification('Comment posted successfully!', 'success');
+                    },
+                    error: function() {
+                        showNotification('Error posting comment. Please try again.', 'error');
+                    },
+                    complete: function() {
+                        submitButton.prop('disabled', false).text(originalText);
+                    }
+                });
+            });
+
+            // Load replies via AJAX
+            $(document).on('click', '.load-replies-btn', function(e) {
+                e.preventDefault();
+                const button = $(this);
+                const commentId = button.data('comment-id');
+                const childrenContainer = $(`#children-${commentId}`);
+
+                if (button.prop('disabled')) return;
+
+                button.prop('disabled', true).html('<i class="fas fa-spinner fa-spin"></i> Loading...');
+
+                $.ajax({
+                    url: '/Comment/GetCommentChildren',
+                    method: 'GET',
+                    data: { parentId: commentId },
+                    success: function(data) {
+                        childrenContainer.html(data).slideDown();
+                        button.removeClass('load-replies-btn')
+                              .addClass('collapse-replies-btn')
+                              .html('<i class="fas fa-chevron-up"></i> Collapse replies')
+                              .prop('disabled', false);
+                    },
+                    error: function() {
+                        button.html('<i class="fas fa-exclamation-triangle"></i> Error loading replies')
+                              .prop('disabled', false);
+                        setTimeout(() => {
+                            button.html('<i class="fas fa-chevron-down"></i> Load replies');
+                        }, 2000);
+                    }
+                });
+            });
+
+            // Collapse only the immediate children of this comment
+            $(document).on('click', '.collapse-replies-btn', function(e) {
+                e.preventDefault();
+                const button = $(this);
+                const commentId = button.data('comment-id');
+                const childrenContainer = $(`#children-${commentId}`);
+
+                childrenContainer.slideUp();
+                button.removeClass('collapse-replies-btn')
+                      .addClass('load-replies-btn')
+                      .html('<i class="fas fa-chevron-down"></i> Load replies');
+            });
+
+            // Notifications
+            function showNotification(message, type = 'info') {
+                const alertClass = type === 'success' ? 'alert-success' :
+                                   type === 'error' ? 'alert-danger' : 'alert-info';
+                const notification = $(`
+                    <div class="alert ${alertClass} alert-dismissible fade show position-fixed"
+                         style="top:20px; right:20px; z-index:9999;">
+                        ${message}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                    </div>
+                `);
+                $('body').append(notification);
+                setTimeout(() => notification.alert('close'), 3000);
+            }
+
+            // Make sure all children are hidden on page load
+            $('.children-container').hide();
+        });
+    </script>
+
+
+
+
+}

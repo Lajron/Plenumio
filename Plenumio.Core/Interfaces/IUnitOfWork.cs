@@ -8,7 +8,14 @@ using System.Threading.Tasks;
 namespace Plenumio.Core.Interfaces {
     public interface IUnitOfWork: IDisposable {
         ITagRepository Tags { get; }
-        Task SaveChangesAsync();
+        IPostRepository Posts { get; }
+        IUserRepository Users { get; }
+        ICommentRepository Comments { get; }
+
+
+        Task<int> CompleteAsync();
+        Task ExecuteInTransactionAsync(Func<Task> trySection, Func<Exception, Task>? catchSection = null, Func<Task>? finallySection = null);
+
 
     }
 }

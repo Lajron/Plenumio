@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace Plenumio.Core.Interfaces.Repositories {
-    public interface ITagRepository: IRepository<Tag> {
+    public interface ITagRepository : IRepository<Tag> {
+        Task<ICollection<PostTag>> ResolveTagsAsync(Dictionary<string, string> tags);
     }
 }

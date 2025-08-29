@@ -10,7 +10,7 @@ namespace Plenumio.Core.Entities {
         public required string DisplayedName { get; set; }
         public TagType Type { get; set; } = TagType.User;
 
-        public int? ParentId { get; set; }
+        public Guid? ParentId { get; set; }
         public Tag? Parent { get; set; }
         public ICollection<Tag> Children { get; set; } = [];
 

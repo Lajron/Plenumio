@@ -9,7 +9,7 @@ namespace Plenumio.Core.Entities {
         public Guid ApplicationUserId { get; set; }
         public ApplicationUser? ApplicationUser { get; set; }
 
-        public int TagId { get; set; }
+        public Guid TagId { get; set; }
         public Tag? Tag { get; set; } 
     }
 }

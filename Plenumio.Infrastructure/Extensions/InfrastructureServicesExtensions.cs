@@ -10,6 +10,9 @@ namespace Plenumio.Infrastructure.Extensions {
     public static class InfrastructureServicesExtensions {
         public static IServiceCollection AddRepositories(this IServiceCollection services) {
             services.AddScoped<ITagRepository, TagRepository>();
+            services.AddScoped<IPostRepository, PostRepository>();
+            services.AddScoped<IUserRepository, UserRepository>();
+            services.AddScoped<ICommentRepository, CommentRepository>();
 
             return services;
         }

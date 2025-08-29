@@ -18,7 +18,7 @@ namespace Plenumio.Infrastructure.Data.Configuration {
 
             builder.HasData(
                 new Tag {
-                    Id = 1,
+                    Id = Guid.NewGuid(),
                     Name = "technology",
                     DisplayedName = "Technology",
                     Type = TagType.Default,
@@ -28,7 +28,7 @@ namespace Plenumio.Infrastructure.Data.Configuration {
                     IsDeleted = false
                 },
                 new Tag {
-                    Id = 2,
+                    Id = Guid.NewGuid(),
                     Name = "life",
                     DisplayedName = "Life",
                     Type = TagType.Default,
@@ -38,7 +38,7 @@ namespace Plenumio.Infrastructure.Data.Configuration {
                     IsDeleted = false
                 },
                 new Tag {
-                    Id = 3,
+                    Id = Guid.NewGuid(),
                     Name = "science",
                     DisplayedName = "Science", 
                     Type = TagType.Default,
@@ -48,7 +48,7 @@ namespace Plenumio.Infrastructure.Data.Configuration {
                     IsDeleted = false
                 },
                 new Tag {
-                    Id = 4,
+                    Id = Guid.NewGuid(),
                     Name = "art",
                     DisplayedName = "Art",
                     Type = TagType.Default,
@@ -58,7 +58,7 @@ namespace Plenumio.Infrastructure.Data.Configuration {
                     IsDeleted = false
                 },
                 new Tag {
-                    Id = 5,
+                    Id = Guid.NewGuid(),
                     Name = "gaming",
                     DisplayedName = "Gaming",
                     Type = TagType.Default,

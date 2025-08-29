@@ -9,11 +9,11 @@ namespace Plenumio.Core.Entities {
     public class Comment : BaseIdEntity {
         public required string Content { get; set; }
 
-        public int? ParentId { get; set; }
+        public Guid? ParentId { get; set; }
         public Comment? Parent { get; set; }
         public ICollection<Comment> Children { get; set; } = [];
 
-        public int PostId { get; set; }
+        public Guid PostId { get; set; }
         public Post? Post { get; set; }
 
         public Guid ApplicationUserId { get; set; }

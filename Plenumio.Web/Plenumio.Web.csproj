@@ -21,11 +21,6 @@
 
   <ItemGroup>
     <Folder Include="Areas\Identity\Data\" />
-    <Folder Include="Models\Feed\" />
-    <Folder Include="Models\Tag\" />
-    <Folder Include="Models\Post\" />
-    <Folder Include="Models\Profile\" />
-    <Folder Include="Models\Search\" />
   </ItemGroup>
 
   <ItemGroup>

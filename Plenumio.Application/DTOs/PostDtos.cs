@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Plenumio.Core.Entities;
+using Plenumio.Core.Enums;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,25 +8,49 @@ using System.Threading.Tasks;
 
 namespace Plenumio.Application.DTOs {
     public record PostDto(
-        int Id,
-        string Description,
+        Guid Id,
+        string Title,
+        string Content,
         string Slug,
-        string PrivacyType,
-        DateTime CreatedAt,
-        DateTime UpdatedAt,
-        UserDto Author,
+        PostType Type,
+        PrivacyType Privacy,
+        DateTimeOffset CreatedAt,
+        DateTimeOffset UpdatedAt,
+        UserSummaryDto Author,
         IEnumerable<TagDto> Tags,
         IEnumerable<ImageDto> Images,
         IEnumerable<CommentDto> Comments,
         IEnumerable<ReactionDto> Reactions,
-        int LikesCount
+        int CommentCount,
+        int ReactionCount
     );
 
     public record CreatePostDto(
-        string Description,
-        int PrivacyType,
-        IEnumerable<int> TagIds,
-        IEnumerable<string> ImageUrls
+        string Title,
+        string Content,
+        PostType Type,
+        PrivacyType Privacy,
+        IEnumerable<string> Tags
+    );
+
+    public record PostFeedDto(
+        Guid Id,
+        string Title,
+        string Content,
+        string Slug,
+        PostType Type,
+        DateTimeOffset CreatedAt,
+        DateTimeOffset UpdatedAt,
+        UserSummaryDto User,
+        IEnumerable<TagDto> Tags,
+        IEnumerable<ImageDto> Images,
+        int ReactionCount,
+        int CommentCount
+    );
+
+    public record PostIdSlugDto(
+        Guid Id,
+        string Slug
     );
 
     public record UpdatePostDto(
@@ -36,14 +62,6 @@ namespace Plenumio.Application.DTOs {
         IEnumerable<string> RemoveImageUrls
     );
 
-    public record PostListDto(
-        int Id,
-        string Slug,
-        string Description,
-        string ImageThumbnailUrl,
-        UserDto Author,
-        int LikesCount,
-        int CommentsCount
-    );
+    
 
 }

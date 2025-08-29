@@ -2,8 +2,14 @@
     ViewData["Title"] = "Feed";
 }
 
-<div class="col-8">
-    @* <vc:post-feed></vc:post-feed> *@
+<div class="col-8 d-flex flex-column">
+    <partial name="_CreatePostFeed" model='new CreatePostViewModel {
+                                        Content = "",
+                                        Privacy = PrivacyType.Public,
+                                        Tags = []
+                                    }' />
+
+    <vc:post-feed></vc:post-feed>
 </div>
 
 <div class="col-4 d-flex flex-column gap-2">

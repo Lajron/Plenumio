@@ -1,0 +1,5 @@
+﻿@model List<CommentViewModel>
+
+@foreach (var comment in Model) {
+    <partial name="_Comment" model="comment" />
+}

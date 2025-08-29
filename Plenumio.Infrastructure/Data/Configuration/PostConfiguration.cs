@@ -17,6 +17,12 @@ namespace Plenumio.Infrastructure.Data.Configuration {
             builder.Property(p => p.Privacy)
                 .HasConversion<string>();
 
+            builder.Property(p => p.Type)
+                .HasConversion<string>();
+
+            builder.Property(p => p.Id)
+                .HasDefaultValueSql("NEWSEQUENTIALID()");
+
             builder.HasOne(p => p.ApplicationUser)
                 .WithMany(u => u.Posts)
                 .HasForeignKey(p => p.ApplicationUserId)

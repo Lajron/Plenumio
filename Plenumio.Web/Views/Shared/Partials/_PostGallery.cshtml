@@ -1,0 +1,81 @@
+﻿@model IEnumerable<ImageViewModel>
+@{
+    var images = Model.ToList();
+    var modalId = "galleryModal_" + Guid.NewGuid().ToString("N");
+    var carouselId = "carouselGallery_" + Guid.NewGuid().ToString("N");
+}
+
+@if (images.Any()) {
+    <div class="row g-1">
+        @for (int i = 0; i < Math.Min(images.Count, 4); i++) {
+            <div class="col-6">
+                <div class="ratio ratio-1x1 overflow-hidden rounded position-relative">
+                    <img src="@('/' + images[i].Url)"
+                         class="img-fluid w-100 h-100 object-fit-cover cursor-pointer"
+                         data-bs-toggle="modal"
+                         data-bs-target="#@modalId"
+                         data-bs-slide-to="@i"
+                         style="cursor: pointer;" />
+                    @if (i == 3 && images.Count > 4) {
+                        <div class="position-absolute top-0 start-0 w-100 h-100 d-flex justify-content-center align-items-center bg-dark bg-opacity-75 text-white fs-4 fw-bold rounded">
+                            +@(images.Count - 4)
+                        </div>
+                    }
+                </div>
+            </div>
+        }
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="@modalId" tabindex="-1" aria-labelledby="@modalId-label" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-xl">
+            <div class="modal-content bg-dark border-0">
+                <div class="modal-header border-0 pb-0">
+                    <button type="button" class="btn-close btn-close-white ms-auto" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body p-0">
+                    <div id="@carouselId" class="carousel slide" data-bs-ride="false">
+                        <!-- Carousel Indicators -->
+                        @if (images.Count > 1) {
+                            <div class="carousel-indicators">
+                                @for (int i = 0; i < images.Count; i++) {
+                                    <button type="button"
+                                            data-bs-target="#@carouselId"
+                                            data-bs-slide-to="@i"
+                                            class="@(i == 0 ? "active" : "")"
+                                            aria-current="@(i == 0 ? "true" : "false")"
+                                            aria-label="Slide @(i + 1)"></button>
+                                }
+                            </div>
+                        }
+
+                        <!-- Carousel Inner -->
+                        <div class="carousel-inner">
+                            @for (int i = 0; i < images.Count; i++) {
+                                <div class="carousel-item @(i == 0 ? "active" : "")">
+                                    <div class="d-flex justify-content-center align-items-center" style="height: 70vh;">
+                                        <img src="@('/' + images[i].Url)"
+                                             class="img-fluid"
+                                             style="max-height: 70vh; max-width: 100%; object-fit: contain;" />
+                                    </div>
+                                </div>
+                            }
+                        </div>
+
+                        <!-- Carousel Controls -->
+                        @if (images.Count > 1) {
+                            <button class="carousel-control-prev" type="button" data-bs-target="#@carouselId" data-bs-slide="prev">
+                                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                <span class="visually-hidden">Previous</span>
+                            </button>
+                            <button class="carousel-control-next" type="button" data-bs-target="#@carouselId" data-bs-slide="next">
+                                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                <span class="visually-hidden">Next</span>
+                            </button>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}

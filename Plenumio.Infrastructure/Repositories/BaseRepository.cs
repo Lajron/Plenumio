@@ -12,64 +12,12 @@ namespace Plenumio.Infrastructure.Repositories {
     public class BaseRepository<TEntity>(ApplicationDbContext db) : IRepository<TEntity> where TEntity : class {
         protected readonly DbSet<TEntity> _dbSet = db.Set<TEntity>();
 
-        public async Task<TEntity?> GetAsync(
-            Expression<Func<TEntity, bool>> filter,
-            params Expression<Func<TEntity, object>>[] includes
-        ) {
-            IQueryable<TEntity> query = _dbSet;
-            if (includes != null)
-                query = includes.Aggregate(query, (current, include) => current.Include(include));
-
-            return await query.SingleOrDefaultAsync(filter);
+        public async Task<TEntity?> FindByIdAsync(Guid id) {
+            return await _dbSet.FindAsync(id);
         }
 
-        public async Task<TResult?> GetAsync<TResult>(
-            Expression<Func<TEntity, bool>> filter,
-            Expression<Func<TEntity, TResult>> selector,
-            params Expression<Func<TEntity, object>>[] includes
-        ) {
-            IQueryable<TEntity> query = _dbSet;
-            if (includes != null)
-                query = includes.Aggregate(query, (current, include) => current.Include(include));
-
-            return await query.Where(filter).Select(selector).FirstOrDefaultAsync();
-        }
-
-        public async Task<IEnumerable<TEntity>> FilterAsync(
-            Expression<Func<TEntity, bool>> filter,
-            params Expression<Func<TEntity, object>>[] includes
-        ) {
-            IQueryable<TEntity> query = _dbSet;
-            if (includes != null)
-                query = includes.Aggregate(query, (current, include) => current.Include(include));
-
-            return await query.Where(filter).ToListAsync();
-        }
-
-        public async Task<IEnumerable<TResult>> FilterAsync<TResult>(
-            Expression<Func<TEntity, bool>> filter,
-            Expression<Func<TEntity, TResult>> selector,
-            params Expression<Func<TEntity, object>>[] includes
-        ) {
-            IQueryable<TEntity> query = _dbSet;
-            if (includes != null)
-                query = includes.Aggregate(query, (current, include) => current.Include(include));
-
-            return await query.Where(filter).Select(selector).ToListAsync();
-        }
-
-        public async Task<IEnumerable<TResult>> FilterPagedAsync<TResult>(
-            Expression<Func<TEntity, bool>> filter,
-            Expression<Func<TEntity, TResult>> selector,
-            int skip,
-            int take,
-            params Expression<Func<TEntity, object>>[] includes
-        ) {
-            IQueryable<TEntity> query = _dbSet;
-            if (includes != null)
-                query = includes.Aggregate(query, (current, include) => current.Include(include));
-
-            return await query.Where(filter).Skip(skip).Take(take).Select(selector).ToListAsync();
+        public async Task<IEnumerable<TEntity>> GetAllAsync() {
+            return await _dbSet.ToListAsync();
         }
 
         public async Task AddAsync(TEntity entity) {
@@ -88,7 +36,7 @@ namespace Plenumio.Infrastructure.Repositories {
             _dbSet.Remove(entity);
         }
 
-        public async Task RemoveByIdAsync(int id) {
+        public async Task RemoveByIdAsync(Guid id) {
             TEntity? entity = await _dbSet.FindAsync(id);
             if (entity != null)
                 _dbSet.Remove(entity);
@@ -97,5 +45,7 @@ namespace Plenumio.Infrastructure.Repositories {
         public void RemoveRange(IEnumerable<TEntity> entities) {
             _dbSet.RemoveRange(entities);
         }
+
+        
     }
 }

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Plenumio.Application.DTOs {
     public record ImageDto(
-        int Id,
+        Guid Id,
         string Url
     );
 }

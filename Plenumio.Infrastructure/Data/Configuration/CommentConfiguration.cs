@@ -10,6 +10,9 @@ using System.Threading.Tasks;
 namespace Plenumio.Infrastructure.Data.Configuration {
     public class CommentConfiguration : IEntityTypeConfiguration<Comment> {
         public void Configure(EntityTypeBuilder<Comment> builder) {
+            builder.Property(c => c.Id)
+                .HasDefaultValueSql("NEWSEQUENTIALID()");
+
             builder.HasOne(c => c.Parent)
                 .WithMany(c => c.Children)
                 .HasForeignKey(c => c.ParentId)

@@ -7,6 +7,7 @@ using Plenumio.Core.Entities;
 using Plenumio.Core.Interfaces;
 using Plenumio.Infrastructure.Data;
 using Plenumio.Infrastructure.Extensions;
+using Plenumio.Infrastructure.Services;
 using Plenumio.Web.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -25,7 +26,14 @@ builder.Services.AddIdentity<ApplicationUser, IdentityRole<Guid>>(options => opt
 
 builder.Services.AddRazorPages();
 
+builder.Services.AddScoped<IImageService>(sp => {
+    var env = sp.GetRequiredService<IWebHostEnvironment>();
+    return new ImageService(env.WebRootPath);
+});
+
+builder.Services.AddRepositories();
 builder.Services.AddUnitOfWork();
+builder.Services.AddApplicationHandlers();
 builder.Services.AddApplicationServices();
 builder.Services.AddFeedStrategyServices();
 builder.Services.AddEmailSender();

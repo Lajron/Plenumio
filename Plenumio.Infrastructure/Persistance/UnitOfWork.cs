@@ -10,14 +10,43 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace Plenumio.Infrastructure.Persistance {
-    public class UnitOfWork(ApplicationDbContext db) : IUnitOfWork {
+    public class UnitOfWork(
+            ApplicationDbContext db,
+            ITagRepository tagRepository,
+            IPostRepository postRepository,
+            IUserRepository userRepository,
+            ICommentRepository commentRepository
+        ) : IUnitOfWork {
+
         private bool disposedValue;
 
-        private readonly ITagRepository _tagRepository = new TagRepository(db);
-        public ITagRepository Tags => _tagRepository;
+        public ITagRepository Tags => tagRepository;
+        public IPostRepository Posts => postRepository;
+        public IUserRepository Users => userRepository;
+        public ICommentRepository Comments => commentRepository;
 
-        public async Task SaveChangesAsync() {
-            await db.SaveChangesAsync();
+
+        public async Task<int> CompleteAsync() {
+            return await db.SaveChangesAsync();
+        }
+
+        public async Task ExecuteInTransactionAsync(Func<Task> trySection, Func<Exception, Task>? catchSection = null, Func<Task>? finallySection = null) {
+            await using var transaction = await db.Database.BeginTransactionAsync();
+            try {
+
+                await trySection();
+                await transaction.CommitAsync();
+
+            } catch (Exception e) {
+
+                await transaction.RollbackAsync();
+
+                if (catchSection != null)
+                    await catchSection(e);
+
+            } finally {
+                if (finallySection != null) await finallySection();
+            }
         }
 
         protected virtual void Dispose(bool disposing) {
@@ -33,5 +62,7 @@ namespace Plenumio.Infrastructure.Persistance {
             Dispose(disposing: true);
             GC.SuppressFinalize(this);
         }
+
+       
     }
 }

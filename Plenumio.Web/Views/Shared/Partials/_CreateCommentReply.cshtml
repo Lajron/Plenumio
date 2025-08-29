@@ -1,0 +1,12 @@
+﻿@model CreateCommentViewModel
+
+<form method="post" class="d-flex flex-column gap-2" action="/Comment/Reply">
+    <input type="hidden" name="PostId" value="@Model.PostId" />
+    <input type="hidden" name="ParentId" value="@Model.ParentId" />
+
+    <div class="mb-2">
+        <textarea class="form-control" rows="3" placeholder="Write a reply..." required name="Content"></textarea>
+    </div>
+
+    <button type="submit" class="btn btn-sm btn-primary align-self-end">Post Reply</button>
+</form>

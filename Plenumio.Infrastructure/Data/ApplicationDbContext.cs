@@ -12,6 +12,13 @@ namespace Plenumio.Infrastructure.Data {
         public DbSet<PostTag> PostTag { get; set; }
         public DbSet<ApplicationUser> ApplicationUsers { get; set; }
 
+        public DbSet<Follow> Follows { get; set; }
+        public DbSet<Comment> Comments { get; set; }
+        public DbSet<PostImage> PostImage { get; set; }
+        public DbSet<ApplicationUserTag> ApplicaitonUserTag { get; set; }
+        public DbSet<Reaction> Reactions { get; set; }
+
+
 
         protected override void OnModelCreating(ModelBuilder modelBuilder) {
             base.OnModelCreating(modelBuilder);

@@ -260,23 +260,22 @@ namespace Plenumio.Infrastructure.Migrations
                     b.Property<Guid>("ApplicationUserId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<int>("TagId")
-                        .HasColumnType("int");
+                    b.Property<Guid>("TagId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.HasKey("ApplicationUserId", "TagId");
 
                     b.HasIndex("TagId");
 
-                    b.ToTable("ApplicationUserTag");
+                    b.ToTable("ApplicaitonUserTag");
                 });
 
             modelBuilder.Entity("Plenumio.Core.Entities.Comment", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                        .HasColumnType("uniqueidentifier")
+                        .HasDefaultValueSql("NEWSEQUENTIALID()");
 
                     b.Property<Guid>("ApplicationUserId")
                         .HasColumnType("uniqueidentifier");
@@ -291,11 +290,11 @@ namespace Plenumio.Infrastructure.Migrations
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
-                    b.Property<int?>("ParentId")
-                        .HasColumnType("int");
+                    b.Property<Guid?>("ParentId")
+                        .HasColumnType("uniqueidentifier");
 
-                    b.Property<int>("PostId")
-                        .HasColumnType("int");
+                    b.Property<Guid>("PostId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTimeOffset>("UpdatedAt")
                         .HasColumnType("datetimeoffset");
@@ -308,16 +307,14 @@ namespace Plenumio.Infrastructure.Migrations
 
                     b.HasIndex("PostId");
 
-                    b.ToTable("Comment");
+                    b.ToTable("Comments");
                 });
 
             modelBuilder.Entity("Plenumio.Core.Entities.Follow", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTimeOffset>("CreatedAt")
                         .HasColumnType("datetimeoffset");
@@ -341,16 +338,15 @@ namespace Plenumio.Infrastructure.Migrations
                     b.HasIndex("FollowerId", "FollowedId")
                         .IsUnique();
 
-                    b.ToTable("Follow");
+                    b.ToTable("Follows");
                 });
 
             modelBuilder.Entity("Plenumio.Core.Entities.Post", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                        .HasColumnType("uniqueidentifier")
+                        .HasDefaultValueSql("NEWSEQUENTIALID()");
 
                     b.Property<Guid>("ApplicationUserId")
                         .HasColumnType("uniqueidentifier");
@@ -377,6 +373,10 @@ namespace Plenumio.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("Type")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<DateTimeOffset>("UpdatedAt")
                         .HasColumnType("datetimeoffset");
 
@@ -392,11 +392,9 @@ namespace Plenumio.Infrastructure.Migrations
 
             modelBuilder.Entity("Plenumio.Core.Entities.PostImage", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTimeOffset>("CreatedAt")
                         .HasColumnType("datetimeoffset");
@@ -404,8 +402,8 @@ namespace Plenumio.Infrastructure.Migrations
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
-                    b.Property<int>("PostId")
-                        .HasColumnType("int");
+                    b.Property<Guid>("PostId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTimeOffset>("UpdatedAt")
                         .HasColumnType("datetimeoffset");
@@ -423,11 +421,11 @@ namespace Plenumio.Infrastructure.Migrations
 
             modelBuilder.Entity("Plenumio.Core.Entities.PostTag", b =>
                 {
-                    b.Property<int>("PostId")
-                        .HasColumnType("int");
+                    b.Property<Guid>("PostId")
+                        .HasColumnType("uniqueidentifier");
 
-                    b.Property<int>("TagId")
-                        .HasColumnType("int");
+                    b.Property<Guid>("TagId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.HasKey("PostId", "TagId");
 
@@ -438,11 +436,9 @@ namespace Plenumio.Infrastructure.Migrations
 
             modelBuilder.Entity("Plenumio.Core.Entities.Reaction", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid>("ApplicationUserId")
                         .HasColumnType("uniqueidentifier");
@@ -453,8 +449,8 @@ namespace Plenumio.Infrastructure.Migrations
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
-                    b.Property<int>("PostId")
-                        .HasColumnType("int");
+                    b.Property<Guid>("PostId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Type")
                         .IsRequired()
@@ -469,16 +465,14 @@ namespace Plenumio.Infrastructure.Migrations
 
                     b.HasIndex("PostId");
 
-                    b.ToTable("Reaction");
+                    b.ToTable("Reactions");
                 });
 
             modelBuilder.Entity("Plenumio.Core.Entities.Tag", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTimeOffset>("CreatedAt")
                         .HasColumnType("datetimeoffset");
@@ -494,8 +488,8 @@ namespace Plenumio.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("ParentId")
-                        .HasColumnType("int");
+                    b.Property<Guid?>("ParentId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Type")
                         .IsRequired()
@@ -513,53 +507,53 @@ namespace Plenumio.Infrastructure.Migrations
                     b.HasData(
                         new
                         {
-                            Id = 1,
-                            CreatedAt = new DateTimeOffset(new DateTime(2025, 8, 23, 22, 28, 34, 74, DateTimeKind.Unspecified).AddTicks(3157), new TimeSpan(0, 0, 0, 0, 0)),
+                            Id = new Guid("c3370f9d-1804-47a9-8d41-32b245097849"),
+                            CreatedAt = new DateTimeOffset(new DateTime(2025, 8, 28, 17, 48, 31, 836, DateTimeKind.Unspecified).AddTicks(1122), new TimeSpan(0, 0, 0, 0, 0)),
                             DisplayedName = "Technology",
                             IsDeleted = false,
                             Name = "technology",
                             Type = "Default",
-                            UpdatedAt = new DateTimeOffset(new DateTime(2025, 8, 23, 22, 28, 34, 74, DateTimeKind.Unspecified).AddTicks(3159), new TimeSpan(0, 0, 0, 0, 0))
+                            UpdatedAt = new DateTimeOffset(new DateTime(2025, 8, 28, 17, 48, 31, 836, DateTimeKind.Unspecified).AddTicks(1123), new TimeSpan(0, 0, 0, 0, 0))
                         },
                         new
                         {
-                            Id = 2,
-                            CreatedAt = new DateTimeOffset(new DateTime(2025, 8, 23, 22, 28, 34, 74, DateTimeKind.Unspecified).AddTicks(3162), new TimeSpan(0, 0, 0, 0, 0)),
+                            Id = new Guid("d053fadf-da82-4282-b580-ef12407b2613"),
+                            CreatedAt = new DateTimeOffset(new DateTime(2025, 8, 28, 17, 48, 31, 836, DateTimeKind.Unspecified).AddTicks(1128), new TimeSpan(0, 0, 0, 0, 0)),
                             DisplayedName = "Life",
                             IsDeleted = false,
                             Name = "life",
                             Type = "Default",
-                            UpdatedAt = new DateTimeOffset(new DateTime(2025, 8, 23, 22, 28, 34, 74, DateTimeKind.Unspecified).AddTicks(3163), new TimeSpan(0, 0, 0, 0, 0))
+                            UpdatedAt = new DateTimeOffset(new DateTime(2025, 8, 28, 17, 48, 31, 836, DateTimeKind.Unspecified).AddTicks(1128), new TimeSpan(0, 0, 0, 0, 0))
                         },
                         new
                         {
-                            Id = 3,
-                            CreatedAt = new DateTimeOffset(new DateTime(2025, 8, 23, 22, 28, 34, 74, DateTimeKind.Unspecified).AddTicks(3165), new TimeSpan(0, 0, 0, 0, 0)),
+                            Id = new Guid("be8db476-8fd4-4b04-a22e-05948acbe2d7"),
+                            CreatedAt = new DateTimeOffset(new DateTime(2025, 8, 28, 17, 48, 31, 836, DateTimeKind.Unspecified).AddTicks(1132), new TimeSpan(0, 0, 0, 0, 0)),
                             DisplayedName = "Science",
                             IsDeleted = false,
                             Name = "science",
                             Type = "Default",
-                            UpdatedAt = new DateTimeOffset(new DateTime(2025, 8, 23, 22, 28, 34, 74, DateTimeKind.Unspecified).AddTicks(3166), new TimeSpan(0, 0, 0, 0, 0))
+                            UpdatedAt = new DateTimeOffset(new DateTime(2025, 8, 28, 17, 48, 31, 836, DateTimeKind.Unspecified).AddTicks(1132), new TimeSpan(0, 0, 0, 0, 0))
                         },
                         new
                         {
-                            Id = 4,
-                            CreatedAt = new DateTimeOffset(new DateTime(2025, 8, 23, 22, 28, 34, 74, DateTimeKind.Unspecified).AddTicks(3169), new TimeSpan(0, 0, 0, 0, 0)),
+                            Id = new Guid("2ce1998a-eaea-4f04-bb3d-82d23ca174c8"),
+                            CreatedAt = new DateTimeOffset(new DateTime(2025, 8, 28, 17, 48, 31, 836, DateTimeKind.Unspecified).AddTicks(1144), new TimeSpan(0, 0, 0, 0, 0)),
                             DisplayedName = "Art",
                             IsDeleted = false,
                             Name = "art",
                             Type = "Default",
-                            UpdatedAt = new DateTimeOffset(new DateTime(2025, 8, 23, 22, 28, 34, 74, DateTimeKind.Unspecified).AddTicks(3169), new TimeSpan(0, 0, 0, 0, 0))
+                            UpdatedAt = new DateTimeOffset(new DateTime(2025, 8, 28, 17, 48, 31, 836, DateTimeKind.Unspecified).AddTicks(1144), new TimeSpan(0, 0, 0, 0, 0))
                         },
                         new
                         {
-                            Id = 5,
-                            CreatedAt = new DateTimeOffset(new DateTime(2025, 8, 23, 22, 28, 34, 74, DateTimeKind.Unspecified).AddTicks(3181), new TimeSpan(0, 0, 0, 0, 0)),
+                            Id = new Guid("1fb74b36-871e-45af-b48d-05439c14f0d1"),
+                            CreatedAt = new DateTimeOffset(new DateTime(2025, 8, 28, 17, 48, 31, 836, DateTimeKind.Unspecified).AddTicks(1148), new TimeSpan(0, 0, 0, 0, 0)),
                             DisplayedName = "Gaming",
                             IsDeleted = false,
                             Name = "gaming",
                             Type = "Default",
-                            UpdatedAt = new DateTimeOffset(new DateTime(2025, 8, 23, 22, 28, 34, 74, DateTimeKind.Unspecified).AddTicks(3182), new TimeSpan(0, 0, 0, 0, 0))
+                            UpdatedAt = new DateTimeOffset(new DateTime(2025, 8, 28, 17, 48, 31, 836, DateTimeKind.Unspecified).AddTicks(1148), new TimeSpan(0, 0, 0, 0, 0))
                         });
                 });
 

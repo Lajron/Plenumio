@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 namespace Plenumio.Core.Entities {
     public class Post: BaseIdEntity {
 
-        public string? Title { get; set; }
+        public string Title { get; set; } = string.Empty;
         public required string Content { get; set; }
         public required string Slug { get; set; }
 

@@ -1,0 +1,6 @@
+﻿@model PostStatisticsViewModel
+
+<div class="post-reactions mb-2 text-muted">
+    <span>@Model.ReactionCount @((Model.ReactionCount == 1) ? "Reaction" : "Reactions")</span>
+    <span class="ms-3">@Model.CommentCount @((Model.CommentCount == 1) ? "Comment" : "Comments")</span>
+</div>

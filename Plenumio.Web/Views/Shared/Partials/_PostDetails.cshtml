@@ -1,0 +1,19 @@
+﻿@model PostViewModel
+
+<div class="card mb-4 shadow-sm  ">
+
+    <div class="card-body">
+
+        <partial name="_PostHeader" model="@Model.Header" />
+        <partial name="_PostBody" model="@Model.Body" />
+        <partial name="_PostGallery" model="@Model.Images" />
+        <partial name="_PostTags" model="@Model.Tags" />
+        <partial name="_PostStatistics" model="@Model.Statistics" />
+        <div class="px-3 py-2 mb-2 rounded bg-light">
+            <partial name="_CreateComment"
+                     model="new CreateCommentViewModel { PostId = Model.Header.PostId, ParentId = null }" />
+        </div>
+        <vc:comment-post post-id="@Model.Header.PostId"></vc:comment-post>
+
+    </div>
+</div>

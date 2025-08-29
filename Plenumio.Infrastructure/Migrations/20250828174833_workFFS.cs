@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Plenumio.Infrastructure.Migrations
 {
     /// <inheritdoc />
-    public partial class fullDatabase : Migration
+    public partial class workFFS : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -66,12 +66,11 @@ namespace Plenumio.Infrastructure.Migrations
                 name: "Tags",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     DisplayedName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Type = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    ParentId = table.Column<int>(type: "int", nullable: true),
+                    ParentId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
                     CreatedAt = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false),
                     UpdatedAt = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false),
                     IsDeleted = table.Column<bool>(type: "bit", nullable: false)
@@ -194,11 +193,10 @@ namespace Plenumio.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Follow",
+                name: "Follows",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     FollowerId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     FollowedId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     CreatedAt = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false),
@@ -207,15 +205,15 @@ namespace Plenumio.Infrastructure.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Follow", x => x.Id);
+                    table.PrimaryKey("PK_Follows", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Follow_AspNetUsers_FollowedId",
+                        name: "FK_Follows_AspNetUsers_FollowedId",
                         column: x => x.FollowedId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_Follow_AspNetUsers_FollowerId",
+                        name: "FK_Follows_AspNetUsers_FollowerId",
                         column: x => x.FollowerId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
@@ -226,11 +224,11 @@ namespace Plenumio.Infrastructure.Migrations
                 name: "Posts",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false, defaultValueSql: "NEWSEQUENTIALID()"),
                     Title = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Content = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Slug = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Type = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Privacy = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     ApplicationUserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     CreatedAt = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false),
@@ -249,23 +247,23 @@ namespace Plenumio.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "ApplicationUserTag",
+                name: "ApplicaitonUserTag",
                 columns: table => new
                 {
                     ApplicationUserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    TagId = table.Column<int>(type: "int", nullable: false)
+                    TagId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ApplicationUserTag", x => new { x.ApplicationUserId, x.TagId });
+                    table.PrimaryKey("PK_ApplicaitonUserTag", x => new { x.ApplicationUserId, x.TagId });
                     table.ForeignKey(
-                        name: "FK_ApplicationUserTag_AspNetUsers_ApplicationUserId",
+                        name: "FK_ApplicaitonUserTag_AspNetUsers_ApplicationUserId",
                         column: x => x.ApplicationUserId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_ApplicationUserTag_Tags_TagId",
+                        name: "FK_ApplicaitonUserTag_Tags_TagId",
                         column: x => x.TagId,
                         principalTable: "Tags",
                         principalColumn: "Id",
@@ -273,14 +271,13 @@ namespace Plenumio.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Comment",
+                name: "Comments",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false, defaultValueSql: "NEWSEQUENTIALID()"),
                     Content = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    ParentId = table.Column<int>(type: "int", nullable: true),
-                    PostId = table.Column<int>(type: "int", nullable: false),
+                    ParentId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    PostId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     ApplicationUserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     CreatedAt = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false),
                     UpdatedAt = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false),
@@ -288,21 +285,21 @@ namespace Plenumio.Infrastructure.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Comment", x => x.Id);
+                    table.PrimaryKey("PK_Comments", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Comment_AspNetUsers_ApplicationUserId",
+                        name: "FK_Comments_AspNetUsers_ApplicationUserId",
                         column: x => x.ApplicationUserId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Comment_Comment_ParentId",
+                        name: "FK_Comments_Comments_ParentId",
                         column: x => x.ParentId,
-                        principalTable: "Comment",
+                        principalTable: "Comments",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_Comment_Posts_PostId",
+                        name: "FK_Comments_Posts_PostId",
                         column: x => x.PostId,
                         principalTable: "Posts",
                         principalColumn: "Id",
@@ -313,10 +310,9 @@ namespace Plenumio.Infrastructure.Migrations
                 name: "PostImage",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Url = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    PostId = table.Column<int>(type: "int", nullable: false),
+                    PostId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     CreatedAt = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false),
                     UpdatedAt = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false),
                     IsDeleted = table.Column<bool>(type: "bit", nullable: false)
@@ -336,8 +332,8 @@ namespace Plenumio.Infrastructure.Migrations
                 name: "PostTag",
                 columns: table => new
                 {
-                    PostId = table.Column<int>(type: "int", nullable: false),
-                    TagId = table.Column<int>(type: "int", nullable: false)
+                    PostId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    TagId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -357,13 +353,12 @@ namespace Plenumio.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Reaction",
+                name: "Reactions",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Type = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    PostId = table.Column<int>(type: "int", nullable: false),
+                    PostId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     ApplicationUserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     CreatedAt = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false),
                     UpdatedAt = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false),
@@ -371,15 +366,15 @@ namespace Plenumio.Infrastructure.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Reaction", x => x.Id);
+                    table.PrimaryKey("PK_Reactions", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Reaction_AspNetUsers_ApplicationUserId",
+                        name: "FK_Reactions_AspNetUsers_ApplicationUserId",
                         column: x => x.ApplicationUserId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Reaction_Posts_PostId",
+                        name: "FK_Reactions_Posts_PostId",
                         column: x => x.PostId,
                         principalTable: "Posts",
                         principalColumn: "Id",
@@ -391,16 +386,16 @@ namespace Plenumio.Infrastructure.Migrations
                 columns: new[] { "Id", "CreatedAt", "DisplayedName", "IsDeleted", "Name", "ParentId", "Type", "UpdatedAt" },
                 values: new object[,]
                 {
-                    { 1, new DateTimeOffset(new DateTime(2025, 8, 23, 22, 28, 34, 74, DateTimeKind.Unspecified).AddTicks(3157), new TimeSpan(0, 0, 0, 0, 0)), "Technology", false, "technology", null, "Default", new DateTimeOffset(new DateTime(2025, 8, 23, 22, 28, 34, 74, DateTimeKind.Unspecified).AddTicks(3159), new TimeSpan(0, 0, 0, 0, 0)) },
-                    { 2, new DateTimeOffset(new DateTime(2025, 8, 23, 22, 28, 34, 74, DateTimeKind.Unspecified).AddTicks(3162), new TimeSpan(0, 0, 0, 0, 0)), "Life", false, "life", null, "Default", new DateTimeOffset(new DateTime(2025, 8, 23, 22, 28, 34, 74, DateTimeKind.Unspecified).AddTicks(3163), new TimeSpan(0, 0, 0, 0, 0)) },
-                    { 3, new DateTimeOffset(new DateTime(2025, 8, 23, 22, 28, 34, 74, DateTimeKind.Unspecified).AddTicks(3165), new TimeSpan(0, 0, 0, 0, 0)), "Science", false, "science", null, "Default", new DateTimeOffset(new DateTime(2025, 8, 23, 22, 28, 34, 74, DateTimeKind.Unspecified).AddTicks(3166), new TimeSpan(0, 0, 0, 0, 0)) },
-                    { 4, new DateTimeOffset(new DateTime(2025, 8, 23, 22, 28, 34, 74, DateTimeKind.Unspecified).AddTicks(3169), new TimeSpan(0, 0, 0, 0, 0)), "Art", false, "art", null, "Default", new DateTimeOffset(new DateTime(2025, 8, 23, 22, 28, 34, 74, DateTimeKind.Unspecified).AddTicks(3169), new TimeSpan(0, 0, 0, 0, 0)) },
-                    { 5, new DateTimeOffset(new DateTime(2025, 8, 23, 22, 28, 34, 74, DateTimeKind.Unspecified).AddTicks(3181), new TimeSpan(0, 0, 0, 0, 0)), "Gaming", false, "gaming", null, "Default", new DateTimeOffset(new DateTime(2025, 8, 23, 22, 28, 34, 74, DateTimeKind.Unspecified).AddTicks(3182), new TimeSpan(0, 0, 0, 0, 0)) }
+                    { new Guid("1fb74b36-871e-45af-b48d-05439c14f0d1"), new DateTimeOffset(new DateTime(2025, 8, 28, 17, 48, 31, 836, DateTimeKind.Unspecified).AddTicks(1148), new TimeSpan(0, 0, 0, 0, 0)), "Gaming", false, "gaming", null, "Default", new DateTimeOffset(new DateTime(2025, 8, 28, 17, 48, 31, 836, DateTimeKind.Unspecified).AddTicks(1148), new TimeSpan(0, 0, 0, 0, 0)) },
+                    { new Guid("2ce1998a-eaea-4f04-bb3d-82d23ca174c8"), new DateTimeOffset(new DateTime(2025, 8, 28, 17, 48, 31, 836, DateTimeKind.Unspecified).AddTicks(1144), new TimeSpan(0, 0, 0, 0, 0)), "Art", false, "art", null, "Default", new DateTimeOffset(new DateTime(2025, 8, 28, 17, 48, 31, 836, DateTimeKind.Unspecified).AddTicks(1144), new TimeSpan(0, 0, 0, 0, 0)) },
+                    { new Guid("be8db476-8fd4-4b04-a22e-05948acbe2d7"), new DateTimeOffset(new DateTime(2025, 8, 28, 17, 48, 31, 836, DateTimeKind.Unspecified).AddTicks(1132), new TimeSpan(0, 0, 0, 0, 0)), "Science", false, "science", null, "Default", new DateTimeOffset(new DateTime(2025, 8, 28, 17, 48, 31, 836, DateTimeKind.Unspecified).AddTicks(1132), new TimeSpan(0, 0, 0, 0, 0)) },
+                    { new Guid("c3370f9d-1804-47a9-8d41-32b245097849"), new DateTimeOffset(new DateTime(2025, 8, 28, 17, 48, 31, 836, DateTimeKind.Unspecified).AddTicks(1122), new TimeSpan(0, 0, 0, 0, 0)), "Technology", false, "technology", null, "Default", new DateTimeOffset(new DateTime(2025, 8, 28, 17, 48, 31, 836, DateTimeKind.Unspecified).AddTicks(1123), new TimeSpan(0, 0, 0, 0, 0)) },
+                    { new Guid("d053fadf-da82-4282-b580-ef12407b2613"), new DateTimeOffset(new DateTime(2025, 8, 28, 17, 48, 31, 836, DateTimeKind.Unspecified).AddTicks(1128), new TimeSpan(0, 0, 0, 0, 0)), "Life", false, "life", null, "Default", new DateTimeOffset(new DateTime(2025, 8, 28, 17, 48, 31, 836, DateTimeKind.Unspecified).AddTicks(1128), new TimeSpan(0, 0, 0, 0, 0)) }
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_ApplicationUserTag_TagId",
-                table: "ApplicationUserTag",
+                name: "IX_ApplicaitonUserTag_TagId",
+                table: "ApplicaitonUserTag",
                 column: "TagId");
 
             migrationBuilder.CreateIndex(
@@ -443,28 +438,28 @@ namespace Plenumio.Infrastructure.Migrations
                 filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Comment_ApplicationUserId",
-                table: "Comment",
+                name: "IX_Comments_ApplicationUserId",
+                table: "Comments",
                 column: "ApplicationUserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Comment_ParentId",
-                table: "Comment",
+                name: "IX_Comments_ParentId",
+                table: "Comments",
                 column: "ParentId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Comment_PostId",
-                table: "Comment",
+                name: "IX_Comments_PostId",
+                table: "Comments",
                 column: "PostId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Follow_FollowedId",
-                table: "Follow",
+                name: "IX_Follows_FollowedId",
+                table: "Follows",
                 column: "FollowedId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Follow_FollowerId_FollowedId",
-                table: "Follow",
+                name: "IX_Follows_FollowerId_FollowedId",
+                table: "Follows",
                 columns: new[] { "FollowerId", "FollowedId" },
                 unique: true);
 
@@ -490,13 +485,13 @@ namespace Plenumio.Infrastructure.Migrations
                 column: "TagId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Reaction_ApplicationUserId",
-                table: "Reaction",
+                name: "IX_Reactions_ApplicationUserId",
+                table: "Reactions",
                 column: "ApplicationUserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Reaction_PostId",
-                table: "Reaction",
+                name: "IX_Reactions_PostId",
+                table: "Reactions",
                 column: "PostId");
 
             migrationBuilder.CreateIndex(
@@ -509,7 +504,7 @@ namespace Plenumio.Infrastructure.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "ApplicationUserTag");
+                name: "ApplicaitonUserTag");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoleClaims");
@@ -527,10 +522,10 @@ namespace Plenumio.Infrastructure.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
-                name: "Comment");
+                name: "Comments");
 
             migrationBuilder.DropTable(
-                name: "Follow");
+                name: "Follows");
 
             migrationBuilder.DropTable(
                 name: "PostImage");
@@ -539,7 +534,7 @@ namespace Plenumio.Infrastructure.Migrations
                 name: "PostTag");
 
             migrationBuilder.DropTable(
-                name: "Reaction");
+                name: "Reactions");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");

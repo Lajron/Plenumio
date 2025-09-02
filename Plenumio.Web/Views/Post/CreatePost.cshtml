@@ -23,7 +23,7 @@
 
         <div class="mb-3">
             <label asp-for="Tags" class="form-label">Tags (comma separated)</label>
-            <input asp-for="Tags" class="form-control" value="@string.Join(',', Model.Tags)" placeholder="Add tags separated by commas" />
+            <input asp-for="Tags" class="form-control" value="@string.Join(' ', Model.Tags)" placeholder="Add tags separated by whitespace" />
         </div>
 
         <div class="mb-3">

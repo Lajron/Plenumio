@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace Plenumio.Core.Entities {
-    public class Follow : BaseIdEntity {
+    public class Follow : BaseEntity {
         public Guid FollowerId { get; set; }
         public ApplicationUser? Follower { get; set; }
 

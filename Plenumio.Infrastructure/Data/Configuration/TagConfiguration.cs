@@ -10,6 +10,9 @@ namespace Plenumio.Infrastructure.Data.Configuration {
             builder.Property(t => t.Type)
                 .HasConversion<string>();
 
+            builder.HasIndex(t => t.Name)
+                .IsUnique();
+
             builder.HasOne(t => t.Parent)
                 .WithMany(t => t.Children)
                 .HasForeignKey(t => t.ParentId)

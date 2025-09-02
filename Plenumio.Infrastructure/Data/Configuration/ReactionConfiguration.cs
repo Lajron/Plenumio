@@ -4,6 +4,7 @@ using Plenumio.Core.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection.Emit;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -12,6 +13,9 @@ namespace Plenumio.Infrastructure.Data.Configuration {
         public void Configure(EntityTypeBuilder<Reaction> builder) {
             builder.Property(r => r.Type)
                 .HasConversion<string>();
+
+            builder.HasIndex(r => new { r.PostId, r.ApplicationUserId })
+                .IsUnique();
 
             builder.HasOne(r => r.Post)
                 .WithMany(p => p.Reactions)

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Plenumio.Core.Enums {
     public enum PostType {
-        Standard = 0,
+        Standard,
         Article,
         Media
     }

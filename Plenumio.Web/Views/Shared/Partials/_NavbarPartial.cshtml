@@ -2,17 +2,23 @@
     <div class="container-fluid d-flex align-items-center justify-content-between">
         <a class="navbar-brand me-3 " asp-controller="Feed" asp-action="Index">PLENUMIO</a>
 
-        <form class="mx-auto">
+        <form asp-controller="Feed" asp-action="Index" method="get" class="mx-auto" id="searchForm">
             <div class="input-group w-100">
                 <span class="input-group-text border-0 rounded-start">
                     <i class="bi bi-search"></i>
                 </span>
+                <input type="hidden" name="Scope" value="Global" />
+                <input type="hidden" name="Tag" id="tagField" />
                 <input type="text"
                        class="form-control border-0 rounded-end"
-                       placeholder="Search"
+                       name="Search"
+                       id="searchField"
+                       placeholder="Search posts or #tag"
                        style="box-shadow: none;" />
             </div>
         </form>
+        
+        
 
         <ul class="navbar-nav d-flex flex-row align-items-center gap-2">
             @if (SignInManager.IsSignedIn(User)) {

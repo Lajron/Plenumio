@@ -11,13 +11,18 @@ using Plenumio.Application.Utilities;
 using Plenumio.Core.Entities;
 using Plenumio.Core.Enums;
 using Plenumio.Web.Models;
+using System;
 
 namespace Plenumio.Web.Controllers {
     public class PostController(IPostService postService, UserManager<ApplicationUser> userManager) : Controller {
 
         public async Task<IActionResult> Index(Guid id) {
-            var feedPosts = await postService.GetFeedPostsAsync();
-            return Ok(feedPosts);
+            var slug = await postService.GetPostSlugById(id);
+
+            if (string.IsNullOrEmpty(slug))
+                return NotFound(slug);
+
+            return RedirectToAction(nameof(Details), "Post", new { slug });
         }
 
         [HttpGet("Post/Details/{slug}")]
@@ -95,7 +100,7 @@ namespace Plenumio.Web.Controllers {
                 model.Content,
                 PostType.Standard,
                 model.Privacy,
-                model.Tags
+                model.Tags?.Split(' ', StringSplitOptions.RemoveEmptyEntries) ?? []
             );
 
             var imageFileDtos = ImageConverter.ToImageFileDtos(images);

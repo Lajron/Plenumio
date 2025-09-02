@@ -8,7 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace Plenumio.Core.Entities {
-    public class Post: BaseIdEntity {
+    public class Post: BaseEntity, IPrivacyEntity {
 
         public string Title { get; set; } = string.Empty;
         public required string Content { get; set; }

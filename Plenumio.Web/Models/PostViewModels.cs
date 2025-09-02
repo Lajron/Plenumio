@@ -49,8 +49,7 @@ namespace Plenumio.Web.Models {
         [Required(ErrorMessage = "Content can't be empty")]
         public string Content { get; set; } = string.Empty;
         public PrivacyType Privacy { get; set; } = PrivacyType.Public;
-
-        public List<string> Tags { get; set; } = [];
+        public string Tags { get; set; } = string.Empty;
     }
 
     public record CreateArticleViewModel {

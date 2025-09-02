@@ -1,0 +1,21 @@
+﻿@model IEnumerable<PostFeedViewModel>
+
+@{
+    ViewData["Title"] = "Tags";
+}
+
+<div class="col-8 d-flex flex-column">
+    <partial name="_PostFeedCards" model="@Model" />
+</div>
+
+<div class="col-4 d-flex flex-column gap-2">
+
+    <vc:trending-tags-card></vc:trending-tags-card>
+
+    <vc:trending-users-card></vc:trending-users-card>
+
+    <vc:recently-viewed-posts></vc:recently-viewed-posts>
+
+    <partial name="_Footer" />
+
+</div>

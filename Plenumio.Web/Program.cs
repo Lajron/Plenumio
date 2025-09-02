@@ -35,7 +35,7 @@ builder.Services.AddRepositories();
 builder.Services.AddUnitOfWork();
 builder.Services.AddApplicationHandlers();
 builder.Services.AddApplicationServices();
-builder.Services.AddFeedStrategyServices();
+builder.Services.AddSortStrategyServices();
 builder.Services.AddEmailSender();
 builder.Services.AddApplicationMapperProfileServices();
 

@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using Plenumio.Core.Entities.Base;
 using Plenumio.Core.Enums;
 using System;
 using System.Collections.Generic;
@@ -7,7 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace Plenumio.Core.Entities {
-    public class ApplicationUser: IdentityUser<Guid> {
+    public class ApplicationUser: IdentityUser<Guid>, IAuditableEntity, IPrivacyEntity {
 
         public required string DisplayedName { get; set; }
         public string Description { get; set; } = string.Empty;

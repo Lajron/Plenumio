@@ -77,6 +77,12 @@ namespace Plenumio.Application.Services {
             return await queryDispatcher.SendAsync<GetPostsForFeedQuery, IEnumerable<PostFeedDto>>(query);
         }
 
+        public async Task<PostsQueryResult> GetPostsAsync(FeedFilterQuery filters, Guid? currentUserId) {
+            var query = new GetPostsQuery(filters, currentUserId);
+
+            return await queryDispatcher.SendAsync<GetPostsQuery, PostsQueryResult>(query);
+
+        }
         public async Task<IEnumerable<CommentDto>> GetPostCommentsAsync(Guid id, int? top = null) {
             GetCommentsForPostQuery query = new GetCommentsForPostQuery(id, top);
 
@@ -91,8 +97,9 @@ namespace Plenumio.Application.Services {
                 .SendAsync<GetPostDetailsBySlugQuery,  PostDto>(query);
         }
 
-
-
+        public async Task<string?> GetPostSlugById(Guid id) {
+            return await uof.Posts.GetSlugById(id);
+        }
 
 
         //public async Task<IEnumerable<PostDto>> GetPostsAsync() {

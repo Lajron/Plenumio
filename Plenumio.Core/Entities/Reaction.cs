@@ -7,7 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace Plenumio.Core.Entities {
-    public class Reaction : BaseIdEntity {
+    public class Reaction : BaseEntity {
         public required ReactionType Type { get; set; }
 
         public Guid PostId { get; set; }
@@ -15,5 +15,6 @@ namespace Plenumio.Core.Entities {
 
         public Guid ApplicationUserId { get; set; }
         public ApplicationUser? ApplicationUser { get; set; }
+
     }
 }

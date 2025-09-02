@@ -4,6 +4,7 @@ using Plenumio.Application.Queries;
 using Plenumio.Application.Queries.Comment;
 using Plenumio.Application.Queries.Feed;
 using Plenumio.Application.Queries.Post;
+using Plenumio.Application.Queries.Tag;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,8 +21,15 @@ namespace Plenumio.Application.Extensions {
             services.AddScoped<IQueryHandler<GetPostsForFeedQuery, IEnumerable<PostFeedDto>>, GetPostsForFeedQueryHandler>();
             services.AddScoped<IQueryHandler<GetCommentsForPostQuery, IEnumerable<CommentDto>>, GetCommentsForPostQueryHandler>();
             services.AddScoped<IQueryHandler<GetPostDetailsBySlugQuery, PostDto?>, GetPostDetailsBySlugHandler>();
+
+            services.AddScoped<IQueryHandler<GetPostsQuery, PostsQueryResult>, GetPostsQueryHandler>();
+
+
             services.AddScoped<IQueryHandler<GetRepliesFromCommentQuery, IEnumerable<CommentDto>>, GetRepliesFromCommentQueryHandler>();
             services.AddScoped<IQueryHandler<GetCreatedReplyQuery, CommentDto?>, GetCreatedReplyQueryHandler>();
+            
+            services.AddScoped<IQueryHandler<Queries.Tag.GetPostsByTagQuery, IEnumerable<PostFeedDto>>, GetPostsByTagQueryHandler>();
+            services.AddScoped<IQueryHandler<GetAllTagsQuery, IEnumerable<TagDto>>, GetAllTagsQueryHandler>();
 
             return services;
         }

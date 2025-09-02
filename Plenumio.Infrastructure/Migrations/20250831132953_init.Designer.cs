@@ -12,8 +12,8 @@ using Plenumio.Infrastructure.Data;
 namespace Plenumio.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250828174833_workFFS")]
-    partial class workFFS
+    [Migration("20250831132953_init")]
+    partial class init
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -510,53 +510,53 @@ namespace Plenumio.Infrastructure.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("c3370f9d-1804-47a9-8d41-32b245097849"),
-                            CreatedAt = new DateTimeOffset(new DateTime(2025, 8, 28, 17, 48, 31, 836, DateTimeKind.Unspecified).AddTicks(1122), new TimeSpan(0, 0, 0, 0, 0)),
+                            Id = new Guid("793cb150-7f5a-40a1-8b59-59dc8fc3d5ca"),
+                            CreatedAt = new DateTimeOffset(new DateTime(2025, 8, 31, 13, 29, 51, 819, DateTimeKind.Unspecified).AddTicks(4644), new TimeSpan(0, 0, 0, 0, 0)),
                             DisplayedName = "Technology",
                             IsDeleted = false,
                             Name = "technology",
                             Type = "Default",
-                            UpdatedAt = new DateTimeOffset(new DateTime(2025, 8, 28, 17, 48, 31, 836, DateTimeKind.Unspecified).AddTicks(1123), new TimeSpan(0, 0, 0, 0, 0))
+                            UpdatedAt = new DateTimeOffset(new DateTime(2025, 8, 31, 13, 29, 51, 819, DateTimeKind.Unspecified).AddTicks(4644), new TimeSpan(0, 0, 0, 0, 0))
                         },
                         new
                         {
-                            Id = new Guid("d053fadf-da82-4282-b580-ef12407b2613"),
-                            CreatedAt = new DateTimeOffset(new DateTime(2025, 8, 28, 17, 48, 31, 836, DateTimeKind.Unspecified).AddTicks(1128), new TimeSpan(0, 0, 0, 0, 0)),
+                            Id = new Guid("66eb4ec5-902d-4a3d-9c03-16d44857b8a2"),
+                            CreatedAt = new DateTimeOffset(new DateTime(2025, 8, 31, 13, 29, 51, 819, DateTimeKind.Unspecified).AddTicks(4650), new TimeSpan(0, 0, 0, 0, 0)),
                             DisplayedName = "Life",
                             IsDeleted = false,
                             Name = "life",
                             Type = "Default",
-                            UpdatedAt = new DateTimeOffset(new DateTime(2025, 8, 28, 17, 48, 31, 836, DateTimeKind.Unspecified).AddTicks(1128), new TimeSpan(0, 0, 0, 0, 0))
+                            UpdatedAt = new DateTimeOffset(new DateTime(2025, 8, 31, 13, 29, 51, 819, DateTimeKind.Unspecified).AddTicks(4650), new TimeSpan(0, 0, 0, 0, 0))
                         },
                         new
                         {
-                            Id = new Guid("be8db476-8fd4-4b04-a22e-05948acbe2d7"),
-                            CreatedAt = new DateTimeOffset(new DateTime(2025, 8, 28, 17, 48, 31, 836, DateTimeKind.Unspecified).AddTicks(1132), new TimeSpan(0, 0, 0, 0, 0)),
+                            Id = new Guid("4a2cb743-d179-40b6-9266-521083b9d66f"),
+                            CreatedAt = new DateTimeOffset(new DateTime(2025, 8, 31, 13, 29, 51, 819, DateTimeKind.Unspecified).AddTicks(4654), new TimeSpan(0, 0, 0, 0, 0)),
                             DisplayedName = "Science",
                             IsDeleted = false,
                             Name = "science",
                             Type = "Default",
-                            UpdatedAt = new DateTimeOffset(new DateTime(2025, 8, 28, 17, 48, 31, 836, DateTimeKind.Unspecified).AddTicks(1132), new TimeSpan(0, 0, 0, 0, 0))
+                            UpdatedAt = new DateTimeOffset(new DateTime(2025, 8, 31, 13, 29, 51, 819, DateTimeKind.Unspecified).AddTicks(4655), new TimeSpan(0, 0, 0, 0, 0))
                         },
                         new
                         {
-                            Id = new Guid("2ce1998a-eaea-4f04-bb3d-82d23ca174c8"),
-                            CreatedAt = new DateTimeOffset(new DateTime(2025, 8, 28, 17, 48, 31, 836, DateTimeKind.Unspecified).AddTicks(1144), new TimeSpan(0, 0, 0, 0, 0)),
+                            Id = new Guid("6ac51318-450b-44c1-af17-9fe1ab122d45"),
+                            CreatedAt = new DateTimeOffset(new DateTime(2025, 8, 31, 13, 29, 51, 819, DateTimeKind.Unspecified).AddTicks(4659), new TimeSpan(0, 0, 0, 0, 0)),
                             DisplayedName = "Art",
                             IsDeleted = false,
                             Name = "art",
                             Type = "Default",
-                            UpdatedAt = new DateTimeOffset(new DateTime(2025, 8, 28, 17, 48, 31, 836, DateTimeKind.Unspecified).AddTicks(1144), new TimeSpan(0, 0, 0, 0, 0))
+                            UpdatedAt = new DateTimeOffset(new DateTime(2025, 8, 31, 13, 29, 51, 819, DateTimeKind.Unspecified).AddTicks(4659), new TimeSpan(0, 0, 0, 0, 0))
                         },
                         new
                         {
-                            Id = new Guid("1fb74b36-871e-45af-b48d-05439c14f0d1"),
-                            CreatedAt = new DateTimeOffset(new DateTime(2025, 8, 28, 17, 48, 31, 836, DateTimeKind.Unspecified).AddTicks(1148), new TimeSpan(0, 0, 0, 0, 0)),
+                            Id = new Guid("97d9e87f-50bf-4fba-9acb-18aedb34a6e8"),
+                            CreatedAt = new DateTimeOffset(new DateTime(2025, 8, 31, 13, 29, 51, 819, DateTimeKind.Unspecified).AddTicks(4663), new TimeSpan(0, 0, 0, 0, 0)),
                             DisplayedName = "Gaming",
                             IsDeleted = false,
                             Name = "gaming",
                             Type = "Default",
-                            UpdatedAt = new DateTimeOffset(new DateTime(2025, 8, 28, 17, 48, 31, 836, DateTimeKind.Unspecified).AddTicks(1148), new TimeSpan(0, 0, 0, 0, 0))
+                            UpdatedAt = new DateTimeOffset(new DateTime(2025, 8, 31, 13, 29, 51, 819, DateTimeKind.Unspecified).AddTicks(4664), new TimeSpan(0, 0, 0, 0, 0))
                         });
                 });
 

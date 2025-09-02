@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Plenumio.Infrastructure.Migrations
 {
     /// <inheritdoc />
-    public partial class workFFS : Migration
+    public partial class init : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -386,11 +386,11 @@ namespace Plenumio.Infrastructure.Migrations
                 columns: new[] { "Id", "CreatedAt", "DisplayedName", "IsDeleted", "Name", "ParentId", "Type", "UpdatedAt" },
                 values: new object[,]
                 {
-                    { new Guid("1fb74b36-871e-45af-b48d-05439c14f0d1"), new DateTimeOffset(new DateTime(2025, 8, 28, 17, 48, 31, 836, DateTimeKind.Unspecified).AddTicks(1148), new TimeSpan(0, 0, 0, 0, 0)), "Gaming", false, "gaming", null, "Default", new DateTimeOffset(new DateTime(2025, 8, 28, 17, 48, 31, 836, DateTimeKind.Unspecified).AddTicks(1148), new TimeSpan(0, 0, 0, 0, 0)) },
-                    { new Guid("2ce1998a-eaea-4f04-bb3d-82d23ca174c8"), new DateTimeOffset(new DateTime(2025, 8, 28, 17, 48, 31, 836, DateTimeKind.Unspecified).AddTicks(1144), new TimeSpan(0, 0, 0, 0, 0)), "Art", false, "art", null, "Default", new DateTimeOffset(new DateTime(2025, 8, 28, 17, 48, 31, 836, DateTimeKind.Unspecified).AddTicks(1144), new TimeSpan(0, 0, 0, 0, 0)) },
-                    { new Guid("be8db476-8fd4-4b04-a22e-05948acbe2d7"), new DateTimeOffset(new DateTime(2025, 8, 28, 17, 48, 31, 836, DateTimeKind.Unspecified).AddTicks(1132), new TimeSpan(0, 0, 0, 0, 0)), "Science", false, "science", null, "Default", new DateTimeOffset(new DateTime(2025, 8, 28, 17, 48, 31, 836, DateTimeKind.Unspecified).AddTicks(1132), new TimeSpan(0, 0, 0, 0, 0)) },
-                    { new Guid("c3370f9d-1804-47a9-8d41-32b245097849"), new DateTimeOffset(new DateTime(2025, 8, 28, 17, 48, 31, 836, DateTimeKind.Unspecified).AddTicks(1122), new TimeSpan(0, 0, 0, 0, 0)), "Technology", false, "technology", null, "Default", new DateTimeOffset(new DateTime(2025, 8, 28, 17, 48, 31, 836, DateTimeKind.Unspecified).AddTicks(1123), new TimeSpan(0, 0, 0, 0, 0)) },
-                    { new Guid("d053fadf-da82-4282-b580-ef12407b2613"), new DateTimeOffset(new DateTime(2025, 8, 28, 17, 48, 31, 836, DateTimeKind.Unspecified).AddTicks(1128), new TimeSpan(0, 0, 0, 0, 0)), "Life", false, "life", null, "Default", new DateTimeOffset(new DateTime(2025, 8, 28, 17, 48, 31, 836, DateTimeKind.Unspecified).AddTicks(1128), new TimeSpan(0, 0, 0, 0, 0)) }
+                    { new Guid("4a2cb743-d179-40b6-9266-521083b9d66f"), new DateTimeOffset(new DateTime(2025, 8, 31, 13, 29, 51, 819, DateTimeKind.Unspecified).AddTicks(4654), new TimeSpan(0, 0, 0, 0, 0)), "Science", false, "science", null, "Default", new DateTimeOffset(new DateTime(2025, 8, 31, 13, 29, 51, 819, DateTimeKind.Unspecified).AddTicks(4655), new TimeSpan(0, 0, 0, 0, 0)) },
+                    { new Guid("66eb4ec5-902d-4a3d-9c03-16d44857b8a2"), new DateTimeOffset(new DateTime(2025, 8, 31, 13, 29, 51, 819, DateTimeKind.Unspecified).AddTicks(4650), new TimeSpan(0, 0, 0, 0, 0)), "Life", false, "life", null, "Default", new DateTimeOffset(new DateTime(2025, 8, 31, 13, 29, 51, 819, DateTimeKind.Unspecified).AddTicks(4650), new TimeSpan(0, 0, 0, 0, 0)) },
+                    { new Guid("6ac51318-450b-44c1-af17-9fe1ab122d45"), new DateTimeOffset(new DateTime(2025, 8, 31, 13, 29, 51, 819, DateTimeKind.Unspecified).AddTicks(4659), new TimeSpan(0, 0, 0, 0, 0)), "Art", false, "art", null, "Default", new DateTimeOffset(new DateTime(2025, 8, 31, 13, 29, 51, 819, DateTimeKind.Unspecified).AddTicks(4659), new TimeSpan(0, 0, 0, 0, 0)) },
+                    { new Guid("793cb150-7f5a-40a1-8b59-59dc8fc3d5ca"), new DateTimeOffset(new DateTime(2025, 8, 31, 13, 29, 51, 819, DateTimeKind.Unspecified).AddTicks(4644), new TimeSpan(0, 0, 0, 0, 0)), "Technology", false, "technology", null, "Default", new DateTimeOffset(new DateTime(2025, 8, 31, 13, 29, 51, 819, DateTimeKind.Unspecified).AddTicks(4644), new TimeSpan(0, 0, 0, 0, 0)) },
+                    { new Guid("97d9e87f-50bf-4fba-9acb-18aedb34a6e8"), new DateTimeOffset(new DateTime(2025, 8, 31, 13, 29, 51, 819, DateTimeKind.Unspecified).AddTicks(4663), new TimeSpan(0, 0, 0, 0, 0)), "Gaming", false, "gaming", null, "Default", new DateTimeOffset(new DateTime(2025, 8, 31, 13, 29, 51, 819, DateTimeKind.Unspecified).AddTicks(4664), new TimeSpan(0, 0, 0, 0, 0)) }
                 });
 
             migrationBuilder.CreateIndex(

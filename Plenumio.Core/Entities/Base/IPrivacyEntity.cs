@@ -5,8 +5,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Plenumio.Application.Interfaces {
-    public interface IFeedStrategyFactory {
-        IFeedStrategy GetStrategy(FeedType feedType);
+namespace Plenumio.Core.Entities.Base {
+    public interface IPrivacyEntity {
+        PrivacyType Privacy { get; set; }
+
     }
 }

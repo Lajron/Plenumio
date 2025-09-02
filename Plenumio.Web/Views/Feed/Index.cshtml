@@ -1,15 +1,20 @@
-﻿@{
-    ViewData["Title"] = "Feed";
+﻿@model PageViewModel<PostFeedPageModel>
+
+@{
+    ViewData["Title"] = Model.Title;
 }
 
 <div class="col-8 d-flex flex-column">
-    <partial name="_CreatePostFeed" model='new CreatePostViewModel {
+    @if (SignInManager.IsSignedIn(User)) {
+            <partial name="_CreatePostFeed" model='new CreatePostViewModel {
                                         Content = "",
                                         Privacy = PrivacyType.Public,
-                                        Tags = []
+                                        Tags = string.Empty
                                     }' />
+    }
 
-    <vc:post-feed></vc:post-feed>
+    <partial name="_FeedFiltersPartial" model="Model.Content.Filters" />
+    <partial name="_PostFeedCards" model="@Model.Content" />
 </div>
 
 <div class="col-4 d-flex flex-column gap-2">
@@ -23,3 +28,35 @@
     <partial name="_Footer" />
 
 </div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function() {
+            $('#searchForm').on('submit', function(e) {
+                e.preventDefault();               
+            
+                const searchInput = $('#searchField');
+                const query = searchInput.val().trim();
+
+                let tag = null;
+                let searchTerm = null;
+
+                if (query.startsWith('#')) {
+                    const parts = query.substring(1).split(' ');
+
+                    tag = parts[0];
+
+                    searchTerm = parts.slice(1).join(' ').trim();
+                } else {
+                    searchTerm = query;
+                }
+
+                $('#tagField').val(tag || '');
+                $('#searchField').val(searchTerm);
+
+                this.submit();
+            });
+
+        });
+    </script>
+}

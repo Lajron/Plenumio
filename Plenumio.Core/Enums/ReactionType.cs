@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 
 namespace Plenumio.Core.Enums {
     public enum ReactionType {
-        Like = 0,
-        Dislike = 1,
-        Love = 2,
+        Upvote,
+        Downvote,
+        Heart,
     }
 }

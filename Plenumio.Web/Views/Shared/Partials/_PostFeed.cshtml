@@ -1,118 +1,23 @@
 ﻿@model PostFeedViewModel
 
-<div class="card mb-4 shadow-sm  ">
+<div class="card border-2 mb-4 shadow-sm  ">
 
-    <div class="card-body">
+    <div class="card-body border-0">
 
-        <!-- Header with Follow -->
         <partial name="_PostHeader" model="@Model.Header" />
-        @* <div class="d-flex justify-content-between align-items-start mb-3">
-            <div class="d-flex align-items-center">
-                <img src="@(Model.Author.AvatarUrl?.Trim() ?? "https://picsum.photos/50")"
-                     alt="@Model.Author.DisplayedName"
-                        class="rounded-circle me-2 border border-2 border-secondary" width="50" height="50" />
-                <div>
-                    <strong>@Model.Author.DisplayedName</strong><br />
-                    <small class="text-muted">@Model.CreatedAt.ToString("dd.MM.yyyy HH:mm")</small>
-                </div>
-            </div>
-            <button class="btn btn-sm btn-success btn-outline-white">Follow</button>
-        </div> *@
 
-        <!-- Text -->
         <a asp-controller="Post" asp-action="Details" asp-route-slug="@Model.Header.Slug" class="text-decoration-none text-reset">
             <partial name="_PostBody" model="@Model.Body" />
         </a>
-        @* <p class="mb-3">@Model.Content</p> *@
 
-        <!-- Horizontalni red slika sa fade -->
         <partial name="_PostGallery" model="@Model.Images" />
-        @* @if (Model.Images.Any()) {
-            <div class="position-relative mb-3" style="overflow:hidden;">
-                <div class="d-flex" style="gap:5px; overflow-x:auto; scroll-behavior:smooth;">
-                    @foreach (var img in Model.Images) {
-                        <img src="@img.Url" class="border border-dark"
-                                style="height:150px; object-fit:cover; cursor:pointer;"
-                                data-bs-toggle="modal" data-bs-target="#imagesModal-@Model.Id" />
-                    }
-                </div>
-                <div class="position-absolute top-0 end-0 h-100"
-                        style="width:50px; background: linear-gradient(to left, rgba(28, 28, 28, 1), rgba(33,37,41,0)); pointer-events:none;"></div>
-            </div>
-
-            <!-- Modal carousel -->
-            <div class="modal fade" id="imagesModal-@Model.Id" tabindex="-1" aria-hidden="true">
-                <div class="modal-dialog modal-dialog-centered modal-lg">
-                    <div class="modal-content  ">
-                        <div id="modalCarousel-@Model.Id" class="carousel slide" data-bs-ride="carousel">
-                            <div class="carousel-inner">
-                                @for (int i = 0; i < Model.Images.Count(); i++) {
-                                    var img = Model.Images.ElementAt(i);
-                                    <div class="carousel-item @(i == 0 ? "active" : "") text-center">
-                                        <img src="@img.Url" class="img-fluid rounded" />
-                                    </div>
-                                }
-                            </div>
-                            @if (Model.Images.Count() > 1) {
-                                <button class="carousel-control-prev" type="button" data-bs-target="#modalCarousel-@Model.Id" data-bs-slide="prev">
-                                    <span class="carousel-control-prev-icon"></span>
-                                </button>
-                                <button class="carousel-control-next" type="button" data-bs-target="#modalCarousel-@Model.Id" data-bs-slide="next">
-                                    <span class="carousel-control-next-icon"></span>
-                                </button>
-                            }
-                        </div>
-                        <div class="modal-footer border-top border-light">
-                            <button type="button" class="btn btn-sm btn-outline-light" data-bs-dismiss="modal">Close</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        } *@
-
-        <!-- Tags -->
-        <partial name="_PostTags" model="@Model.Tags"/>
-        @* @if (Model.Tags.Any()) {
-            <div class="mb-2  border-bottom border-dark">
-                @foreach (var tag in Model.Tags) {
-                    <span class="badge rounded-0  me-1">#@tag.Name</span>
-                }
-            </div>
-        } *@
-
-        <!-- Like / Share -->
+       
         <partial name="_PostStatistics" model="@Model.Statistics" />
 
-        @* <div class="d-flex justify-content-between mb-2">
-            <button class="btn btn-sm btn-dark btn-outline-black">❤️ Reactions (@Model.ReactionCount)</button>
-            <button class="btn btn-sm btn-dark btn-outline-black">↗️Comments (@Model.CommentCount)</button>
-        </div> *@
+            <vc:comment-feed post-id="@Model.Header.PostId"></vc:comment-feed>
 
-        <!-- Komentari auto-carousel -->
-        <vc:comment-feed post-id="@Model.Header.PostId"></vc:comment-feed>
+        <partial name="_PostTags" model="@Model.Tags" />
         
     </div>
 </div>
 
-@section Scripts {
-    <script>
-        $(document).ready(function() {
-            const hash = window.location.hash; // e.g., "#comment-1234"
-            if(hash) {
-                const $el = $(hash); // jQuery finds element by id
-                if($el.length) {
-                    // Smooth scroll
-                    $('html, body').animate({
-                        scrollTop: $el.offset().top - 100 // optional offset
-                    }, 500);
-
-                    // Highlight briefly
-                    $el.addClass('bg-warning-subtle');
-                    setTimeout(() => {
-                        $el.removeClass('bg-warning-subtle');
-                    }, 3000);
-                }
-            }
-        });
-    </script>
-}

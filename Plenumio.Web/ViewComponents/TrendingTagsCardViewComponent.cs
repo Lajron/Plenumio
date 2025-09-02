@@ -53,7 +53,7 @@ namespace Plenumio.Web.ViewComponents {
             var trendingCardModel = new TrendingCardVM {
                 Title = "Trending Tags",
                 Items = tags,
-                Controller = "Tags",
+                Controller = "Tag",
                 Action = "Index",
                 RouteValues = null,
                 ViewMoreText = "View all tags"

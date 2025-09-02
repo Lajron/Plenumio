@@ -4,7 +4,7 @@ using Plenumio.Core.Enums;
 using System.ComponentModel.DataAnnotations;
 
 namespace Plenumio.Core.Entities {
-    public class Tag: BaseIdEntity {
+    public class Tag: BaseEntity {
 
         public required string Name { get; set; }
         public required string DisplayedName { get; set; }

@@ -5,8 +5,8 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace Plenumio.Core.Enums {
-    public enum FeedType {
-        Global = 0,
-        Personal = 1
+    public enum FeedScope {
+        Global,
+        Personal
     }
 }

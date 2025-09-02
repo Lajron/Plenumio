@@ -10,7 +10,7 @@
            
         </div>
 
-        <div class="flex-grow-1 p-2 bg-dark">
+        <div class="flex-grow-1 p-2 bg-light">
             <div class="d-flex justify-content-between">
                 <strong>@Model.User.DisplayedName</strong>
                 <small class="text-muted">@Model.CreatedAt.ToString("dd.MM.yyyy HH:mm")</small>
@@ -34,8 +34,8 @@
     <!-- Reply form (hidden initially) -->
     <div class="reply-form-container ms-5 mt-2" id="reply-form-@Model.Id" style="display: none;">
         @await Html.PartialAsync("_CreateCommentReply", new CreateCommentViewModel {
-        PostId = Model.PostId,
-                ParentId = Model.Id // this will be updated dynamically via JS
+                PostId = Model.PostId,
+                ParentId = Model.Id 
                 })
     </div>
 

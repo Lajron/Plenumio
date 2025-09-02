@@ -1,3 +1,12 @@
 ﻿@model IEnumerable<CommentViewModel>
 
-<partial name="_CommentList" model="@Model" />
+@if (Model != null && Model.Any()) {
+    <partial name="_CommentList" model="@Model" />
+} else {
+    <div class="card border-0">
+        <div class="card-body text-center text-muted py-4">
+            <i class="bi bi-chat-left-text fs-3 d-block mb-2"></i>
+            <span>No comments yet — start the conversation!</span>
+        </div>
+    </div>
+}

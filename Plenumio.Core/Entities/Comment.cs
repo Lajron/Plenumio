@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace Plenumio.Core.Entities {
-    public class Comment : BaseIdEntity {
+    public class Comment : BaseEntity {
         public required string Content { get; set; }
 
         public Guid? ParentId { get; set; }

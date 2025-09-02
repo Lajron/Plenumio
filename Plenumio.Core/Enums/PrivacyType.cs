@@ -6,8 +6,7 @@ using System.Threading.Tasks;
 
 namespace Plenumio.Core.Enums {
     public enum PrivacyType {
-        Public = 0,
-        Private = 1,
-        Followers = 2
+        Public,
+        Followers
     }
 }

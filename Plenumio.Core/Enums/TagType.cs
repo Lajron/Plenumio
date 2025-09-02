@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Plenumio.Core.Enums {
     public enum TagType {
-        Default = 0,
-        User = 1
+        Default,
+        User
     }
 }

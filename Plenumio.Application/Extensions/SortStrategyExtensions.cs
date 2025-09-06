@@ -15,6 +15,8 @@ namespace Plenumio.Application.Extensions {
         public static IServiceCollection AddSortStrategyServices(this IServiceCollection services) {
             services.AddScoped<ISortStrategy<Post>, PostSortStrategy>();
             services.AddScoped<ISortStrategy<ApplicationUser>, UserSortStrategy>();
+            services.AddScoped<ISortStrategy<Tag>, TagSortStrategy>();
+
 
             return services;
         }

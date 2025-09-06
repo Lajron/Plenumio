@@ -1,66 +1,31 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using Plenumio.Application.DTOs;
+using Plenumio.Application.DTOs.Tags;
+using Plenumio.Application.Interfaces;
+using Plenumio.Core.Entities;
+using Plenumio.Core.Enums;
 using Plenumio.Web.Models.Shared;
 using Plenumio.Web.Models.Shared.ViewModels;
 
 namespace Plenumio.Web.ViewComponents {
-    public class TrendingTagsCardViewComponent : ViewComponent {
+    public class TrendingTagsCardViewComponent(
+            ITagService tagService,
+            UserManager<ApplicationUser> userManager
+        ) : ViewComponent {
         public async Task<IViewComponentResult> InvokeAsync() {
-            var tags = new List<TrendingItemVM> { 
-            new TrendingItemVM
-            {
-                DisplayText = "#C#",
-                Controller = "Tags",
-                Action = "Details",
-                RouteValues = new Dictionary<string, string> { { "tagName", "csharp" } },
-                ImageUrl = null // tags nemaju avatare
-            },
-            new TrendingItemVM
-            {
-                DisplayText = "#.NET",
-                Controller = "Tags",
-                Action = "Details",
-                RouteValues = new Dictionary<string, string> { { "tagName", "csharp" } },
-                ImageUrl = null
-            },
-            new TrendingItemVM
-            {
-                DisplayText = "#Blazor",
-                Controller = "Tags",
-                Action = "Details",
-                RouteValues = new Dictionary<string, string> { { "tagName", "csharp" } },
-                ImageUrl = null
-            },
-            new TrendingItemVM
-            {
-                DisplayText = "#SQL",
-                Controller = "Tags",
-                Action = "Details",
-                RouteValues = new Dictionary < string, string > { { "tagName", "csharp" } },
-                ImageUrl = null
-            },
-            new TrendingItemVM
-            {
-                DisplayText = "#Azure",
-                Controller = "Tags",
-                Action = "Details",
-                RouteValues = new Dictionary < string, string > { { "tagName", "csharp" } },
-                ImageUrl = null
-            }
-            };
+            string? userId = userManager.GetUserId(HttpContext.User);
+            Guid? currentUserId = string.IsNullOrEmpty(userId) ? null : Guid.Parse(userId);
 
-            // Zatim kreirati TrendingCardViewModel
-            var trendingCardModel = new TrendingCardVM {
-                Title = "Trending Tags",
-                Items = tags,
-                Controller = "Tag",
-                Action = "Index",
-                RouteValues = null,
-                ViewMoreText = "View all tags"
-            };
+            var tags = await tagService.GetAllTagsAsync(
+                new TagFilterDto {
+                    Sort = SortType.Trending,
+                    PageSize = 5
+                },
+                currentUserId
+            );
 
-
-            return View(trendingCardModel);
+            return View(tags);
         }
     }
 }

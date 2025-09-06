@@ -263,6 +263,15 @@ namespace Plenumio.Infrastructure.Migrations
                     b.Property<Guid>("TagId")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<DateTimeOffset>("CreatedAt")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTimeOffset>("UpdatedAt")
+                        .HasColumnType("datetimeoffset");
+
                     b.HasKey("ApplicationUserId", "TagId");
 
                     b.HasIndex("TagId");
@@ -396,6 +405,10 @@ namespace Plenumio.Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<string>("AltText")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<DateTimeOffset>("CreatedAt")
                         .HasColumnType("datetimeoffset");
 
@@ -426,6 +439,15 @@ namespace Plenumio.Infrastructure.Migrations
 
                     b.Property<Guid>("TagId")
                         .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTimeOffset>("CreatedAt")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTimeOffset>("UpdatedAt")
+                        .HasColumnType("datetimeoffset");
 
                     b.HasKey("PostId", "TagId");
 
@@ -463,7 +485,8 @@ namespace Plenumio.Infrastructure.Migrations
 
                     b.HasIndex("ApplicationUserId");
 
-                    b.HasIndex("PostId");
+                    b.HasIndex("PostId", "ApplicationUserId")
+                        .IsUnique();
 
                     b.ToTable("Reactions");
                 });
@@ -486,7 +509,7 @@ namespace Plenumio.Infrastructure.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<Guid?>("ParentId")
                         .HasColumnType("uniqueidentifier");
@@ -500,6 +523,9 @@ namespace Plenumio.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("Name")
+                        .IsUnique();
+
                     b.HasIndex("ParentId");
 
                     b.ToTable("Tags");
@@ -507,53 +533,53 @@ namespace Plenumio.Infrastructure.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("793cb150-7f5a-40a1-8b59-59dc8fc3d5ca"),
-                            CreatedAt = new DateTimeOffset(new DateTime(2025, 8, 31, 13, 29, 51, 819, DateTimeKind.Unspecified).AddTicks(4644), new TimeSpan(0, 0, 0, 0, 0)),
+                            Id = new Guid("7f11a2a6-83bd-4d4d-8c23-53b6d86e6940"),
+                            CreatedAt = new DateTimeOffset(new DateTime(2025, 9, 5, 0, 30, 11, 207, DateTimeKind.Unspecified).AddTicks(1910), new TimeSpan(0, 0, 0, 0, 0)),
                             DisplayedName = "Technology",
                             IsDeleted = false,
                             Name = "technology",
                             Type = "Default",
-                            UpdatedAt = new DateTimeOffset(new DateTime(2025, 8, 31, 13, 29, 51, 819, DateTimeKind.Unspecified).AddTicks(4644), new TimeSpan(0, 0, 0, 0, 0))
+                            UpdatedAt = new DateTimeOffset(new DateTime(2025, 9, 5, 0, 30, 11, 207, DateTimeKind.Unspecified).AddTicks(1911), new TimeSpan(0, 0, 0, 0, 0))
                         },
                         new
                         {
-                            Id = new Guid("66eb4ec5-902d-4a3d-9c03-16d44857b8a2"),
-                            CreatedAt = new DateTimeOffset(new DateTime(2025, 8, 31, 13, 29, 51, 819, DateTimeKind.Unspecified).AddTicks(4650), new TimeSpan(0, 0, 0, 0, 0)),
+                            Id = new Guid("f27b6996-6f75-4170-ae80-00ceced835d9"),
+                            CreatedAt = new DateTimeOffset(new DateTime(2025, 9, 5, 0, 30, 11, 207, DateTimeKind.Unspecified).AddTicks(1917), new TimeSpan(0, 0, 0, 0, 0)),
                             DisplayedName = "Life",
                             IsDeleted = false,
                             Name = "life",
                             Type = "Default",
-                            UpdatedAt = new DateTimeOffset(new DateTime(2025, 8, 31, 13, 29, 51, 819, DateTimeKind.Unspecified).AddTicks(4650), new TimeSpan(0, 0, 0, 0, 0))
+                            UpdatedAt = new DateTimeOffset(new DateTime(2025, 9, 5, 0, 30, 11, 207, DateTimeKind.Unspecified).AddTicks(1918), new TimeSpan(0, 0, 0, 0, 0))
                         },
                         new
                         {
-                            Id = new Guid("4a2cb743-d179-40b6-9266-521083b9d66f"),
-                            CreatedAt = new DateTimeOffset(new DateTime(2025, 8, 31, 13, 29, 51, 819, DateTimeKind.Unspecified).AddTicks(4654), new TimeSpan(0, 0, 0, 0, 0)),
+                            Id = new Guid("9f0ab855-bcfa-4276-90be-b0a9401dbbbd"),
+                            CreatedAt = new DateTimeOffset(new DateTime(2025, 9, 5, 0, 30, 11, 207, DateTimeKind.Unspecified).AddTicks(1930), new TimeSpan(0, 0, 0, 0, 0)),
                             DisplayedName = "Science",
                             IsDeleted = false,
                             Name = "science",
                             Type = "Default",
-                            UpdatedAt = new DateTimeOffset(new DateTime(2025, 8, 31, 13, 29, 51, 819, DateTimeKind.Unspecified).AddTicks(4655), new TimeSpan(0, 0, 0, 0, 0))
+                            UpdatedAt = new DateTimeOffset(new DateTime(2025, 9, 5, 0, 30, 11, 207, DateTimeKind.Unspecified).AddTicks(1931), new TimeSpan(0, 0, 0, 0, 0))
                         },
                         new
                         {
-                            Id = new Guid("6ac51318-450b-44c1-af17-9fe1ab122d45"),
-                            CreatedAt = new DateTimeOffset(new DateTime(2025, 8, 31, 13, 29, 51, 819, DateTimeKind.Unspecified).AddTicks(4659), new TimeSpan(0, 0, 0, 0, 0)),
+                            Id = new Guid("8eb81a9e-0106-4017-bc63-c48fa06f64d6"),
+                            CreatedAt = new DateTimeOffset(new DateTime(2025, 9, 5, 0, 30, 11, 207, DateTimeKind.Unspecified).AddTicks(1935), new TimeSpan(0, 0, 0, 0, 0)),
                             DisplayedName = "Art",
                             IsDeleted = false,
                             Name = "art",
                             Type = "Default",
-                            UpdatedAt = new DateTimeOffset(new DateTime(2025, 8, 31, 13, 29, 51, 819, DateTimeKind.Unspecified).AddTicks(4659), new TimeSpan(0, 0, 0, 0, 0))
+                            UpdatedAt = new DateTimeOffset(new DateTime(2025, 9, 5, 0, 30, 11, 207, DateTimeKind.Unspecified).AddTicks(1936), new TimeSpan(0, 0, 0, 0, 0))
                         },
                         new
                         {
-                            Id = new Guid("97d9e87f-50bf-4fba-9acb-18aedb34a6e8"),
-                            CreatedAt = new DateTimeOffset(new DateTime(2025, 8, 31, 13, 29, 51, 819, DateTimeKind.Unspecified).AddTicks(4663), new TimeSpan(0, 0, 0, 0, 0)),
+                            Id = new Guid("e93dffc8-fae2-403f-9daa-c40815879fd8"),
+                            CreatedAt = new DateTimeOffset(new DateTime(2025, 9, 5, 0, 30, 11, 207, DateTimeKind.Unspecified).AddTicks(1940), new TimeSpan(0, 0, 0, 0, 0)),
                             DisplayedName = "Gaming",
                             IsDeleted = false,
                             Name = "gaming",
                             Type = "Default",
-                            UpdatedAt = new DateTimeOffset(new DateTime(2025, 8, 31, 13, 29, 51, 819, DateTimeKind.Unspecified).AddTicks(4664), new TimeSpan(0, 0, 0, 0, 0))
+                            UpdatedAt = new DateTimeOffset(new DateTime(2025, 9, 5, 0, 30, 11, 207, DateTimeKind.Unspecified).AddTicks(1940), new TimeSpan(0, 0, 0, 0, 0))
                         });
                 });
 

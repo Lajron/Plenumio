@@ -1,4 +1,38 @@
-﻿@model TrendingCardVM
+﻿@using Plenumio.Application.DTOs.Tags.Responses
+@model IEnumerable<GetTagResponse>
 
-<partial name="_TrendingCard" model="@Model" />
+<div class="card border-0 shadow-sm">
+    <div class="card-header border-0 py-2 px-3 text-uppercase fw-bold small">
+        Trending Tags
+    </div>
+
+    <div class="card-body p-0">
+        @foreach (var tag in Model) {
+            <div class="d-flex justify-content-between align-items-center px-3 py-1 border-bottom">
+                <a asp-controller="Tag" asp-action="Details" asp-route-tagName="@tag.Name" class="text-decoration-none text-body">
+                    <div>
+                        <span class="fw-semibold text-secondary">@( "#" + tag.DisplayedName.ToLower())</span>
+                        <span class="badge bg-light text-muted ms-2">@tag.PostsCount posts</span>
+                    </div>
+                </a>
+
+
+                <form asp-controller="Tags" asp-action="ToggleFollow" asp-route-id="@tag.Id" method="post" class="m-0">
+                    <button type="submit"
+                            class="btn btn-sm @(tag.IsFollowing ? "btn-outline-secondary" : "btn-light border")">
+                        @(tag.IsFollowing ? "Unfollow" : "Follow")
+                    </button>
+                </form>
+
+            </div>
+        }
+    </div>
+
+    <div class="card-footer border-0 py-2 text-center small">
+        <a asp-controller="Tag" asp-action="Index" class="text-decoration-none">
+            View more tags
+        </a>
+    </div>
+</div>
+
 

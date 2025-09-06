@@ -1,10 +1,13 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Azure;
+using Microsoft.AspNetCore.Identity;
 using Plenumio.Application.DTOs;
+using Plenumio.Application.DTOs.Posts;
+using Plenumio.Application.DTOs.Posts.Requests;
+using Plenumio.Application.DTOs.Posts.Responses;
 using Plenumio.Application.Interfaces;
 using Plenumio.Application.Queries;
 using Plenumio.Application.Queries.Comment;
-using Plenumio.Application.Queries.Feed;
-using Plenumio.Application.Queries.Post;
+using Plenumio.Application.Queries.PostHandlers;
 using Plenumio.Application.Utilities;
 using Plenumio.Core.Entities;
 using Plenumio.Core.Enums;
@@ -24,7 +27,7 @@ using static System.Net.Mime.MediaTypeNames;
 namespace Plenumio.Application.Services {
     public class PostService(IUnitOfWork uof, IQueryDispatcher queryDispatcher, IImageService imageService) 
         : IPostService {
-        public async Task<PostIdSlugDto> CreatePostAsync(CreatePostDto request, Guid userId, IEnumerable<ImageFileDto> imgFiles) {
+        public async Task<CreatePostResponse> CreatePostAsync(CreatePostRequest request, Guid userId, IEnumerable<ImageFileDto> imgFiles) {
             Guid postId = Guid.Empty;
             string postSlug = string.Empty;
             IEnumerable<string> storedImageUrls = [];
@@ -44,7 +47,9 @@ namespace Plenumio.Application.Services {
 
                     post.Slug = SlugGenerator.GeneratePostSlug(request.Content, request.Title);
 
-                    Dictionary<string, string> tagsWithSlug = request.Tags.ToDictionary(t => SlugGenerator.GenerateTagSlug(t), t => t);
+                    Dictionary<string, string> tagsWithSlug = request.Tags
+                        .Select(t => t.TrimStart('#').Trim())
+                        .ToDictionary(t => SlugGenerator.GenerateTagSlug(t), t => t);
                     post.PostTag = await uof.Tags.ResolveTagsAsync(tagsWithSlug);
 
                     await uof.Posts.AddAsync(post);
@@ -68,19 +73,19 @@ namespace Plenumio.Application.Services {
                     throw new ApplicationException("Failed to create post with images", e);
                 }
             );
-            return new PostIdSlugDto(postId, postSlug);
+            return new CreatePostResponse {
+                Id = postId,
+                Slug = postSlug
+            };
         }
 
-        public async Task<IEnumerable<PostFeedDto>> GetFeedPostsAsync() {
-            GetPostsForFeedQuery query = new GetPostsForFeedQuery(1, 10);
+        public async Task<GetPostsResponse> GetPostsAsync(PostFilterDto filters, Guid? currentUserId) {
+            var query = new GetPostsRequest {
+                Filters = filters,
+                UserId = currentUserId
+            };
 
-            return await queryDispatcher.SendAsync<GetPostsForFeedQuery, IEnumerable<PostFeedDto>>(query);
-        }
-
-        public async Task<PostsQueryResult> GetPostsAsync(FeedFilterQuery filters, Guid? currentUserId) {
-            var query = new GetPostsQuery(filters, currentUserId);
-
-            return await queryDispatcher.SendAsync<GetPostsQuery, PostsQueryResult>(query);
+            return await queryDispatcher.SendAsync<GetPostsRequest, GetPostsResponse>(query);
 
         }
         public async Task<IEnumerable<CommentDto>> GetPostCommentsAsync(Guid id, int? top = null) {
@@ -97,7 +102,7 @@ namespace Plenumio.Application.Services {
                 .SendAsync<GetPostDetailsBySlugQuery,  PostDto>(query);
         }
 
-        public async Task<string?> GetPostSlugById(Guid id) {
+        public async Task<string?> GetPostSlugByIdAsync(Guid id) {
             return await uof.Posts.GetSlugById(id);
         }
 

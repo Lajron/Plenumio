@@ -1,0 +1,11 @@
+﻿@model CreateCommentViewModel
+
+<form asp-controller="Comment" asp-action="Create" method="post" class="d-flex align-items-center gap-2">
+    <input type="hidden" asp-for="PostId" />
+    <input type="hidden" asp-for="ParentId" />
+
+    <textarea asp-for="Content" class="form-control form-control-sm flex-grow-1" rows="1" placeholder="Write a comment..." required></textarea>
+
+    <button type="submit" class="btn btn-sm btn-primary">Comment</button>
+</form>
+<span asp-validation-for="Content" class="text-danger small"></span>

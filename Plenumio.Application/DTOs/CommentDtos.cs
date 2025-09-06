@@ -9,7 +9,7 @@ namespace Plenumio.Application.DTOs {
     public record CommentDto(
        Guid Id,
        string Content,
-       UserSummaryDto User,
+       OldUserSummaryDto User,
        DateTimeOffset CreatedAt,
        DateTimeOffset UpdatedAt,
        bool? HasChildren,

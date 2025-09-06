@@ -69,6 +69,12 @@ namespace Plenumio.Application.Extensions {
             return result;
         }
 
+        public static IQueryable<Post> WhereProfile(this IQueryable<Post> query, Guid? profileId) {
+            if (profileId == null)
+                return query;
+            return query.Where(p => p.ApplicationUserId == profileId);
+        }
+
         public static IQueryable<Post> WhereTag(this IQueryable<Post> query, Tag? tag) {
             if (tag is null)
                 return query;

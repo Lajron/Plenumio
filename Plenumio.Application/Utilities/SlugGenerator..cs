@@ -35,9 +35,6 @@ namespace Plenumio.Application.Utilities {
             if (string.IsNullOrWhiteSpace(tag))
                 return string.Empty;
 
-            // Remove leading '#' and trim
-            tag = tag.TrimStart('#').Trim();
-
             // Special replacements
             tag = tag.Replace("#", "Sharp"); // C# -> CSharp, F# -> FSharp, etc.
 
@@ -59,6 +56,29 @@ namespace Plenumio.Application.Utilities {
             string guid = Guid.NewGuid().ToString("N");
             string randomSuffix = guid.Substring(guid.Length - 8); // take last 8 chars
             return $"{baseSlug}-{randomSuffix}";
+        }
+
+        public static string GenerateUsername(string username) {
+            if (string.IsNullOrWhiteSpace(username))
+                throw new ArgumentException("Username cannot be empty.");
+
+            // Lowercase
+            string slug = username.Trim().ToLowerInvariant();
+
+            // Remove invalid characters (letters, digits, underscores, hyphens only)
+            slug = Regex.Replace(slug, @"[^a-z0-9_-]", "");
+
+            // Collapse multiple hyphens or underscores
+            slug = Regex.Replace(slug, @"[-_]+", m => m.Value[0].ToString());
+
+            // Trim leading/trailing hyphens or underscores
+            slug = slug.Trim('-', '_');
+
+            // Ensure minimum length (fallback if slug is empty)
+            if (string.IsNullOrEmpty(slug))
+                slug = "user" + Guid.NewGuid().ToString("N").Substring(0, 6);
+
+            return slug;
         }
     }
 }

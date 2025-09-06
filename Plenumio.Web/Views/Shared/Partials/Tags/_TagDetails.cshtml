@@ -1,0 +1,38 @@
+﻿@model TagVM
+
+<div class="border-bottom pb-3 mb-0">
+    <!-- Header row -->
+    <div class="d-flex justify-content-between align-items-center">
+        <div>
+            <a asp-controller="Tag" asp-action="Details" asp-route-tagName="@Model.Name"
+               class="text-decoration-none">
+                <span class="fs-3 fw-bold">#@Model.DisplayedName</span>
+            </a>
+            <div>
+                <small class="text-muted">
+                    @Model.PostsCount posts · @Model.FollowersCount followers
+                </small>
+            </div>
+        </div>
+        <form asp-controller="Tags" asp-action="ToggleFollow" asp-route-id="@Model.Id" method="post">
+            <button type="submit" class="btn @(Model.IsFollowing ? "btn-outline-secondary" : "btn-light border")">
+                @(Model.IsFollowing ? "Unfollow" : "Follow")
+            </button>
+        </form>
+    </div>
+
+    <!-- Similar tags -->
+    @if ((Model.Parent != null) || Model.Children.Any()) {
+        <div class="mt-2 small text-muted">
+            Tags you might also be interested in:
+            @if (Model.Parent != null) {
+                <a asp-controller="Tags" asp-action="Details" asp-route-name="@Model.Parent.Name"
+                   class="me-2 text-decoration-none">@Model.Parent.DisplayedName</a>
+            }
+            @foreach (var child in Model.Children) {
+                <a asp-controller="Tags" asp-action="Details" asp-route-name="@child.Name"
+                   class="me-2 text-decoration-none">@child.DisplayedName</a>
+            }
+        </div>
+    }
+</div>

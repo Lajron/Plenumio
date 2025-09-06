@@ -11,14 +11,14 @@
 </head>
 <body data-bs-theme="light">
     <header class="sticky-top">
-        <partial name="_NavbarPartial" />
+        <partial name="_Navbar" />
     </header>
     <main>
         <div class="d-flex flex-nowrap">
             <div class="d-flex flex-column col-2 pt-4 px-2 border-end border-secondary border-2">
-                <partial name="_FeedMenu" />
+                <partial name="_SidebarMenu" />
             </div>
-            <div class="d-flex justify-content-center w-100">
+            <div class="d-flex justify-content-center w-100 bg-light">
                 <div class="col-10 container-fluid container-md pt-4">
                     <div class="row">
                         @RenderBody()

@@ -1,4 +1,42 @@
-﻿@model TrendingCardVM
+﻿@using Plenumio.Application.DTOs.Users
+@model IEnumerable<UserSummaryDto>
 
-<partial name="_TrendingCard" model="@Model"/>
+<div class="card border-0 shadow-sm">
+    <div class="card-header border-0 py-2 px-3 text-uppercase fw-bold small">
+        Trending Users
+    </div>
 
+    <div class="card-body p-0">
+        @foreach (var user in Model) {
+            <a asp-controller="Profile" asp-action="Index" asp-route-username="@user.Username"
+               class="d-flex align-items-center justify-content-between px-3 py-2 border-bottom text-decoration-none text-body hover-bg-light">
+                <div class="d-flex align-items-center gap-2">
+                    <img src="@(user.AvatarUrl?.Trim() ?? "https://picsum.photos/50")"
+                         alt="@user.DisplayedName"
+                         class="rounded-circle border border-2" width="40" height="40" />
+                    <div class="d-flex flex-column">
+                        <div class="fw-semibold">
+                            @user.DisplayedName
+                            @if (user.IsVerified == false) {
+                                <i class="bi bi-patch-check-fill text-primary ms-1" title="Verified"></i>
+                            }
+                        </div>
+                        <small class="text-muted">@("@" + user.Username)</small>
+                    </div>
+                </div>
+            </a>
+        }
+    </div>
+
+    <div class="card-footer border-0 py-2 text-center small">
+        <a asp-controller="Profile" asp-action="All" class="text-decoration-none">
+            View more users
+        </a>
+    </div>
+</div>
+
+<style>
+    .hover-bg-light:hover {
+        background-color: #f8f9fa;
+    }
+</style>

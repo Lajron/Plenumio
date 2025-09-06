@@ -1,13 +1,14 @@
-﻿@model IEnumerable<TagViewModel>
+﻿@using Plenumio.Web.Models.Tag
+@model PageVM<IEnumerable<TagVM>>
 
 @{
-    ViewData["Title"] = "All Tags";
+    ViewData["Title"] = Model.Title;
 }
 
 <div class="col-8">
     <div class="row g-2">
-        @foreach (var tag in Model) {
-            <partial name="_TagCard" model="tag" />
+        @foreach (var tag in Model.Content) {
+            <partial name="_TagDetails" model="tag" />
         }
     </div>
 </div>

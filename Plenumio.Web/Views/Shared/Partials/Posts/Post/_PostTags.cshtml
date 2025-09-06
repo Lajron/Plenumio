@@ -1,0 +1,13 @@
+﻿@using Plenumio.Web.Models.Tag
+@model IEnumerable<TagVM>
+
+@if (Model.Any()) {
+    <div class="post-tags mb-2">
+        @foreach (var tag in Model) {
+            <a asp-controller="Feed" asp-action="Index" asp-route-scope="Global" asp-route-tag="@tag.Name" class="text-decoration-none text-reset">
+
+                <span class="badge bg-secondary fs-6 me-2">@tag.DisplayedName</span>
+            </a>
+        }
+    </div>
+}

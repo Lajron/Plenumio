@@ -1,57 +1,70 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using Plenumio.Application.DTOs;
+using Plenumio.Application.DTOs.Tags;
 using Plenumio.Application.Interfaces;
+using Plenumio.Application.Services;
+using Plenumio.Core.Entities;
+using Plenumio.Core.Enums;
+using Plenumio.Web.Mapping;
 using Plenumio.Web.Models;
+using Plenumio.Web.Models.Filter;
+using Plenumio.Web.Models.Page;
+using Plenumio.Web.Models.Profile;
+using Plenumio.Web.Models.Tag;
 
 namespace Plenumio.Web.Controllers {
-    public class TagController(ITagService tagService) : Controller {
+    public class TagController(
+            ITagService tagService,
+            UserManager<ApplicationUser> userManager
+        ) : Controller {
 
-        public async Task<IActionResult> Index() {
-            var tags = await tagService.GetAllTags(0, 20);
+        [HttpGet("Tags")]
+        public async Task<IActionResult> Index(TagFilterVM filters) {
+            string? userId = userManager.GetUserId(User);
+            Guid? currentUserId = string.IsNullOrEmpty(userId) ? null : Guid.Parse(userId);
 
-            var tagsVM = tags.Select(t => new TagViewModel {
-                Id  = t.Id,
-                Name = t.Name,
-                DisplayedName = t.DisplayedName
-            });
-            return View(tagsVM);
+            var filtersDto = new TagFilterDto {
+                SearchTerm = filters.SearchTerm
+            };
+
+            var tags = await tagService.GetTagsAsync(filtersDto, currentUserId);
+
+            var tagsVM = tags.Select(t => t.ToVM());
+
+            var result = new PageVM<IEnumerable<TagVM>> {
+                Content = tagsVM,
+                Title = "Tags"
+            };
+            return View(result);
         }
 
-        [HttpGet("Tag/Details/{name}")]
-        public async Task<IActionResult> Details(string name) {
-            IEnumerable<PostFeedDto> posts = await tagService.GetPostsByTagName(name);
+        [HttpGet("Tag/Details/{tagName}")]
+        public async Task<IActionResult> Details(string tagName, PostFilterVM filtersVM) {
+            string? userId = userManager.GetUserId(User);
+            Guid? currentUserId = string.IsNullOrEmpty(userId) ? null : Guid.Parse(userId);
 
-            var postsVM = posts.Select(p => new PostFeedViewModel {
-                Type = p.Type,
-                Header = new PostHeaderViewModel {
-                    PostId = p.Id,
-                    Author = new UserSummaryViewModel {
-                        Id = p.User.Id,
-                        DisplayedName = p.User.DisplayedName,
-                        AvatarUrl = p.User.AvatarUrl,
-                        IsVerified = p.User.IsVerified
-                    },
-                    CreatedAt = p.CreatedAt,
-                    UpdatedAt = p.UpdatedAt,
-                    Slug = p.Slug
-                },
-                Body = new PostContentViewModel {
-                    Title = p.Title,
-                    Content = p.Content
-                },
-                Statistics = new PostStatisticsViewModel {
-                    PostId = p.Id,
-                    CommentCount = p.CommentCount,
-                    ReactionCount = p.ReactionCount,
-                    Reactions = []
-                },
-                CreatedAt = p.CreatedAt,
-                UpdatedAt = p.UpdatedAt,
-                Tags = p.Tags.Select(t => new TagViewModel { Name = t.Name, DisplayedName = t.DisplayedName }).ToList(),
-                Images = p.Images.Select(i => new ImageViewModel { Url = i.Url }).ToList()
-            }).ToList();
+            var tag = await tagService.GetTagAsync(tagName, currentUserId);
 
-            return View(postsVM);
+            if (tag is null) return NotFound();
+
+            filtersVM = filtersVM with { 
+                Scope = FeedScope.Global,
+                Tag = tagName
+            };
+
+            var tagVM = tag.ToVM();
+
+            var result = new PageVM<TagPageModel> {
+                Content = new TagPageModel {
+                    Tag = tagVM,
+                    PostFilters = filtersVM
+                },
+                Title = tagVM.DisplayedName,
+                CurrentUserId = currentUserId
+            };
+
+            return View(result);
         }
     }
 }

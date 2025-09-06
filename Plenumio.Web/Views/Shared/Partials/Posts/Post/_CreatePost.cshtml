@@ -1,0 +1,34 @@
+﻿@model CreatePostViewModel
+
+<form asp-controller="Post" asp-action="CreatePost" method="post" enctype="multipart/form-data">
+    @Html.AntiForgeryToken()
+    <div class="modal-header">
+        <div>
+            <select asp-for="Privacy" class="form-select" asp-items="Html.GetEnumSelectList<PrivacyType>()"></select>
+        </div>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+    </div>
+    <div class="modal-body d-flex flex-column">
+        <textarea asp-for="Content" class="form-control" placeholder="What's on your mind?" rows="6"></textarea>
+        <span asp-validation-for="Content" class="text-danger"></span>
+
+        <div class="d-flex gap-2">
+            <input asp-for="Tags" class="form-control" placeholder="Add tags (#tag1 #tag2 #tag3)" value="@string.Join(' ', Model.Tags)" />
+        </div>
+
+        <div class="d-flex flex-row">
+
+            <div>
+                <input type="file" name="images" class="form-control" placeholder="Add Images" multiple />
+            </div>
+
+        </div>
+
+    </div>
+    <div class="modal-footer d-flex justify-content-between align-items-center">
+        <div class="d-flex gap-2">
+            <a asp-controller="Post" asp-action="CreateArticle" class="btn btn-outline-secondary btn-sm">Create Article</a>
+        </div>
+        <button type="submit" class="btn btn-primary btn-sm">Post</button>
+    </div>
+</form>

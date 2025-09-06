@@ -5,19 +5,25 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Hosting;
 using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.Blazor;
 using Plenumio.Application.DTOs;
+using Plenumio.Application.DTOs.Posts.Requests;
+using Plenumio.Application.DTOs.Posts.Responses;
 using Plenumio.Application.Interfaces;
 using Plenumio.Application.Services;
 using Plenumio.Application.Utilities;
 using Plenumio.Core.Entities;
 using Plenumio.Core.Enums;
 using Plenumio.Web.Models;
+using Plenumio.Web.Models.Tag;
 using System;
 
 namespace Plenumio.Web.Controllers {
-    public class PostController(IPostService postService, UserManager<ApplicationUser> userManager) : Controller {
+    public class PostController(
+            IPostService postService, 
+            UserManager<ApplicationUser> userManager
+        ) : Controller {
 
         public async Task<IActionResult> Index(Guid id) {
-            var slug = await postService.GetPostSlugById(id);
+            var slug = await postService.GetPostSlugByIdAsync(id);
 
             if (string.IsNullOrEmpty(slug))
                 return NotFound(slug);
@@ -61,7 +67,7 @@ namespace Plenumio.Web.Controllers {
                     Reactions = post.Reactions.Select(r => new ReactionViewModel { Name = r.Name }).ToList()
                 },
 
-                Tags = post.Tags.Select(t => new TagViewModel { Id = t.Id, Name = t.Name }).ToList(),
+                Tags = post.Tags.Select(t => new TagVM { Id = t.Id, Name = t.Name }).ToList(),
                 Images = post.Images.Select(i => new ImageViewModel { Id = i.Id, Url = i.Url }).ToList(),
 
                 Comments = post.Comments.Select(c => new CommentViewModel {
@@ -95,17 +101,17 @@ namespace Plenumio.Web.Controllers {
 
             var userId = Guid.Parse(userManager.GetUserId(User)!);
 
-            var request = new CreatePostDto(
-                "", // empty because standard post has no title
-                model.Content,
-                PostType.Standard,
-                model.Privacy,
-                model.Tags?.Split(' ', StringSplitOptions.RemoveEmptyEntries) ?? []
-            );
+            var request = new CreatePostRequest {
+                Title = "", // empty because standard post has no title
+                Content = model.Content,
+                Type = PostType.Standard,
+                Privacy = model.Privacy,
+                Tags = model.Tags?.Split(' ', StringSplitOptions.RemoveEmptyEntries) ?? []
+            };
 
             var imageFileDtos = ImageConverter.ToImageFileDtos(images);
 
-            PostIdSlugDto result = await postService.CreatePostAsync(request, userId, imageFileDtos);
+            var result = await postService.CreatePostAsync(request, userId, imageFileDtos);
 
             
             return RedirectToAction("Details", "Post", new { slug = result.Slug });
@@ -124,17 +130,17 @@ namespace Plenumio.Web.Controllers {
             var userId = Guid.Parse(userManager.GetUserId(User)!);
 
             // Map ViewModel to DTO
-            var dto = new CreatePostDto(
-                Title: model.Title,
-                Content: model.Content,
-                Type: PostType.Article, // Article type
-                Privacy: model.Privacy,
-                Tags: model.Tags
-            );
+            var dto = new CreatePostRequest {
+                Title = model.Title,
+                Content= model.Content,
+                Type = PostType.Article, // Article type
+                Privacy = model.Privacy,
+                Tags = model.Tags
+            };
 
             var imageFileDtos = ImageConverter.ToImageFileDtos(images);
 
-            PostIdSlugDto post = await postService.CreatePostAsync(dto, userId, imageFileDtos);
+            CreatePostResponse post = await postService.CreatePostAsync(dto, userId, imageFileDtos);
 
             return RedirectToAction("Index", "Feed");
         }

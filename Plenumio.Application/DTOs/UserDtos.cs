@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace Plenumio.Application.DTOs {
-    public record UserSummaryDto(
+    public record OldUserSummaryDto(
         Guid Id,
         string DisplayedName,
         string AvatarUrl,

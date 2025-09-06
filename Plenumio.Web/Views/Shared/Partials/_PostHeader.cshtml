@@ -1,9 +1,0 @@
-﻿@model PostHeaderViewModel
-
-<div class="post-header d-flex align-items-center mb-2">
-    <img src="@Model.Author.AvatarUrl" class="rounded-circle me-2" width="40" height="40" />
-    <div>
-        <a href="@Url.Action("Profile", "User", new { id = Model.Author.Id })">@Model.Author.DisplayedName</a>
-        <div class="text-muted small">@Model.CreatedAt.ToLocalTime().ToString("g")</div>
-    </div>
-</div>

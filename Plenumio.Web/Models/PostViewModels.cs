@@ -1,4 +1,5 @@
 ﻿using Plenumio.Core.Enums;
+using Plenumio.Web.Models.Tag;
 using System.ComponentModel.DataAnnotations;
 
 namespace Plenumio.Web.Models {
@@ -28,7 +29,7 @@ namespace Plenumio.Web.Models {
         public PostHeaderViewModel Header { get; init; } = new();
         public PostContentViewModel Body { get; init; } = new();
         public PostStatisticsViewModel Statistics { get; init; } = new();
-        public List<TagViewModel> Tags { get; init; } = [];
+        public List<TagVM> Tags { get; init; } = [];
         public List<ImageViewModel> Images { get; init; } = [];
         public List<CommentViewModel> Comments { get; init; } = [];
 
@@ -41,7 +42,7 @@ namespace Plenumio.Web.Models {
         public PostStatisticsViewModel Statistics { get; init; } = new();
         public DateTimeOffset CreatedAt { get; init; }
         public DateTimeOffset UpdatedAt { get; init; }
-        public List<TagViewModel> Tags { get; init; } = [];
+        public List<TagVM> Tags { get; init; } = [];
         public List<ImageViewModel> Images { get; init; } = [];
     }
 

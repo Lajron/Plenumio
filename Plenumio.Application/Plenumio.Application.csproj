@@ -8,12 +8,20 @@
 
   <ItemGroup>
     <PackageReference Include="AutoMapper" Version="15.0.1" />
+    <PackageReference Include="LinqKit.Microsoft.EntityFrameworkCore" Version="8.1.8" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.19" />
+
+	<PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="8.0.19" />
+	<PackageReference Include="Microsoft.AspNetCore.Identity" Version="2.2.0" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\Plenumio.Core\Plenumio.Core.csproj" />
     <ProjectReference Include="..\Plenumio.Infrastructure\Plenumio.Infrastructure.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Queries\FeedHandlers\" />
   </ItemGroup>
 
 </Project>

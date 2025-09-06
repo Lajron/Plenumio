@@ -12,7 +12,9 @@ namespace Plenumio.Application.Strategies {
         }
 
         protected override IQueryable<ApplicationUser> ApplyTrendingSort(IQueryable<ApplicationUser> query) {
-            return query.OrderByDescending(u => u.Posts.Count);
+            var cutoff = DateTimeOffset.UtcNow.AddDays(-7);
+
+            return query.OrderByDescending(u => u.Followers.Count(f => f.CreatedAt >= cutoff));
 
         }
     }

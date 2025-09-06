@@ -1,4 +1,6 @@
 ﻿using Plenumio.Application.DTOs;
+using Plenumio.Application.DTOs.Tags;
+using Plenumio.Application.DTOs.Tags.Responses;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,7 +9,11 @@ using System.Threading.Tasks;
 
 namespace Plenumio.Application.Interfaces {
     public interface ITagService {
-        Task<IEnumerable<PostFeedDto>> GetPostsByTagName(string name);
-        Task<IEnumerable<TagDto>> GetAllTags(int skip, int amount);
+
+        Task<GetTagResponse?> GetTagAsync(string name, Guid? userId);
+        Task<IEnumerable<GetTagResponse>> GetTagsAsync(TagFilterDto filters, Guid? userId);
+        Task<IEnumerable<GetTagResponse>> GetAllTagsAsync(TagFilterDto filters, Guid? userId);
+
+
     }
 }

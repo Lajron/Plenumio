@@ -22,6 +22,7 @@ builder.Services.AddDbContext<ApplicationDbContext>(options => {
 
 builder.Services.AddIdentity<ApplicationUser, IdentityRole<Guid>>(options => options.SignIn.RequireConfirmedAccount = false)
                 .AddEntityFrameworkStores<ApplicationDbContext>()
+                .AddSignInManager()
                 .AddDefaultTokenProviders();
 
 builder.Services.AddRazorPages();
@@ -37,7 +38,6 @@ builder.Services.AddApplicationHandlers();
 builder.Services.AddApplicationServices();
 builder.Services.AddSortStrategyServices();
 builder.Services.AddEmailSender();
-builder.Services.AddApplicationMapperProfileServices();
 
 var app = builder.Build();
 

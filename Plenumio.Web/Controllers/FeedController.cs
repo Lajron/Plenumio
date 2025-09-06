@@ -4,12 +4,16 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using NuGet.Protocol;
 using Plenumio.Application.DTOs;
+using Plenumio.Application.DTOs.Posts;
 using Plenumio.Application.Interfaces;
-using Plenumio.Application.Queries.Feed;
 using Plenumio.Application.Services;
 using Plenumio.Core.Entities;
 using Plenumio.Core.Enums;
+using Plenumio.Web.Mapping;
 using Plenumio.Web.Models;
+using Plenumio.Web.Models.Filter;
+using Plenumio.Web.Models.Page;
+using Plenumio.Web.Models.Tag;
 using System.Diagnostics;
 
 namespace Plenumio.Web.Controllers {
@@ -19,31 +23,33 @@ namespace Plenumio.Web.Controllers {
         ) 
         : Controller {
 
-        public async Task<IActionResult> Index(FeedFilterQuery filters) {
+        public async Task<IActionResult> Index(PostFilterVM filtersVM) {
             var userId = userManager.GetUserId(User);
 
             if (string.IsNullOrEmpty(userId)) {
-                filters = filters with { Scope = FeedScope.Global };
+                filtersVM = filtersVM with { Scope = FeedScope.Global };
             }
 
             Guid? currentUserId = string.IsNullOrEmpty(userId) ? null : Guid.Parse(userId);
 
-            var result = await postService.GetPostsAsync(filters, currentUserId);
+            var filtersDto = filtersVM.ToDto();
+
+            var result = await postService.GetPostsAsync(filtersDto, currentUserId);
 
             
 
-            var postsVM = result.Posts.Select(p => new PostFeedViewModel {
+            var postsVM = result.Items.Select(p => new PostFeedViewModel {
                 Type = p.Type,
                 Header = new PostHeaderViewModel {
                     PostId = p.Id,
                     Author = new UserSummaryViewModel {
-                        Id = p.User.Id,
-                        DisplayedName = p.User.DisplayedName,
-                        AvatarUrl = p.User.AvatarUrl,
-                        IsVerified = p.User.IsVerified
+                        Id = p.Author.Id,
+                        DisplayedName = p.Author.DisplayedName,
+                        Username = p.Author.Username,
+                        AvatarUrl = p.Author.AvatarUrl,
+                        IsVerified = p.Author.IsVerified
                     },
                     CreatedAt = p.CreatedAt,
-                    UpdatedAt = p.UpdatedAt,
                     Slug = p.Slug
                 },
                 Body = new PostContentViewModel {
@@ -52,27 +58,21 @@ namespace Plenumio.Web.Controllers {
                 },
                 Statistics = new PostStatisticsViewModel {
                     PostId = p.Id,
-                    CommentCount = p.CommentCount,
-                    ReactionCount = p.ReactionCount,
+                    CommentCount = p.CommentsCount,
+                    ReactionCount = p.Reactions.Sum(r => r.Count),
                     Reactions = []
                 },
                 CreatedAt = p.CreatedAt,
-                UpdatedAt = p.UpdatedAt,
-                Tags = p.Tags.Select(t => new TagViewModel { Name = t.Name, DisplayedName = t.DisplayedName }).ToList(),
+                Tags = p.Tags.Select(t => new TagVM { Name = t.Name, DisplayedName = t.DisplayedName }).ToList(),
                 Images = p.Images.Select(i => new ImageViewModel { Url = i.Url }).ToList()
             }).ToList();
 
-            var viewModel = new PageViewModel<PostFeedPageModel> {
-                Content = new PostFeedPageModel {
+            var viewModel = new PageVM<FeedPageModel> {
+                Content = new FeedPageModel {
                     Posts = postsVM,
-                    Filters = filters
+                    Filters = filtersVM
                 },
-                Title = (filters.Scope == FeedScope.Global) ? "Discover Feed" : "My Feed",
-                Pagination = new PaginationViewModel { 
-                    PageNumber = filters.Page,
-                    PageSize = filters.PageSize,
-                    TotalCount = result.TotalCount
-                }
+                Title = (filtersVM.Scope == FeedScope.Global) ? "Discover Feed" : "My Feed"
             };
 
             return View(viewModel);

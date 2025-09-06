@@ -18,6 +18,26 @@
 
 @section Scripts {
     <script>
+        const post = {
+            id: '@Model.Header.PostId',
+            title: '@Model.Body.Title',
+            slug: '@Model.Header.Slug',
+            content: '@(Model.Body.Content.Length > 100 ? Model.Body.Content.Substring(0, 100) + "..." : Model.Body.Content)'
+        };
+
+        let recent = JSON.parse(localStorage.getItem('recentPosts') || '[]');
+
+        recent = recent.filter(p => p.id !== post.id);
+
+        recent.unshift(post);
+
+        if (recent.length > 10) recent.pop();
+
+        localStorage.setItem('recentPosts', JSON.stringify(recent));
+    </script>
+
+
+    <script>
         $(document).ready(function() {
             // Toggle reply form
             $(document).on('click', '.reply-btn', function(e) {

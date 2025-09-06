@@ -1,0 +1,28 @@
+﻿@using Plenumio.Web.Models.Profile
+@model UserSummaryVM
+
+<div class="border-bottom pb-3 mb-0">
+    <!-- Main row -->
+    <div class="d-flex justify-content-between align-items-center">
+        <!-- Left: Avatar + name -->
+        <div class="d-flex align-items-center gap-2">
+            <img src="@(Model.AvatarUrl?.Trim() ?? "https://picsum.photos/50")"
+                 alt="@Model.DisplayedName"
+                 class="rounded-circle border" width="40" height="40" />
+
+            <div class="d-flex flex-column">
+                <a asp-controller="Profile" asp-action="Index" asp-route-username="@Model.Username" 
+                   class="text-decoration-none text-dark">
+                    <span class="fw-bold">@Model.DisplayedName</span>
+                    @if (Model.IsVerified) {
+                        <i class="bi bi-patch-check-fill text-primary ms-1"></i>
+                    }
+                </a>
+                <small class="text-muted">@Model.Username</small>
+            </div>
+        </div>
+
+        <!-- Right: Optional action (Follow button could go here if needed) -->
+    </div>
+</div>
+

@@ -1,4 +1,5 @@
-﻿using Plenumio.Core.Entities;
+﻿using Plenumio.Application.DTOs.Tags;
+using Plenumio.Core.Entities;
 using Plenumio.Core.Enums;
 using System;
 using System.Collections.Generic;
@@ -16,21 +17,13 @@ namespace Plenumio.Application.DTOs {
         PrivacyType Privacy,
         DateTimeOffset CreatedAt,
         DateTimeOffset UpdatedAt,
-        UserSummaryDto Author,
-        IEnumerable<TagDto> Tags,
+        OldUserSummaryDto Author,
+        IEnumerable<TagSummaryDto> Tags,
         IEnumerable<ImageDto> Images,
         IEnumerable<CommentDto> Comments,
         IEnumerable<ReactionDto> Reactions,
         int CommentCount,
         int ReactionCount
-    );
-
-    public record CreatePostDto(
-        string Title,
-        string Content,
-        PostType Type,
-        PrivacyType Privacy,
-        IEnumerable<string> Tags
     );
 
     public record PostFeedDto(
@@ -41,17 +34,14 @@ namespace Plenumio.Application.DTOs {
         PostType Type,
         DateTimeOffset CreatedAt,
         DateTimeOffset UpdatedAt,
-        UserSummaryDto User,
-        IEnumerable<TagDto> Tags,
+        OldUserSummaryDto User,
+        IEnumerable<TagSummaryDto> Tags,
         IEnumerable<ImageDto> Images,
         int ReactionCount,
         int CommentCount
     );
 
-    public record PostIdSlugDto(
-        Guid Id,
-        string Slug
-    );
+    
 
     public record UpdatePostDto(
         string Description,

@@ -1,0 +1,46 @@
+﻿@model CreatePostViewModel
+
+<div class="card mb-2 shadow-sm">
+    <div class="card-body d-flex align-items-center gap-2">
+        <img src="https://picsum.photos/40" class="rounded-circle" width="40" height="40" alt="Your Avatar" />
+        <button type="button" class="form-control text-start py-2" data-bs-toggle="modal" data-bs-target="#createPostModal"
+                style="cursor:pointer;">
+            What's on your mind?
+        </button>
+    </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="createPostModal" tabindex="-1" aria-labelledby="createPostModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+            <partial name="_CreatePost" model="Model"/>
+        </div>
+    </div>
+</div>
+
+@* <form asp-controller="Post" asp-action="CreatePost" method="post" enctype="multipart/form-data">
+        @Html.AntiForgeryToken()
+
+        <div class="mb-3">
+            <label asp-for="Content" class="form-label"></label>
+            <textarea asp-for="Content" class="form-control" rows="5" placeholder="What's on your mind?"></textarea>
+            <span asp-validation-for="Content" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="Privacy" class="form-label"></label>
+            <select asp-for="Privacy" class="form-select" asp-items="Html.GetEnumSelectList<PrivacyType>()"></select>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="Tags" class="form-label">Tags (comma separated)</label>
+            <input asp-for="Tags" class="form-control" value="@string.Join(',', Model.Tags)" placeholder="Add tags separated by commas" />
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Images</label>
+            <input type="file" name="images" class="form-control" multiple />
+        </div>
+
+        <button type="submit" class="btn btn-primary">Post</button> *@

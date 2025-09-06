@@ -1,0 +1,23 @@
+﻿@model PostFeedViewModel
+
+<div class="card border-1 mb-4 shadow-sm  ">
+
+    <div class="card-body border-0">
+
+        <partial name="_PostHeader" model="@Model.Header" />
+
+        <a asp-controller="Post" asp-action="Details" asp-route-slug="@Model.Header.Slug" class="text-decoration-none text-reset">
+            <partial name="_PostBody" model="@Model.Body" />
+        </a>
+
+        <partial name="_PostGallery" model="@Model.Images" />
+       
+        <partial name="_PostStatistics" model="@Model.Statistics" />
+
+            <vc:comment-feed post-id="@Model.Header.PostId"></vc:comment-feed>
+
+        <partial name="_PostTags" model="@Model.Tags" />
+        
+    </div>
+</div>
+

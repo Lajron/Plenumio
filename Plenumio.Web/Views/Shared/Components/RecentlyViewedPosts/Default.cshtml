@@ -1,5 +1,38 @@
 ﻿@model TrendingCardVM
 
-<partial name="_TrendingCard" model="@Model" />
+<div class="card border-0 shadow-sm" id="recently-viewed-card">
+    <div class="card-header d-flex justify-content-between align-items-center border-0 py-2 px-3 text-uppercase fw-bold small">
+        <span>Recently Viewed</span>
+        <button id="clear-recent" class="btn btn-sm btn-outline-secondary">Clear</button>
+    </div>
+    <div class="card-body p-0" id="recently-viewed-body">
+
+    </div>
+</div>
+
+<script>
+    const container = document.getElementById('recently-viewed-body');
+    const clearBtn = document.getElementById('clear-recent');
+
+    function renderPosts() {
+        container.innerHTML = '';
+        const posts = JSON.parse(localStorage.getItem('recentPosts') || '[]');
+
+        posts.forEach(post => {
+            const a = document.createElement('a');
+            a.href = `/Post/Details/${post.slug}`;
+            a.className = 'd-block px-3 py-2 border-bottom text-decoration-none text-body hover-bg-light';
+            a.innerHTML = `<div class="fw-semibold">${post.title}</div><small class="text-muted">${post.content}</small>`;
+            container.appendChild(a);
+        });
+    }
+
+    clearBtn.addEventListener('click', () => {
+        localStorage.removeItem('recentPosts');
+        renderPosts();
+    });
+
+    renderPosts();
+</script>
 
 

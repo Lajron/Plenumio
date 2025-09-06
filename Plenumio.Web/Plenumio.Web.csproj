@@ -21,7 +21,8 @@
 
   <ItemGroup>
     <Folder Include="Areas\Identity\Data\" />
-    <Folder Include="Views\Shared\Modules\Cards\" />
+    <Folder Include="Models\Post\" />
+    <Folder Include="Views\Shared\Partials\Posts\Article\" />
   </ItemGroup>
 
   <ItemGroup>

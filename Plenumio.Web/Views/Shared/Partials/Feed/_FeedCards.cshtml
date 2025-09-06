@@ -1,0 +1,22 @@
+﻿@model FeedPageModel
+
+<partial name="_PostFilters" model="Model.Filters" />
+
+<div class="rounded">
+    @foreach (var post in Model.Posts) {
+        switch (post.Type) {
+            case PostType.Standard:
+                <partial name="_PostSummary" model="@post" />
+                break;
+
+            case PostType.Article:
+                break;
+
+            case PostType.Media:
+                break;
+
+            default:
+                break;
+        }
+    }
+</div>

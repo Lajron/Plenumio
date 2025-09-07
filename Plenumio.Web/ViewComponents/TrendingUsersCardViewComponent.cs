@@ -12,13 +12,10 @@ using Plenumio.Web.Models.Shared.ViewModels;
 
 namespace Plenumio.Web.ViewComponents {
     public class TrendingUsersCardViewComponent(
-            IUserService userService,
-            UserManager<ApplicationUser> userManager
+            IUserService userService
         ) : ViewComponent {
-        public async Task<IViewComponentResult> InvokeAsync(int count = 5) {
-            string? userId = userManager.GetUserId(HttpContext.User);
-            Guid? currentUserId = string.IsNullOrEmpty(userId) ? null : Guid.Parse(userId);
-
+        public async Task<IViewComponentResult> InvokeAsync(Guid? currentUserId = null) {
+            
             var tags = await userService.GetAllUsersAsync(
                 new UserFilterDto {
                     Sort = SortType.Trending,

@@ -29,6 +29,10 @@ namespace Plenumio.Application.Queries.TagHandlers {
                 tagQuery = tagQuery.Where(p => p.CreatedAt <= query.Filters.ToDate.Value);
             }
 
+            if (query.Filters.UserId.HasValue) {
+                tagQuery = tagQuery.Where(t => t.UserTags.Any(ut => ut.ApplicationUserId == query.Filters.UserId));
+            }
+
             var search = query.Filters.SearchTerm?.Trim();
             if (!string.IsNullOrEmpty(search)) {
                 var slugSearch = SlugGenerator.GenerateTagSlug(search);

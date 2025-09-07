@@ -1,5 +1,6 @@
 ﻿using Plenumio.Application.DTOs.Users;
 using Plenumio.Application.DTOs.Users.Responses;
+using Plenumio.Core.Enums;
 using Plenumio.Web.Models.Profile;
 
 namespace Plenumio.Web.Mapping {
@@ -17,26 +18,33 @@ namespace Plenumio.Web.Mapping {
                 FollowersCount = dto.FollowersCount,
                 FollowingCount = dto.FollowingCount,
                 PostsCount = dto.PostsCount,
-                IsFollowing = dto.IsFollowing
+                UserRelationshipVM = new UserRelationshipVM {
+                    TargetUserId = dto.Id,
+                    Outgoing = dto.FollowStatusOutgoing.ToOutgoingVM(),
+                    Incoming = dto.FollowStatusIncoming.ToIncomingVM()
+                }
             };
         }
 
-        public static UserSummaryVM ToVM(this UserSummaryDto dto) =>
-        new() {
-            Id = dto.Id,
-            DisplayedName = dto.DisplayedName,
-            Username = dto.Username,
-            AvatarUrl = dto.AvatarUrl,
-            IsVerified = dto.IsVerified
-        };
+        public static UserSummaryVM ToVM(this UserSummaryDto dto) {
+            return new UserSummaryVM {
+                Id = dto.Id,
+                DisplayedName = dto.DisplayedName,
+                Username = dto.Username,
+                AvatarUrl = dto.AvatarUrl,
+                IsVerified = dto.IsVerified
+            };
+        }
 
-        public static UserSummaryDto ToDto(this UserSummaryVM vm) =>
-            new() {
+
+        public static UserSummaryDto ToDto(this UserSummaryVM vm) {
+            return new UserSummaryDto {
                 Id = vm.Id,
                 DisplayedName = vm.DisplayedName,
                 Username = vm.Username,
                 AvatarUrl = vm.AvatarUrl,
                 IsVerified = vm.IsVerified
             };
+        }
     }
 }

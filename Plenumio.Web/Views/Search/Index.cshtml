@@ -6,9 +6,9 @@
 
 
 <div class="col-8 d-flex flex-column gap-3">
-    <vc:tags filters="Model.Content.TagFilters" current-user-id="Model.CurrentUserId"></vc:tags>
-    <vc:users filters="Model.Content.UserFilters" current-user-id="Model.CurrentUserId"></vc:users>
-    <vc:posts filters="Model.Content.PostFilters" current-user-id="Model.CurrentUserId"></vc:posts>
+    <vc:tags filters="Model.Content.TagFilters" current-user-id="@Model.CurrentUserId"></vc:tags>
+    <vc:users filters="Model.Content.UserFilters" current-user-id="@Model.CurrentUserId"></vc:users>
+    <vc:posts filters="Model.Content.PostFilters" current-user-id="@Model.CurrentUserId"></vc:posts>
 
 </div>
 

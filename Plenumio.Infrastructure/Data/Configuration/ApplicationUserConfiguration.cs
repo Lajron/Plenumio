@@ -34,8 +34,8 @@ namespace Plenumio.Infrastructure.Data.Configuration {
                 .OnDelete(DeleteBehavior.Restrict);
 
             builder.HasMany(u => u.Followers)
-                .WithOne(f => f.Followed)
-                .HasForeignKey(f => f.FollowedId)
+                .WithOne(f => f.Following)
+                .HasForeignKey(f => f.FollowingId)
                 .OnDelete(DeleteBehavior.Restrict);
         }
     }

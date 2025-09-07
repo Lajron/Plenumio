@@ -22,7 +22,6 @@ namespace Plenumio.Application.Queries.PostHandlers {
             ISortStrategy<Post> sortStrategy
         ) 
         : IQueryHandler<GetPostsRequest, GetPostsResponse> {
-
         public async Task<GetPostsResponse> HandleAsync(GetPostsRequest query, CancellationToken cancellationToken = default) {
 
             var postsQuery = db.Posts.AsExpandable().AsQueryable();
@@ -33,8 +32,8 @@ namespace Plenumio.Application.Queries.PostHandlers {
                     postsQuery = postsQuery.ForGlobalFeed(query.UserId);
                     break;
                 case FeedScope.Personal:
-                    var followingIds = await db.Follows.Where(f => f.FollowerId == query.UserId && !f.IsDeleted).Select(f => f.FollowedId).ToListAsync(cancellationToken);
-                    var followedTagIds = await db.ApplicaitonUserTag.Where(ut => ut.ApplicationUserId == query.UserId).Select(ut => ut.TagId).ToListAsync(cancellationToken);
+                    var followingIds = await db.Follows.Where(f => f.FollowerId == query.UserId && !f.IsDeleted).Select(f => f.FollowingId).ToListAsync(cancellationToken);
+                    var followedTagIds = await db.ApplicationUserTags.Where(ut => ut.ApplicationUserId == query.UserId).Select(ut => ut.TagId).ToListAsync(cancellationToken);
                     postsQuery = postsQuery.ForPersonalFeed(query.UserId!.Value, followingIds, followedTagIds);
                     break;
                 default:

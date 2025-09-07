@@ -276,7 +276,7 @@ namespace Plenumio.Infrastructure.Migrations
 
                     b.HasIndex("TagId");
 
-                    b.ToTable("ApplicaitonUserTag");
+                    b.ToTable("ApplicationUserTags");
                 });
 
             modelBuilder.Entity("Plenumio.Core.Entities.Comment", b =>
@@ -328,23 +328,27 @@ namespace Plenumio.Infrastructure.Migrations
                     b.Property<DateTimeOffset>("CreatedAt")
                         .HasColumnType("datetimeoffset");
 
-                    b.Property<Guid>("FollowedId")
+                    b.Property<Guid>("FollowerId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("FollowerId")
+                    b.Property<Guid>("FollowingId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTimeOffset>("UpdatedAt")
                         .HasColumnType("datetimeoffset");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("FollowedId");
+                    b.HasIndex("FollowingId");
 
-                    b.HasIndex("FollowerId", "FollowedId")
+                    b.HasIndex("FollowerId", "FollowingId")
                         .IsUnique();
 
                     b.ToTable("Follows");
@@ -533,53 +537,53 @@ namespace Plenumio.Infrastructure.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("7f11a2a6-83bd-4d4d-8c23-53b6d86e6940"),
-                            CreatedAt = new DateTimeOffset(new DateTime(2025, 9, 5, 0, 30, 11, 207, DateTimeKind.Unspecified).AddTicks(1910), new TimeSpan(0, 0, 0, 0, 0)),
+                            Id = new Guid("44bfff9a-0212-4aef-987b-69635ea7b7e8"),
+                            CreatedAt = new DateTimeOffset(new DateTime(2025, 9, 7, 0, 46, 29, 695, DateTimeKind.Unspecified).AddTicks(9805), new TimeSpan(0, 0, 0, 0, 0)),
                             DisplayedName = "Technology",
                             IsDeleted = false,
                             Name = "technology",
                             Type = "Default",
-                            UpdatedAt = new DateTimeOffset(new DateTime(2025, 9, 5, 0, 30, 11, 207, DateTimeKind.Unspecified).AddTicks(1911), new TimeSpan(0, 0, 0, 0, 0))
+                            UpdatedAt = new DateTimeOffset(new DateTime(2025, 9, 7, 0, 46, 29, 695, DateTimeKind.Unspecified).AddTicks(9806), new TimeSpan(0, 0, 0, 0, 0))
                         },
                         new
                         {
-                            Id = new Guid("f27b6996-6f75-4170-ae80-00ceced835d9"),
-                            CreatedAt = new DateTimeOffset(new DateTime(2025, 9, 5, 0, 30, 11, 207, DateTimeKind.Unspecified).AddTicks(1917), new TimeSpan(0, 0, 0, 0, 0)),
+                            Id = new Guid("bfd89dbe-03e5-4f69-bf68-7d1baee01f3b"),
+                            CreatedAt = new DateTimeOffset(new DateTime(2025, 9, 7, 0, 46, 29, 695, DateTimeKind.Unspecified).AddTicks(9813), new TimeSpan(0, 0, 0, 0, 0)),
                             DisplayedName = "Life",
                             IsDeleted = false,
                             Name = "life",
                             Type = "Default",
-                            UpdatedAt = new DateTimeOffset(new DateTime(2025, 9, 5, 0, 30, 11, 207, DateTimeKind.Unspecified).AddTicks(1918), new TimeSpan(0, 0, 0, 0, 0))
+                            UpdatedAt = new DateTimeOffset(new DateTime(2025, 9, 7, 0, 46, 29, 695, DateTimeKind.Unspecified).AddTicks(9814), new TimeSpan(0, 0, 0, 0, 0))
                         },
                         new
                         {
-                            Id = new Guid("9f0ab855-bcfa-4276-90be-b0a9401dbbbd"),
-                            CreatedAt = new DateTimeOffset(new DateTime(2025, 9, 5, 0, 30, 11, 207, DateTimeKind.Unspecified).AddTicks(1930), new TimeSpan(0, 0, 0, 0, 0)),
+                            Id = new Guid("c19283ad-24c1-4515-8acd-b7b540a6f47e"),
+                            CreatedAt = new DateTimeOffset(new DateTime(2025, 9, 7, 0, 46, 29, 695, DateTimeKind.Unspecified).AddTicks(9818), new TimeSpan(0, 0, 0, 0, 0)),
                             DisplayedName = "Science",
                             IsDeleted = false,
                             Name = "science",
                             Type = "Default",
-                            UpdatedAt = new DateTimeOffset(new DateTime(2025, 9, 5, 0, 30, 11, 207, DateTimeKind.Unspecified).AddTicks(1931), new TimeSpan(0, 0, 0, 0, 0))
+                            UpdatedAt = new DateTimeOffset(new DateTime(2025, 9, 7, 0, 46, 29, 695, DateTimeKind.Unspecified).AddTicks(9819), new TimeSpan(0, 0, 0, 0, 0))
                         },
                         new
                         {
-                            Id = new Guid("8eb81a9e-0106-4017-bc63-c48fa06f64d6"),
-                            CreatedAt = new DateTimeOffset(new DateTime(2025, 9, 5, 0, 30, 11, 207, DateTimeKind.Unspecified).AddTicks(1935), new TimeSpan(0, 0, 0, 0, 0)),
+                            Id = new Guid("648c01b5-1d2f-42ed-b853-2f2c438c1890"),
+                            CreatedAt = new DateTimeOffset(new DateTime(2025, 9, 7, 0, 46, 29, 695, DateTimeKind.Unspecified).AddTicks(9836), new TimeSpan(0, 0, 0, 0, 0)),
                             DisplayedName = "Art",
                             IsDeleted = false,
                             Name = "art",
                             Type = "Default",
-                            UpdatedAt = new DateTimeOffset(new DateTime(2025, 9, 5, 0, 30, 11, 207, DateTimeKind.Unspecified).AddTicks(1936), new TimeSpan(0, 0, 0, 0, 0))
+                            UpdatedAt = new DateTimeOffset(new DateTime(2025, 9, 7, 0, 46, 29, 695, DateTimeKind.Unspecified).AddTicks(9837), new TimeSpan(0, 0, 0, 0, 0))
                         },
                         new
                         {
-                            Id = new Guid("e93dffc8-fae2-403f-9daa-c40815879fd8"),
-                            CreatedAt = new DateTimeOffset(new DateTime(2025, 9, 5, 0, 30, 11, 207, DateTimeKind.Unspecified).AddTicks(1940), new TimeSpan(0, 0, 0, 0, 0)),
+                            Id = new Guid("e34dccf9-e8a5-4b3d-8fd7-54895477f9da"),
+                            CreatedAt = new DateTimeOffset(new DateTime(2025, 9, 7, 0, 46, 29, 695, DateTimeKind.Unspecified).AddTicks(9841), new TimeSpan(0, 0, 0, 0, 0)),
                             DisplayedName = "Gaming",
                             IsDeleted = false,
                             Name = "gaming",
                             Type = "Default",
-                            UpdatedAt = new DateTimeOffset(new DateTime(2025, 9, 5, 0, 30, 11, 207, DateTimeKind.Unspecified).AddTicks(1940), new TimeSpan(0, 0, 0, 0, 0))
+                            UpdatedAt = new DateTimeOffset(new DateTime(2025, 9, 7, 0, 46, 29, 695, DateTimeKind.Unspecified).AddTicks(9841), new TimeSpan(0, 0, 0, 0, 0))
                         });
                 });
 
@@ -681,21 +685,21 @@ namespace Plenumio.Infrastructure.Migrations
 
             modelBuilder.Entity("Plenumio.Core.Entities.Follow", b =>
                 {
-                    b.HasOne("Plenumio.Core.Entities.ApplicationUser", "Followed")
-                        .WithMany("Followers")
-                        .HasForeignKey("FollowedId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
                     b.HasOne("Plenumio.Core.Entities.ApplicationUser", "Follower")
                         .WithMany("Following")
                         .HasForeignKey("FollowerId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.Navigation("Followed");
+                    b.HasOne("Plenumio.Core.Entities.ApplicationUser", "Following")
+                        .WithMany("Followers")
+                        .HasForeignKey("FollowingId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
 
                     b.Navigation("Follower");
+
+                    b.Navigation("Following");
                 });
 
             modelBuilder.Entity("Plenumio.Core.Entities.Post", b =>

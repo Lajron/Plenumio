@@ -22,13 +22,7 @@
                     </div>
                 </a>
 
-
-                <form asp-controller="Tags" asp-action="ToggleFollow" asp-route-id="@tag.Id" method="post" class="m-0">
-                    <button type="submit"
-                            class="btn btn-sm @(tag.IsFollowing ? "btn-outline-secondary" : "btn-light border")">
-                        @(tag.IsFollowing ? "Unfollow" : "Follow")
-                    </button>
-                </form>
+                <partial name="_TagFollowButton" model="@tag.FollowButton" />
 
             </div>
         }

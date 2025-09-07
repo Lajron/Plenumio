@@ -1,4 +1,5 @@
 ﻿using Plenumio.Core.Entities.Base;
+using Plenumio.Core.Enums;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,7 +11,9 @@ namespace Plenumio.Core.Entities {
         public Guid FollowerId { get; set; }
         public ApplicationUser? Follower { get; set; }
 
-        public Guid FollowedId { get; set; }
-        public ApplicationUser? Followed { get; set; }
+        public Guid FollowingId { get; set; }
+        public ApplicationUser? Following { get; set; }
+
+        public FollowStatus Status { get; set; } = FollowStatus.Pending;
     }
 }

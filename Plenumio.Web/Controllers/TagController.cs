@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Plenumio.Application.DTOs;
 using Plenumio.Application.DTOs.Tags;
@@ -37,6 +38,24 @@ namespace Plenumio.Web.Controllers {
                 Title = "Tags"
             };
             return View(result);
+        }
+
+        [HttpPost]
+        [Authorize]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> ToggleFollow(Guid tagId) {
+            string? userId = userManager.GetUserId(User);
+            if (string.IsNullOrEmpty(userId)) return Unauthorized();
+
+            Guid currentUserId = Guid.Parse(userId);
+            bool isFollowing = await tagService.ToggleFollowAsync(tagId, currentUserId);
+
+            var result = new TagFollowButtonVM {
+                TagId = tagId,
+                IsFollowing = isFollowing
+            };
+
+            return PartialView("_TagFollowButton", result);
         }
 
         [HttpGet("Tag/Details/{tagName}")]

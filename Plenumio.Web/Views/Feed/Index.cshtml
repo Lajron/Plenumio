@@ -13,19 +13,14 @@
                                     }' />
     }
 
-
-    @* @if (Model.Content.Filters.Tag is not null) {
-        <vc:tag tag-name="@Model.Content.Filters.Tag"></vc:tag>
-    } *@
-
     <partial name="_FeedCards" model="@Model.Content" />
 </div>
 
 <div class="col-4 d-flex flex-column gap-3">
 
-    <vc:trending-tags-card></vc:trending-tags-card>
+    <vc:trending-tags-card current-user-id="@Model.CurrentUserId"></vc:trending-tags-card>
 
-    <vc:trending-users-card></vc:trending-users-card>
+    <vc:trending-users-card current-user-id="@Model.CurrentUserId"></vc:trending-users-card>
 
     <vc:recently-viewed-posts></vc:recently-viewed-posts>
 

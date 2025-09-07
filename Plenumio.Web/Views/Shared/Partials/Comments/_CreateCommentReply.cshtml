@@ -1,6 +1,7 @@
 ﻿@model CreateCommentViewModel
 
 <form method="post" class="d-flex flex-column gap-2" action="/Comment/Reply">
+    @Html.AntiForgeryToken()
     <input type="hidden" name="PostId" value="@Model.PostId" />
     <input type="hidden" name="ParentId" value="@Model.ParentId" />
 

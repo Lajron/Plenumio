@@ -1,10 +1,4 @@
-﻿using Plenumio.Application.DTOs.Posts;
-using Plenumio.Application.DTOs.Tags;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Plenumio.Core.Enums;
 
 namespace Plenumio.Application.DTOs.Users.Responses {
     public record GetUserProfileResponse {
@@ -19,6 +13,7 @@ namespace Plenumio.Application.DTOs.Users.Responses {
         public int FollowersCount { get; init; }
         public int FollowingCount { get; init; }
         public int PostsCount { get; init; }
-        public bool IsFollowing { get; init; }
+        public FollowStatus FollowStatusOutgoing { get; init; }
+        public FollowStatus FollowStatusIncoming { get; init; }
     }
 }

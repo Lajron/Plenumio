@@ -1,5 +1,7 @@
 ﻿@{
     var title = ViewData["Title"]?.ToString() ?? "";
+    string? userId = UserManager.GetUserId(User);
+    Guid? currentUserId = userId is null ? null : Guid.Parse(userId);
 }
 
 <div class="card border-0 bg-body px-0 gap-1">
@@ -16,7 +18,10 @@
         <span class="fw-medium">Discover</span>
     </a>
 </div>
-
+<hr class="border-primary border-1 my-1"/>
+@if (SignInManager.IsSignedIn(User)) {
+    <vc:personal-tags current-user-id="@currentUserId"></vc:personal-tags>
+}
 <style>
     .hover-bg-light:hover {
         background-color: rgba(0,0,0,0.05);

@@ -1,0 +1,23 @@
+﻿@using Plenumio.Web.Models.Profile
+@model FollowStatusIncomingVM?
+
+@if (Model != null) {
+    <div class="d-flex gap-1 incoming-btns">
+        @switch (Model) {
+            case FollowStatusIncomingVM.Accept:
+                <button class="btn btn-sm btn-success accept-btn">Accept</button>
+                <button class="btn btn-sm btn-danger decline-btn">Decline</button>
+                break;
+
+            case FollowStatusIncomingVM.Following:
+                <span class="badge bg-secondary">Following each other</span>
+                break;
+
+            case FollowStatusIncomingVM.Declined:
+                <span class="badge bg-muted">Declined</span>
+                break;
+        }
+    </div>
+
+    
+}

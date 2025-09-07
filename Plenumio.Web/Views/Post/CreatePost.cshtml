@@ -6,7 +6,7 @@
 
 <div class="col-8">
     <h2>Create Post</h2>
-
+    @Html.AntiForgeryToken()
     <form asp-controller="Post" asp-action="CreatePost" method="post" enctype="multipart/form-data">
         @Html.AntiForgeryToken()
 

@@ -1,6 +1,7 @@
 ﻿using Plenumio.Application.DTOs.Users;
 using Plenumio.Application.DTOs.Users.Responses;
 using Plenumio.Core.Entities;
+using Plenumio.Core.Enums;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -33,8 +34,17 @@ namespace Plenumio.Application.Mapping {
                 FollowersCount = user.Followers.Count,
                 FollowingCount = user.Following.Count,
                 PostsCount = user.Posts.Count,
-                IsFollowing = user.Followers.Any(f => f.FollowerId == currentUserId)
+                FollowStatusOutgoing = user.Followers
+                    .Where(f => f.FollowerId == currentUserId)
+                    .Select(f => f.Status)
+                    .FirstOrDefault(),
+                FollowStatusIncoming = user.Following
+                    .Where(f => f.FollowingId == currentUserId)
+                    .Select(f => f.Status)
+                    .FirstOrDefault()
             };
         }
+
+        
     }
 }

@@ -11,6 +11,8 @@ namespace Plenumio.Core.Interfaces {
         IPostRepository Posts { get; }
         IUserRepository Users { get; }
         ICommentRepository Comments { get; }
+        IApplicationUserTagRepository ApplicationUserTags { get; }
+        IFollowRepository Follows { get; }
 
 
         Task<int> CompleteAsync();

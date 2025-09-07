@@ -1,0 +1,27 @@
+﻿<script>
+    $(document).on("click", ".tag-follow-btn", function () {
+        const btn = $(this);
+        const container = btn.closest(".tag-follow-container");
+        const tagId = btn.data("tag-id");
+        const token = container.find('input[name="__RequestVerificationToken"]').val();
+
+        $.ajax({
+            url: "/Tag/ToggleFollow",
+            type: "POST",
+            data: { tagId: tagId },
+            headers: { "RequestVerificationToken": token },
+            success: function (html) {
+                $(`.tag-follow-container[data-tag-id='${tagId}']`).each(function () {
+                    $(this).replaceWith(html);
+                });
+            },
+            error: function (error) {
+                // if (error.status === 401) {
+                //     window.location.href = `/Login?returnurl=${encodeURIComponent(window.location.pathname)}`;
+                //     return;
+                // }
+                console.error("Failed to toggle follow.");
+            }
+        });
+    });
+</script>

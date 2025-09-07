@@ -14,7 +14,7 @@ namespace Plenumio.Web.ViewComponents {
         ) : ViewComponent {
         public async Task<IViewComponentResult> InvokeAsync(PostFilterVM filters, Guid? currentUserId) {
             var filtersDto = filters.ToDto();
-
+            Console.WriteLine("//////////////////////////////////////////////////////////////////////////////");
             var posts = await postService.GetPostsAsync(filtersDto, currentUserId);
 
             var postsVM = posts.Items.Select(p => new PostFeedViewModel {

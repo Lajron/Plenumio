@@ -14,6 +14,7 @@ namespace Plenumio.Application.Extensions {
             services.AddScoped<IPostService, PostService>();
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<ICommentService, CommentService>();
+            services.AddScoped<IFollowService, FollowService>();
 
             return services;
         }

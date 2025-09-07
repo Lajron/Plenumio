@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Plenumio.Application.DTOs;
 using Plenumio.Application.Interfaces;
@@ -14,6 +15,7 @@ namespace Plenumio.Web.Controllers {
         }
 
         [HttpPost]
+        [Authorize]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(CreateCommentViewModel model) {
 
@@ -32,6 +34,8 @@ namespace Plenumio.Web.Controllers {
         }
 
         [HttpPost]
+        [Authorize]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Reply(CreateCommentViewModel model) {
             Guid userId = Guid.Parse(userManager.GetUserId(User)!);
 

@@ -1,5 +1,5 @@
 ﻿@using Plenumio.Application.DTOs.Tags.Responses
-@model IEnumerable<GetTagResponse>
+@model IEnumerable<TagVM>
 
 <div class="card border-0 shadow-sm">
     <div class="card-header border-0 py-2 px-3 text-uppercase fw-bold small">
@@ -15,14 +15,8 @@
                         <span class="badge bg-light text-muted ms-2">@tag.PostsCount posts</span>
                     </div>
                 </a>
-
-
-                <form asp-controller="Tags" asp-action="ToggleFollow" asp-route-id="@tag.Id" method="post" class="m-0">
-                    <button type="submit"
-                            class="btn btn-sm @(tag.IsFollowing ? "btn-outline-secondary" : "btn-light border")">
-                        @(tag.IsFollowing ? "Unfollow" : "Follow")
-                    </button>
-                </form>
+               
+                <partial name="_TagFollowButton" model="@tag.FollowButton" />
 
             </div>
         }

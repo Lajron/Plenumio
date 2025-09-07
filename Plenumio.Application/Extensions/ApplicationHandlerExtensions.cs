@@ -38,7 +38,8 @@ namespace Plenumio.Application.Extensions {
 
             services.AddScoped<IQueryHandler<GetUserProfileRequest, GetUserProfileResponse?>, GetUserProfileHandler>();
             services.AddScoped<IQueryHandler<GetUsersRequest, IEnumerable<UserSummaryDto>>, GetUsersHandler>();
-
+            services.AddScoped<IQueryHandler<GetUserRelationshipRequest, GetUserRelationshipResponse>, GetUserRelationshipHandler>();
+            
             return services;
         }
     }

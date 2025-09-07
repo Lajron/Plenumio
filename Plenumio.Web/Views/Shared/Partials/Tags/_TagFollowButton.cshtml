@@ -1,0 +1,11 @@
+﻿@model TagFollowButtonVM
+
+<span class="tag-follow-container" data-tag-id="@Model.TagId">
+    @Html.AntiForgeryToken()
+    <button type="button"
+            class="btn btn-sm @(Model.IsFollowing ? "btn-primary" : "btn-outline-primary") tag-follow-btn"
+            data-tag-id="@Model.TagId">
+        @(Model.IsFollowing ? "Unfollow" : "Follow")
+    </button>
+</span>
+

@@ -58,7 +58,7 @@ namespace Plenumio.Application.Services {
             if (!result.Succeeded) return null;
 
             var user = await userManager.FindByNameAsync(request.Username);
-            return new LoginUserResponse { UserId = user!.Id, Username = user.UserName };
+            return new LoginUserResponse { UserId = user!.Id, Username = user.UserName! };
         }
 
         public async Task LogoutAsync() {
@@ -90,5 +90,8 @@ namespace Plenumio.Application.Services {
 
             return await queryDispatcher.SendAsync<GetUsersRequest, IEnumerable<UserSummaryDto>>(query);
         }
+
+        
+
     }
 }

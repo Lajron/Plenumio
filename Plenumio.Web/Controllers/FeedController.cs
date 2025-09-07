@@ -72,7 +72,8 @@ namespace Plenumio.Web.Controllers {
                     Posts = postsVM,
                     Filters = filtersVM
                 },
-                Title = (filtersVM.Scope == FeedScope.Global) ? "Discover Feed" : "My Feed"
+                Title = (filtersVM.Scope == FeedScope.Global) ? "Discover Feed" : "My Feed",
+                CurrentUserId = currentUserId
             };
 
             return View(viewModel);

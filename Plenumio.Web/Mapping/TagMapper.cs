@@ -1,5 +1,6 @@
 ﻿using Plenumio.Application.DTOs.Tags;
 using Plenumio.Application.DTOs.Tags.Responses;
+using Plenumio.Core.Entities;
 using Plenumio.Web.Models.Tag;
 
 namespace Plenumio.Web.Mapping {
@@ -12,7 +13,7 @@ namespace Plenumio.Web.Mapping {
                 DisplayedName = dto.DisplayedName,
                 PostsCount = dto.PostsCount,
                 FollowersCount = dto.FollowersCount,
-                IsFollowing = dto.IsFollowing,
+                FollowButton = new TagFollowButtonVM { TagId = dto.Id, IsFollowing = dto.IsFollowing },
                 Parent = dto.Parent?.ToVM(),
                 Children = dto.Children.Select(c => c.ToVM())
             };
@@ -25,7 +26,7 @@ namespace Plenumio.Web.Mapping {
                 DisplayedName = vm.DisplayedName,
                 PostsCount = vm.PostsCount,
                 FollowersCount = vm.FollowersCount,
-                IsFollowing = vm.IsFollowing,
+                IsFollowing = vm.FollowButton.IsFollowing,
                 Parent = vm.Parent?.ToDto(),
                 Children = vm.Children.Select(c => c.ToDto())
             };

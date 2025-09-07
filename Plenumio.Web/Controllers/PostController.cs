@@ -1,4 +1,5 @@
 ﻿using Humanizer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -13,6 +14,7 @@ using Plenumio.Application.Utilities;
 using Plenumio.Core.Entities;
 using Plenumio.Core.Enums;
 using Plenumio.Web.Models;
+using Plenumio.Web.Models.Page;
 using Plenumio.Web.Models.Tag;
 using System;
 
@@ -33,6 +35,9 @@ namespace Plenumio.Web.Controllers {
 
         [HttpGet("Post/Details/{slug}")]
         public async Task<IActionResult> Details(string slug) {
+            string? userId = userManager.GetUserId(User);
+            Guid? currentUserId = userId is null ? null : Guid.Parse(userId);
+
             PostDto? post = await postService.GetPostBySlugAsync(slug);
 
             if(post is null)
@@ -85,14 +90,22 @@ namespace Plenumio.Web.Controllers {
                 }).ToList()
             };
 
-            return View(postVM);
+            var result = new PageVM<PostViewModel> {
+                Content = postVM,
+                Title = string.IsNullOrEmpty(post.Title) ? string.Join(" ", post.Content.Split(' ').Take(5)) : post.Title,
+                CurrentUserId = currentUserId
+            };
+            return View(result);
         }
 
+
+        [Authorize]
         public IActionResult CreatePost() {
             return View(new CreatePostViewModel());
         }
 
         [HttpPost]
+        [Authorize]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> CreatePost(CreatePostViewModel model, IEnumerable<IFormFile> images) {
             if (!ModelState.IsValid) {
@@ -122,6 +135,7 @@ namespace Plenumio.Web.Controllers {
         }
 
         [HttpPost]
+        [Authorize]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> CreateArticle(CreateArticleViewModel model, IEnumerable<IFormFile> images) {
             if (!ModelState.IsValid)

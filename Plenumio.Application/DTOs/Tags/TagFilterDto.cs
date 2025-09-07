@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 namespace Plenumio.Application.DTOs.Tags {
     public record TagFilterDto : BaseFilterDto {
         public string SearchTerm { get; init; } = string.Empty;
+        public Guid? UserId { get; init; }
 
-    }
+        }
 }

@@ -11,6 +11,6 @@
         public int FollowersCount { get; init; }
         public int FollowingCount { get; init; }
         public int PostsCount { get; init; }
-        public bool IsFollowing { get; init; }
+        public UserRelationshipVM UserRelationshipVM { get; init; } = new();
     }
 }

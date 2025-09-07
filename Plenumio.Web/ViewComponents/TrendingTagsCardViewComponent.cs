@@ -5,17 +5,15 @@ using Plenumio.Application.DTOs.Tags;
 using Plenumio.Application.Interfaces;
 using Plenumio.Core.Entities;
 using Plenumio.Core.Enums;
+using Plenumio.Web.Mapping;
 using Plenumio.Web.Models.Shared;
 using Plenumio.Web.Models.Shared.ViewModels;
 
 namespace Plenumio.Web.ViewComponents {
     public class TrendingTagsCardViewComponent(
-            ITagService tagService,
-            UserManager<ApplicationUser> userManager
+            ITagService tagService
         ) : ViewComponent {
-        public async Task<IViewComponentResult> InvokeAsync() {
-            string? userId = userManager.GetUserId(HttpContext.User);
-            Guid? currentUserId = string.IsNullOrEmpty(userId) ? null : Guid.Parse(userId);
+        public async Task<IViewComponentResult> InvokeAsync(Guid? currentUserId = null) {
 
             var tags = await tagService.GetAllTagsAsync(
                 new TagFilterDto {
@@ -25,7 +23,9 @@ namespace Plenumio.Web.ViewComponents {
                 currentUserId
             );
 
-            return View(tags);
+            var tagsVM = tags.Select(t => t.ToVM());
+
+            return View(tagsVM);
         }
     }
 }

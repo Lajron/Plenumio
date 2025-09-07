@@ -13,6 +13,8 @@ namespace Plenumio.Infrastructure.Extensions {
             services.AddScoped<IPostRepository, PostRepository>();
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<ICommentRepository, CommentRepository>();
+            services.AddScoped<IApplicationUserTagRepository, ApplicationUserTagRepository>();
+            services.AddScoped<IFollowRepository, FollowRepository>();
 
             return services;
         }

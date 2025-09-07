@@ -21,7 +21,7 @@ namespace Plenumio.Application.Queries.UserHandlers {
             ISortStrategy<ApplicationUser> sortStrategy
         ) : IQueryHandler<GetUsersRequest, IEnumerable<UserSummaryDto>> {
         public async Task<IEnumerable<UserSummaryDto>> HandleAsync(GetUsersRequest query, CancellationToken cancellationToken = default) {
-            var userQuery = db.ApplicationUsers.AsQueryable();
+            var userQuery = db.ApplicationUser.AsQueryable();
 
             if (query.Filters.FromDate.HasValue) {
                 userQuery = userQuery.Where(p => p.CreatedAt >= query.Filters.FromDate.Value);

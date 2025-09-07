@@ -14,6 +14,7 @@ namespace Plenumio.Application.Interfaces {
         Task<IEnumerable<GetTagResponse>> GetTagsAsync(TagFilterDto filters, Guid? userId);
         Task<IEnumerable<GetTagResponse>> GetAllTagsAsync(TagFilterDto filters, Guid? userId);
 
+        Task<bool> ToggleFollowAsync(Guid tagId, Guid userId);
 
     }
 }

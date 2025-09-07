@@ -10,17 +10,20 @@ using System.Threading.Tasks;
 namespace Plenumio.Infrastructure.Data.Configuration {
     public class FollowConfiguration : IEntityTypeConfiguration<Follow> {
         public void Configure(EntityTypeBuilder<Follow> builder) {
-            builder.HasIndex(f => new { f.FollowerId, f.FollowedId })
+            builder.HasIndex(f => new { f.FollowerId, f.FollowingId })
                 .IsUnique();
+
+            builder.Property(f => f.Status)
+                .HasConversion<string>();
 
             builder.HasOne(f => f.Follower)
                 .WithMany(u => u.Following)
                 .HasForeignKey(f => f.FollowerId)
                 .OnDelete(DeleteBehavior.Restrict);
 
-            builder.HasOne(f => f.Followed)
+            builder.HasOne(f => f.Following)
                     .WithMany(u => u.Followers) 
-                    .HasForeignKey(f => f.FollowedId)
+                    .HasForeignKey(f => f.FollowingId)
                     .OnDelete(DeleteBehavior.Restrict);
         }
 

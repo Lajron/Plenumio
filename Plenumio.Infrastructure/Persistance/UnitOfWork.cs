@@ -15,7 +15,9 @@ namespace Plenumio.Infrastructure.Persistance {
             ITagRepository tagRepository,
             IPostRepository postRepository,
             IUserRepository userRepository,
-            ICommentRepository commentRepository
+            ICommentRepository commentRepository,
+            IApplicationUserTagRepository userTagRepository,
+            IFollowRepository followRepository
         ) : IUnitOfWork {
 
         private bool disposedValue;
@@ -24,7 +26,8 @@ namespace Plenumio.Infrastructure.Persistance {
         public IPostRepository Posts => postRepository;
         public IUserRepository Users => userRepository;
         public ICommentRepository Comments => commentRepository;
-
+        public IApplicationUserTagRepository ApplicationUserTags => userTagRepository;
+        public IFollowRepository Follows => followRepository;
 
         public async Task<int> CompleteAsync() {
             return await db.SaveChangesAsync();

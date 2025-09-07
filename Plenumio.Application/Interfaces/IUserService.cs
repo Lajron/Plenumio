@@ -19,5 +19,7 @@ namespace Plenumio.Application.Interfaces {
 
         Task<IEnumerable<UserSummaryDto>> GetUsersAsync(UserFilterDto filters, Guid? userId);
         Task<IEnumerable<UserSummaryDto>> GetAllUsersAsync(UserFilterDto filters, Guid? userId);
+
+        
     }
 }

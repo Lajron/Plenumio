@@ -1,4 +1,5 @@
 ﻿using Plenumio.Application.DTOs.Tags;
+using Plenumio.Application.DTOs.Users;
 using Plenumio.Core.Entities;
 using Plenumio.Core.Enums;
 using System;
@@ -17,7 +18,7 @@ namespace Plenumio.Application.DTOs {
         PrivacyType Privacy,
         DateTimeOffset CreatedAt,
         DateTimeOffset UpdatedAt,
-        OldUserSummaryDto Author,
+        UserSummaryDto Author,
         IEnumerable<TagSummaryDto> Tags,
         IEnumerable<ImageDto> Images,
         IEnumerable<CommentDto> Comments,

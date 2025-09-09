@@ -1,4 +1,4 @@
-﻿@model CommentViewModel
+﻿@model CommentVM
 
 <div class="comment-item mb-2" data-comment-id="@Model.Id" id="comment-@Model.Id">
     <div class="d-flex align-items-start gap-2 position-relative">
@@ -33,7 +33,7 @@
 
     <!-- Reply form (hidden initially) -->
     <div class="reply-form-container ms-5 mt-2" id="reply-form-@Model.Id" style="display: none;">
-        @await Html.PartialAsync("_CreateCommentReply", new CreateCommentViewModel {
+        @await Html.PartialAsync("_CreateCommentReply", new CreateCommentVM {
                 PostId = Model.PostId,
                 ParentId = Model.Id 
                 })

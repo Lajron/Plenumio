@@ -2,11 +2,14 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Plenumio.Application.DTOs;
+using Plenumio.Application.DTOs.Comments;
 using Plenumio.Application.Interfaces;
 using Plenumio.Application.Services;
 using Plenumio.Core.Entities;
 using Plenumio.Core.Enums;
+using Plenumio.Web.Mapping;
 using Plenumio.Web.Models;
+using Plenumio.Web.Models.Comment;
 
 namespace Plenumio.Web.Controllers {
     public class CommentController(ICommentService commentService, UserManager<ApplicationUser> userManager) : Controller {
@@ -17,7 +20,7 @@ namespace Plenumio.Web.Controllers {
         [HttpPost]
         [Authorize]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(CreateCommentViewModel model) {
+        public async Task<IActionResult> Create(CreateCommentVM model) {
 
             Guid userId = Guid.Parse(userManager.GetUserId(User)!);
 
@@ -36,7 +39,7 @@ namespace Plenumio.Web.Controllers {
         [HttpPost]
         [Authorize]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Reply(CreateCommentViewModel model) {
+        public async Task<IActionResult> Reply(CreateCommentVM model) {
             Guid userId = Guid.Parse(userManager.GetUserId(User)!);
 
             CreateCommentDto request = new CreateCommentDto(
@@ -47,22 +50,9 @@ namespace Plenumio.Web.Controllers {
             var newReplyDto = await commentService.CreateReplyAsync(request, userId);
 
             if (newReplyDto != null) {
-                var newReplyViewModel = new CommentViewModel {
-                    Id = newReplyDto.Id,
-                    Content = newReplyDto.Content,
-                    User = new UserSummaryViewModel {
-                        Id = newReplyDto.User.Id,
-                        DisplayedName = newReplyDto.User.DisplayedName,
-                        AvatarUrl = newReplyDto.User.AvatarUrl,
-                        IsVerified = newReplyDto.User.IsVerified
-                    },
-                    CreatedAt = newReplyDto.CreatedAt,
-                    HasChildren = newReplyDto.HasChildren ?? false,
-                    ParentId = model.ParentId,
-                    PostId = newReplyDto.PostId
-                };
+                var newReplyViewModel = newReplyDto.ToVM();
                 return PartialView("_Comment", newReplyViewModel);
-                }
+            }
             return NotFound("NotFound");
         }
 
@@ -71,23 +61,9 @@ namespace Plenumio.Web.Controllers {
 
         [HttpGet]
         public async Task<IActionResult> GetCommentChildren(Guid parentId) {
-            IEnumerable<CommentDto> comments = await commentService.GetRepliesForComment(parentId);
+            IEnumerable<CommentDetailsDto> comments = await commentService.GetRepliesForComment(parentId);
 
-            var commentsVM = comments.Select(c => new CommentViewModel {
-                Id = c.Id,
-                Content = c.Content,
-                User = new UserSummaryViewModel {
-                    Id = c.User.Id,
-                    DisplayedName = c.User.DisplayedName,
-                    AvatarUrl = c.User.AvatarUrl,
-                    IsVerified = c.User.IsVerified
-                },
-                CreatedAt = c.CreatedAt,
-                UpdatedAt = c.UpdatedAt,
-                HasChildren = c.HasChildren ?? false,
-                ParentId = c.ParentId,
-                PostId = c.PostId
-            }).ToList();
+            var commentsVM = comments.Select(c => c.ToVM()).ToList();
 
             return PartialView("_CommentList", commentsVM);
 

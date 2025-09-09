@@ -1,7 +1,8 @@
 ﻿@using Plenumio.Web.Models.Profile
 @model UserRelationshipVM
 
-<div class="user-relationship-container" data-userid="@Model.TargetUserId">
+<div class="user-relationship-container d-inline-flex align-items-center gap-2"
+     data-userid="@Model.TargetUserId">
     @Html.AntiForgeryToken()
     <partial name="_ButtonOutgoing" model="@Model.Outgoing" />
     <partial name="_ButtonIncoming" model="@Model.Incoming" />

@@ -1,0 +1,18 @@
+﻿@model PostFeedViewModel
+
+<div class="card border-2 border-primary mb-4 shadow-sm  ">
+
+    <div class="card-body border-0">
+        <partial name="_ArticleTitle" model="@Model.Body.Title" />
+
+        <partial name="_ArticleHeader" model="@Model.Header" />
+
+        <a asp-controller="Post" asp-action="Details" asp-route-slug="@Model.Header.Slug" class="text-decoration-none text-reset">
+            <partial name="_PostBody" model="@Model.Body" />
+        </a>
+
+        <partial name="_PostGallery" model="@Model.Images" />
+
+    </div>
+</div>
+

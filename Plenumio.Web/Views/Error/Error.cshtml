@@ -1,0 +1,31 @@
+﻿@{
+    var title = (string)(ViewData["Title"] ?? "Error");
+    var detail = (string?)ViewData["Detail"];
+    var status = ViewData["StatusCode"];
+    var traceId = ViewData["TraceId"];
+    var validation = ViewData["ValidationErrors"] as IDictionary<string, string[]>;
+}
+
+<h1 class="display-6 mb-3">@title @if(status != null){
+<small class="text-muted fw-light">(@status)</small>
+}
+</h1>
+<h1>HELLO WORLD</h1>
+@if (!string.IsNullOrWhiteSpace(detail)) {
+    <p class="text-muted">@detail</p>
+}
+
+@if (validation != null) {
+    <div class="alert alert-warning">
+        <strong>Validation errors:</strong>
+        <ul class="mb-0">
+            @foreach (var kv in validation) {
+                foreach (var msg in kv.Value) {
+                    <li><code>@kv.Key</code>: @msg</li>
+                }
+            }
+        </ul>
+    </div>
+}
+
+<p class="text-muted mt-4 small">Trace ID: @traceId</p>

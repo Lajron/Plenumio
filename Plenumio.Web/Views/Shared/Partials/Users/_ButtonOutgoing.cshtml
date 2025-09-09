@@ -1,10 +1,37 @@
 ﻿@using Plenumio.Web.Models.Profile
-@model FollowStatusOutgoingVM?
+@model FollowStatusOutgoingVM
 
-@if (Model != null) {
-    <button class="btn btn-sm btn-primary outgoing-btn" data-status="@Model">
-        @Model
-    </button>
+@{
+    // Map enum to button label + next action semantic
+    string label;
+    string css = "btn btn-sm outgoing-btn";
 
-    
+    switch (Model) {
+        case FollowStatusOutgoingVM.Follow:
+            label = "Follow";
+            css += " btn-outline-primary";
+            break;
+        case FollowStatusOutgoingVM.Pending:
+            label = "Requested";
+            css += " btn-outline-secondary";
+            break;
+        case FollowStatusOutgoingVM.Unfollow:
+            label = "Unfollow";
+            css += " btn-primary";
+            break;
+        case FollowStatusOutgoingVM.Declined:
+            // treat as re-follow option
+            label = "Follow";
+            css += " btn-outline-primary";
+            break;
+        default:
+            label = "Follow";
+            css += " btn-outline-primary";
+            break;
+    }
 }
+<button type="button"
+        class="@css"
+        data-status="@Model">
+    @label
+</button>

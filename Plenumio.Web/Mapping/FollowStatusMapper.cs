@@ -4,12 +4,12 @@ using Plenumio.Web.Models.Profile;
 
 namespace Plenumio.Web.Mapping {
     public static class FollowStatusMapper {
-        public static FollowStatusOutgoingVM? ToOutgoingVM(this FollowStatus status) {
+        public static FollowStatusOutgoingVM ToOutgoingVM(this FollowStatus status) {
             return status switch {
                 FollowStatus.None => FollowStatusOutgoingVM.Follow,
                 FollowStatus.Pending => FollowStatusOutgoingVM.Pending,
                 FollowStatus.Accepted => FollowStatusOutgoingVM.Unfollow,
-                FollowStatus.Declined => null,
+                FollowStatus.Declined => FollowStatusOutgoingVM.Follow,
                 _ => FollowStatusOutgoingVM.Follow
             };
         }

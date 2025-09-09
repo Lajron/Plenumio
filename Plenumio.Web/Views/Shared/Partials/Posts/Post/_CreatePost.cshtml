@@ -1,34 +1,49 @@
-﻿@model CreatePostViewModel
+﻿@model CreatePostVM
 
-<form asp-controller="Post" asp-action="CreatePost" method="post" enctype="multipart/form-data">
+<form asp-controller="Post" asp-action="Create" method="post" enctype="multipart/form-data">
     @Html.AntiForgeryToken()
     <div class="modal-header">
-        <div>
-            <select asp-for="Privacy" class="form-select" asp-items="Html.GetEnumSelectList<PrivacyType>()"></select>
+        <div class="d-flex gap-2">
+            <div class="mb-2">
+                <label asp-for="Type" class="form-label">Post Type</label>
+                <select asp-for="Type" class="form-select">
+                    <option value="@PostType.Standard">Standard</option>
+                    <option value="@PostType.Article">Article</option>
+                </select>
+            </div>
+            <div class="mb-2">
+                <label asp-for="Privacy" class="form-label"></label>
+                <select asp-for="Privacy" class="form-select" asp-items="Html.GetEnumSelectList<PrivacyType>()"></select>
+            </div>
         </div>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
     </div>
     <div class="modal-body d-flex flex-column">
-        <textarea asp-for="Content" class="form-control" placeholder="What's on your mind?" rows="6"></textarea>
-        <span asp-validation-for="Content" class="text-danger"></span>
-
-        <div class="d-flex gap-2">
-            <input asp-for="Tags" class="form-control" placeholder="Add tags (#tag1 #tag2 #tag3)" value="@string.Join(' ', Model.Tags)" />
+        <div class="mb-2 title-wrapper @(Model.Type == PostType.Article ? "" : "d-none")">
+            <label asp-for="Title" class="form-label"></label>
+            <input asp-for="Title" class="form-control" />
+            <span asp-validation-for="Title" class="text-danger"></span>
+        </div>
+        <div class="mb-2">
+            <label asp-for="Content" class="form-label"></label>
+            <textarea asp-for="Content" class="form-control" rows="6"></textarea>
+            <span asp-validation-for="Content" class="text-danger"></span>
         </div>
 
-        <div class="d-flex flex-row">
+        <div class="mb-2">
+            <label asp-for="Tags" class="form-label">Tags (space separated)</label>
+            <input asp-for="Tags" class="form-control" />
+            <span asp-validation-for="Tags" class="text-danger"></span>
+        </div>
 
-            <div>
-                <input type="file" name="images" class="form-control" placeholder="Add Images" multiple />
-            </div>
-
+        <div class="mb-2">
+            <label class="form-label">Images</label>
+            <input type="file" name="images" class="form-control" multiple />
         </div>
 
     </div>
     <div class="modal-footer d-flex justify-content-between align-items-center">
-        <div class="d-flex gap-2">
-            <a asp-controller="Post" asp-action="CreateArticle" class="btn btn-outline-secondary btn-sm">Create Article</a>
-        </div>
-        <button type="submit" class="btn btn-primary btn-sm">Post</button>
+        <button type="submit" class="btn btn-primary">Publish</button>
     </div>
 </form>
+

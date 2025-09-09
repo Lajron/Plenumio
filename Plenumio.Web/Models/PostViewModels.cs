@@ -1,11 +1,13 @@
 ﻿using Plenumio.Core.Enums;
+using Plenumio.Web.Models.Comment;
+using Plenumio.Web.Models.Profile;
 using Plenumio.Web.Models.Tag;
 using System.ComponentModel.DataAnnotations;
 
 namespace Plenumio.Web.Models {
     public record PostHeaderViewModel {
         public Guid PostId { get; init; }
-        public UserSummaryViewModel Author { get; init; } = new();
+        public UserSummaryVM Author { get; init; } = new();
         public DateTimeOffset UpdatedAt { get; init; }
         public DateTimeOffset CreatedAt { get; init; }
         public string Slug { get; init; } = string.Empty;
@@ -23,15 +25,15 @@ namespace Plenumio.Web.Models {
         public IEnumerable<ReactionViewModel> Reactions { get; init; } = [];
     }
 
-    public record PostViewModel {
+    public record PostVM {
         public PostType Type { get; init; }
         public PrivacyType Privacy { get; init; }
         public PostHeaderViewModel Header { get; init; } = new();
         public PostContentViewModel Body { get; init; } = new();
         public PostStatisticsViewModel Statistics { get; init; } = new();
-        public List<TagVM> Tags { get; init; } = [];
-        public List<ImageViewModel> Images { get; init; } = [];
-        public List<CommentViewModel> Comments { get; init; } = [];
+        public IEnumerable<TagSummaryVM> Tags { get; init; } = [];
+        public IEnumerable<ImageViewModel> Images { get; init; } = [];
+        public IEnumerable<CommentVM> Comments { get; init; } = [];
 
     }
 
@@ -42,7 +44,7 @@ namespace Plenumio.Web.Models {
         public PostStatisticsViewModel Statistics { get; init; } = new();
         public DateTimeOffset CreatedAt { get; init; }
         public DateTimeOffset UpdatedAt { get; init; }
-        public List<TagVM> Tags { get; init; } = [];
+        public List<TagSummaryVM> Tags { get; init; } = [];
         public List<ImageViewModel> Images { get; init; } = [];
     }
 

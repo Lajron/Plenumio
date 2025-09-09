@@ -1,11 +1,22 @@
-﻿@model PageVM<PostViewModel>
+﻿@model PageVM<PostVM>
 
 @{
     ViewData["Title"] = Model.Title;
 }
 
 <div class="col-8 d-flex flex-column">
-    <partial name="_PostDetails" model="@Model.Content" />
+    @switch(Model.Content.Type)
+    {
+        case PostType.Article:
+            <partial name="_ArticleDetails" model="@Model.Content" />
+            break;
+        case PostType.Standard:
+            <partial name="_PostDetails" model="@Model.Content" />
+            break;
+        default:
+            <h5>Unknown Content Type</h5>
+            break;
+    }
 </div>
 
 <div class="col-4 d-flex flex-column gap-2">
@@ -14,7 +25,7 @@
 
     <vc:trending-users-card current-user-id="@Model.CurrentUserId"></vc:trending-users-card>
 
-    <vc:recently-viewed-posts></vc:recently-viewed-posts>
+    <partial name="_RecentlyViewedPosts" />
 
     <partial name="_Footer" />
 

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Plenumio.Application.DTOs.Users;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -9,7 +10,7 @@ namespace Plenumio.Application.DTOs {
     public record CommentDto(
        Guid Id,
        string Content,
-       OldUserSummaryDto User,
+       UserSummaryDto User,
        DateTimeOffset CreatedAt,
        DateTimeOffset UpdatedAt,
        bool? HasChildren,

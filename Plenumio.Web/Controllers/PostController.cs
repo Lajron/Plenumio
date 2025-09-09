@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Hosting;
 using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.Blazor;
 using Plenumio.Application.DTOs;
+using Plenumio.Application.DTOs.Posts;
 using Plenumio.Application.DTOs.Posts.Requests;
 using Plenumio.Application.DTOs.Posts.Responses;
 using Plenumio.Application.Interfaces;
@@ -13,8 +14,11 @@ using Plenumio.Application.Services;
 using Plenumio.Application.Utilities;
 using Plenumio.Core.Entities;
 using Plenumio.Core.Enums;
+using Plenumio.Web.Mapping;
 using Plenumio.Web.Models;
+using Plenumio.Web.Models.Comment;
 using Plenumio.Web.Models.Page;
+using Plenumio.Web.Models.Post;
 using Plenumio.Web.Models.Tag;
 using System;
 
@@ -38,23 +42,18 @@ namespace Plenumio.Web.Controllers {
             string? userId = userManager.GetUserId(User);
             Guid? currentUserId = userId is null ? null : Guid.Parse(userId);
 
-            PostDto? post = await postService.GetPostBySlugAsync(slug);
+            PostDetailsDto? post = await postService.GetPostBySlugAsync(slug, currentUserId);
 
             if(post is null)
                 return NotFound();
 
-            PostViewModel postVM = new PostViewModel {
+            var postVM = new PostVM {
                 Type = post.Type,
                 Privacy = post.Privacy,
 
                 Header = new PostHeaderViewModel {
                     PostId = post.Id,
-                    Author = new UserSummaryViewModel {
-                        Id = post.Author.Id,
-                        DisplayedName = post.Author.DisplayedName,
-                        AvatarUrl = post.Author.AvatarUrl,
-                        IsVerified = post.Author.IsVerified
-                    },
+                    Author = post.Author.ToVM(),
                     CreatedAt = post.CreatedAt,
                     UpdatedAt = post.UpdatedAt,
                     Slug = post.Slug
@@ -67,35 +66,66 @@ namespace Plenumio.Web.Controllers {
 
                 Statistics = new PostStatisticsViewModel {
                     PostId = post.Id,
-                    CommentCount = post.CommentCount,
-                    ReactionCount = post.ReactionCount,
-                    Reactions = post.Reactions.Select(r => new ReactionViewModel { Name = r.Name }).ToList()
+                    CommentCount = post.CommentsCount,
+                    ReactionCount = post.Reactions.Count(),
+                    Reactions = []
                 },
 
-                Tags = post.Tags.Select(t => new TagVM { Id = t.Id, Name = t.Name }).ToList(),
+                Tags = post.Tags.Select(t => t.ToVM()),
                 Images = post.Images.Select(i => new ImageViewModel { Id = i.Id, Url = i.Url }).ToList(),
 
-                Comments = post.Comments.Select(c => new CommentViewModel {
-                    Id = c.Id,
-                    Content = c.Content,
-                    User = new UserSummaryViewModel {
-                        Id = c.User.Id,
-                        DisplayedName = c.User.DisplayedName,
-                        AvatarUrl = c.User.AvatarUrl,
-                        IsVerified = c.User.IsVerified
-                    },
-                    CreatedAt = c.CreatedAt,
-                    UpdatedAt = c.UpdatedAt,
-                    HasChildren = c.HasChildren ?? false
-                }).ToList()
+                Comments = []
             };
 
-            var result = new PageVM<PostViewModel> {
+            var result = new PageVM<PostVM> {
                 Content = postVM,
                 Title = string.IsNullOrEmpty(post.Title) ? string.Join(" ", post.Content.Split(' ').Take(5)) : post.Title,
                 CurrentUserId = currentUserId
             };
             return View(result);
+        }
+
+        [HttpGet]
+        [Authorize]
+        public IActionResult Create(CreatePostVM model) {
+            return View(model);
+        }
+
+        [HttpPost]
+        [Authorize]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Create(CreatePostVM model, IEnumerable<IFormFile> images) {
+            if (model.Type == PostType.Article && string.IsNullOrWhiteSpace(model.Title))
+                ModelState.AddModelError(nameof(model.Title), "Title is required for an article.");
+
+            var tags = model.Tags?.Split(' ', StringSplitOptions.RemoveEmptyEntries) ?? [];
+            
+            if (tags.Length == 0)
+                ModelState.AddModelError(nameof(model.Tags), "At least one tag is required.");
+
+            if (tags.Length > 5)
+                ModelState.AddModelError(nameof(model.Tags), "You can specify up to 5 tags.");
+
+            if (model.Type == PostType.Standard)
+                model.Title = "";
+
+            if (!ModelState.IsValid)
+                return View(model);
+
+            var userId = Guid.Parse(userManager.GetUserId(User)!);
+
+            var request = new CreatePostRequest {
+                Title = model.Title ?? "",
+                Content = model.Content,
+                Type = model.Type,
+                Privacy = model.Privacy,
+                Tags = tags
+            };
+
+            var imageFileDtos = ImageConverter.ToImageFileDtos(images);
+            var result = await postService.CreatePostAsync(request, userId, imageFileDtos);
+
+            return RedirectToAction("Details", "Post", new { slug = result.Slug });
         }
 
 

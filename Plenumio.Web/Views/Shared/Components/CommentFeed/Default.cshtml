@@ -1,4 +1,4 @@
-﻿@model CommentFeedViewModel
+﻿@model CommentFeedVM
 
 @if (Model.Comments.Any()) {
     <a asp-controller="Post" asp-action="Index" asp-route-id="@Model.PostId" class="text-decoration-none text-reset">
@@ -16,6 +16,6 @@
 } else {
     <div class="px-3 py-2 mb-2 rounded bg-light">
         <partial name="_CreateComment"
-                 model="new CreateCommentViewModel { PostId = Model.PostId, ParentId = null }" />
+                 model="new CreateCommentVM { PostId = Model.PostId, ParentId = null }" />
     </div>
 }

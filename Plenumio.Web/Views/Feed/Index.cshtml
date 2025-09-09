@@ -6,7 +6,8 @@
 
 <div class="col-8 d-flex flex-column">
     @if (SignInManager.IsSignedIn(User)) {
-            <partial name="_CreatePostFeed" model='new CreatePostViewModel {
+            <partial name="_CreatePostFeed" model='new CreatePostVM {
+                                        Type = PostType.Standard,
                                         Content = "",
                                         Privacy = PrivacyType.Public,
                                         Tags = string.Empty
@@ -22,47 +23,25 @@
 
     <vc:trending-users-card current-user-id="@Model.CurrentUserId"></vc:trending-users-card>
 
-    <vc:recently-viewed-posts></vc:recently-viewed-posts>
+    <partial name="_RecentlyViewedPosts" />
 
     <partial name="_Footer" />
 
 </div>
 
 @section Scripts {
-    @* <script>
-        $(document).ready(function() {
-            $('#searchForm').on('submit', function(e) {
-                e.preventDefault();               
-            
-                const searchInput = $('#searchField');
-                const query = searchInput.val().trim();
-
-                let tag = null;
-                let username = null;
-                let searchTerm = null;
-
-                if (query.startsWith('#')) {
-                    const parts = query.substring(1).split(' ');
-
-                    tag = parts[0];
-
-                    searchTerm = parts.slice(1).join(' ').trim();
-                } else if (query.startsWith('^')) {
-                    console.log("am here");
-                    const parts = query.substring(1).split(' ');
-
-                    username = parts[0];
-                    console.log("now here")
-                } else {
-                    searchTerm = query;
-                }
-
-                $('#tagField').val(tag || '');
-                $('#usernameField').val(username || '');
-                $('#searchField').val(searchTerm);
-                this.submit();
-            });
-
+    <partial name="_ValidationScriptsPartial" />
+    <script>
+        const typeSelect = document.getElementById("Type");
+        const titleWrapper = document.querySelector(".title-wrapper");
+        typeSelect.addEventListener("change", () => {
+            if (typeSelect.value === "Article") {
+                titleWrapper.classList.remove("d-none");
+            } else {
+                titleWrapper.classList.add("d-none");
+                const titleInput = document.getElementById("Title");
+                if (titleInput) titleInput.value = "";
+            }
         });
-    </script> *@
+    </script>
 }

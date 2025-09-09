@@ -1,0 +1,84 @@
+﻿@model CreatePostVM
+@{
+    ViewData["Title"] = "Create";
+}
+
+<partial name="_CreatePost" model="@Model" />
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script>
+        const typeSelect = document.getElementById("Type");
+        const titleWrapper = document.querySelector(".title-wrapper");
+        typeSelect.addEventListener("change", () => {
+            if (typeSelect.value === "Article") {
+                titleWrapper.classList.remove("d-none");
+            } else {
+                titleWrapper.classList.add("d-none");
+                const titleInput = document.getElementById("Title");
+                if (titleInput) titleInput.value = "";
+            }
+        });
+    </script>
+}
+@* 
+<div class="col-8">
+    <form asp-action="Create" method="post" enctype="multipart/form-data">
+        @Html.AntiForgeryToken()
+
+        <div class="mb-3">
+            <label asp-for="Type" class="form-label">Post Type</label>
+            <select asp-for="Type" class="form-select">
+                <option value="@PostType.Standard">Standard</option>
+                <option value="@PostType.Article">Article</option>
+            </select>
+        </div>
+
+        <div class="mb-3 title-wrapper @(Model.Type == PostType.Article ? "" : "d-none")">
+            <label asp-for="Title" class="form-label"></label>
+            <input asp-for="Title" class="form-control" />
+            <span asp-validation-for="Title" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="Content" class="form-label"></label>
+            <textarea asp-for="Content" class="form-control" rows="6"></textarea>
+            <span asp-validation-for="Content" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="Privacy" class="form-label"></label>
+            <select asp-for="Privacy" class="form-select" asp-items="Html.GetEnumSelectList<PrivacyType>()"></select>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="Tags" class="form-label">Tags (space separated)</label>
+            <input asp-for="Tags" class="form-control" />
+            <span asp-validation-for="Tags" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Images</label>
+            <input type="file" name="images" class="form-control" multiple />
+        </div>
+
+        <button type="submit" class="btn btn-primary">Publish</button>
+    </form>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script>
+        const typeSelect = document.getElementById("Type");
+        const titleWrapper = document.querySelector(".title-wrapper");
+        typeSelect.addEventListener("change", () => {
+            if (typeSelect.value === "Article") {
+                titleWrapper.classList.remove("d-none");
+            } else {
+                titleWrapper.classList.add("d-none");
+                const titleInput = document.getElementById("Title");
+                if (titleInput) titleInput.value = "";
+            }
+        });
+    </script>
+} *@

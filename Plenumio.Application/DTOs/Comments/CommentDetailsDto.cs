@@ -6,8 +6,9 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace Plenumio.Application.DTOs.Comments {
-    public record CommentDetailDto {
+    public record CommentDetailsDto {
         public Guid Id { get; init; }
+        public Guid PostId { get; init; }
         public string Content { get; init; } = string.Empty;
         public UserSummaryDto Author { get; init; } = new();
         public DateTimeOffset CreatedAt { get; init; }

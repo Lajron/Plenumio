@@ -1,16 +1,20 @@
 ﻿using Azure;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Plenumio.Application.DTOs;
+using Plenumio.Application.DTOs.Comments;
+using Plenumio.Application.DTOs.Comments.Requests;
 using Plenumio.Application.DTOs.Posts;
 using Plenumio.Application.DTOs.Posts.Requests;
 using Plenumio.Application.DTOs.Posts.Responses;
 using Plenumio.Application.Interfaces;
 using Plenumio.Application.Queries;
-using Plenumio.Application.Queries.Comment;
 using Plenumio.Application.Queries.PostHandlers;
 using Plenumio.Application.Utilities;
+using Plenumio.Application.Validation;
 using Plenumio.Core.Entities;
 using Plenumio.Core.Enums;
+using Plenumio.Core.Exceptions;
 using Plenumio.Core.Interfaces;
 using Plenumio.Infrastructure.Data;
 using Plenumio.Infrastructure.Persistance;
@@ -28,49 +32,56 @@ namespace Plenumio.Application.Services {
     public class PostService(IUnitOfWork uof, IQueryDispatcher queryDispatcher, IImageService imageService) 
         : IPostService {
         public async Task<CreatePostResponse> CreatePostAsync(CreatePostRequest request, Guid userId, IEnumerable<ImageFileDto> imgFiles) {
+            request.ValidateCreatePost();
+
+            var imageFolder = $"users/{userId}/posts";
+            IEnumerable<string> storedImageUrls = [];
+
             Guid postId = Guid.Empty;
             string postSlug = string.Empty;
-            IEnumerable<string> storedImageUrls = [];
 
             await uof.ExecuteInTransactionAsync(
                 trySection: async () => {
-
-                    Post post = new Post {
+                    postSlug = SlugGenerator.GeneratePostSlug(request.Content, request.Title);
+                    var post = new Post {
                         Title = request.Title,
                         Content = request.Content,
-                        Slug = string.Empty,
+                        Slug = postSlug,
                         Type = request.Type,
                         Privacy = request.Privacy,
                         ApplicationUserId = userId,
                         Images = []
                     };
 
-                    post.Slug = SlugGenerator.GeneratePostSlug(request.Content, request.Title);
-
-                    Dictionary<string, string> tagsWithSlug = request.Tags
+                    var tagMap = request.Tags
                         .Select(t => t.TrimStart('#').Trim())
-                        .ToDictionary(t => SlugGenerator.GenerateTagSlug(t), t => t);
-                    post.PostTag = await uof.Tags.ResolveTagsAsync(tagsWithSlug);
+                        .GroupBy(t => SlugGenerator.GenerateTagSlug(t))
+                        .ToDictionary(g => g.Key, g => g.First());
+                    post.PostTag = await uof.Tags.ResolveTagsAsync(tagMap);
 
                     await uof.Posts.AddAsync(post);
                     await uof.CompleteAsync();
 
                     postId = post.Id;
-                    postSlug = post.Slug;
 
                     if (imgFiles.Any()) {
-                        storedImageUrls = await imageService.SaveImagesAsync(imgFiles, userId.ToString() + "/" + post.Id.ToString());
-                        post.Images = storedImageUrls.Select(url => new PostImage { Url = url }).ToList();
+                        storedImageUrls = await imageService.SaveImagesAsync(imgFiles, $"users/{userId}/posts/{post.Id}");
+                        post.Images = storedImageUrls.Select(url => new PostImage { Url = url }).ToImmutableList();
                     }
 
                     await uof.CompleteAsync();
                 },
                 catchSection: async (e) => {
 
-                    if (imgFiles.Any()) {
+                    if (storedImageUrls.Any()) {
                         await imageService.DeleteImagesAsync(storedImageUrls);
                     }
-                    throw new ApplicationException("Failed to create post with images", e);
+
+                    if (e is DbUpdateException) {
+                        throw new ConflictException("Failed to create post due to a persistence conflict.");
+                    }
+
+                    throw new ValidationException("Post creation failed.");
                 }
             );
             return new CreatePostResponse {
@@ -88,75 +99,25 @@ namespace Plenumio.Application.Services {
             return await queryDispatcher.SendAsync<GetPostsRequest, GetPostsResponse>(query);
 
         }
-        public async Task<IEnumerable<CommentDto>> GetPostCommentsAsync(Guid id, int? top = null) {
-            GetCommentsForPostQuery query = new GetCommentsForPostQuery(id, top);
+        public async Task<IEnumerable<CommentDetailsDto>> GetPostCommentsAsync(Guid id, int? top = null) {
+            var query = new GetCommentsForPostRequest {
+                PostId = id,
+                Top = top
+            };
 
-            return await queryDispatcher
-                .SendAsync<GetCommentsForPostQuery, IEnumerable<CommentDto>>(query);
+            return await queryDispatcher.SendAsync<GetCommentsForPostRequest, IEnumerable<CommentDetailsDto>>(query);
         }
 
-        public async Task<PostDto?> GetPostBySlugAsync(string slug) {
-            GetPostDetailsBySlugQuery query = new GetPostDetailsBySlugQuery(slug);
-
-            return await queryDispatcher
-                .SendAsync<GetPostDetailsBySlugQuery,  PostDto>(query);
+        public async Task<PostDetailsDto?> GetPostBySlugAsync(string slug, Guid? currentUserId) {
+            var query = new GetPostDetailsBySlugRequest {
+                Slug = slug,
+                ViewerUserId = currentUserId
+            };
+            return await queryDispatcher.SendAsync<GetPostDetailsBySlugRequest, PostDetailsDto>(query);
         }
 
         public async Task<string?> GetPostSlugByIdAsync(Guid id) {
             return await uof.Posts.GetSlugById(id);
         }
-
-
-        //public async Task<IEnumerable<PostDto>> GetPostsAsync() {
-        //    throw new NotImplementedException();
-        //}
-
-
-
-        //public async Task<PostDto> UpdatePostAsync(int postId, UpdatePostDto updatePostDto) {
-        //    throw new NotImplementedException();
-        //}
-
-        //public async Task<bool> DeletePostAsync(int postId) {
-        //    throw new NotImplementedException();
-        //}
-
-        //public async Task<bool> SoftDeletePostAsync(int postId) {
-        //    throw new NotImplementedException();
-        //}
-
-        //public async Task<PostDto?> GetPostByIdAsync(int postId) {
-        //    throw new NotImplementedException();
-        //}
-
-        //public async Task<PostDto?> GetPostBySlugAsync(string slug) {
-        //    throw new NotImplementedException();
-        //}
-
-        //public async Task<IEnumerable<PostDto>> GetPostsByTagAsync(int tagId) {
-        //    throw new NotImplementedException();
-        //}
-
-        //public async Task<IEnumerable<PostDto>> GetPostsByUserIdAsync(int userId) {
-        //    throw new NotImplementedException();
-        //}
-
-        //public async Task<IEnumerable<PostDto>> SearchPostsAsync(string query) {
-        //    throw new NotImplementedException();
-        //}
-
-        //public async Task AddTagToPostAsync(int postId, int tagId) {
-        //    throw new NotImplementedException();
-        //}
-
-        //public async Task RemoveTagFromPostAsync(int postId, int tagId) {
-        //    throw new NotImplementedException();
-        //}
-
-
-
-
-
-
     }
 }

@@ -9,6 +9,7 @@ using Plenumio.Application.Interfaces;
 using Plenumio.Application.Services;
 using Plenumio.Core.Entities;
 using Plenumio.Core.Enums;
+using Plenumio.Core.Exceptions;
 using Plenumio.Web.Mapping;
 using Plenumio.Web.Models;
 using Plenumio.Web.Models.Filter;
@@ -42,13 +43,7 @@ namespace Plenumio.Web.Controllers {
                 Type = p.Type,
                 Header = new PostHeaderViewModel {
                     PostId = p.Id,
-                    Author = new UserSummaryViewModel {
-                        Id = p.Author.Id,
-                        DisplayedName = p.Author.DisplayedName,
-                        Username = p.Author.Username,
-                        AvatarUrl = p.Author.AvatarUrl,
-                        IsVerified = p.Author.IsVerified
-                    },
+                    Author = p.Author.ToVM(),
                     CreatedAt = p.CreatedAt,
                     Slug = p.Slug
                 },
@@ -63,7 +58,7 @@ namespace Plenumio.Web.Controllers {
                     Reactions = []
                 },
                 CreatedAt = p.CreatedAt,
-                Tags = p.Tags.Select(t => new TagVM { Name = t.Name, DisplayedName = t.DisplayedName }).ToList(),
+                Tags = p.Tags.Select(t => t.ToVM()).ToList(),
                 Images = p.Images.Select(i => new ImageViewModel { Url = i.Url }).ToList()
             }).ToList();
 

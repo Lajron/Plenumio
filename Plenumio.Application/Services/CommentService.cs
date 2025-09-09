@@ -1,8 +1,11 @@
 ﻿using Plenumio.Application.DTOs;
+using Plenumio.Application.DTOs.Comments;
+using Plenumio.Application.DTOs.Comments.Requests;
 using Plenumio.Application.Interfaces;
 using Plenumio.Application.Queries;
-using Plenumio.Application.Queries.Comment;
+using Plenumio.Application.Validation;
 using Plenumio.Core.Entities;
+using Plenumio.Core.Exceptions;
 using Plenumio.Core.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -13,14 +16,18 @@ using System.Threading.Tasks;
 namespace Plenumio.Application.Services {
     public class CommentService(IUnitOfWork uof, IQueryDispatcher queryDispatcher)
         : ICommentService {
+
         public async Task<CommentIdSlugDto> CreateCommentAsync(CreateCommentDto request, Guid userId) {
-            string postSlug = await uof.Posts.GetSlugById(request.PostId) ?? throw new ApplicationException("No post");
-            
-            Comment comment = new Comment {
-                Content = request.Content,
+            request.ValidateCreateComment();
+
+            string postSlug = await uof.Posts.GetSlugById(request.PostId)
+                ?? throw new NotFoundException("Post not found.", "Post", request.PostId);
+
+            var comment = new Comment {
+                Content = request.Content.Trim(),
                 PostId = request.PostId,
                 ApplicationUserId = userId,
-                ParentId = request.ParentId
+                ParentId = null
             };
 
             await uof.Comments.AddAsync(comment);
@@ -29,9 +36,14 @@ namespace Plenumio.Application.Services {
             return new CommentIdSlugDto(comment.Id, postSlug);
         }
 
-        public async Task<CommentDto?> CreateReplyAsync(CreateCommentDto request, Guid userId) {
-            Comment comment = new Comment {
-                Content = request.Content,
+        public async Task<CommentDetailsDto?> CreateReplyAsync(CreateCommentDto request, Guid userId) {
+            request.ValidateCreateReply();
+
+            _ = await uof.Posts.GetSlugById(request.PostId)
+                ?? throw new NotFoundException("Post not found.", "Post", request.PostId);
+
+            var comment = new Comment {
+                Content = request.Content.Trim(),
                 PostId = request.PostId,
                 ApplicationUserId = userId,
                 ParentId = request.ParentId
@@ -40,15 +52,19 @@ namespace Plenumio.Application.Services {
             await uof.Comments.AddAsync(comment);
             await uof.CompleteAsync();
 
-            GetCreatedReplyQuery query = new GetCreatedReplyQuery(comment.Id);
-            return await queryDispatcher.SendAsync<GetCreatedReplyQuery, CommentDto>(query);
+            var query = new GetByCommentIdRequest {
+                CommentId = comment.Id
+            };
+            return await queryDispatcher.SendAsync<GetByCommentIdRequest, CommentDetailsDto>(query);
         }
 
 
-        public async Task<IEnumerable<CommentDto>> GetRepliesForComment(Guid parentId) {
-            GetRepliesFromCommentQuery query = new GetRepliesFromCommentQuery(parentId);
+        public async Task<IEnumerable<CommentDetailsDto>> GetRepliesForComment(Guid parentId) {
+            var query = new GetByCommentIdRequest {
+                CommentId = parentId
+            };
 
-            return await queryDispatcher.SendAsync<GetRepliesFromCommentQuery, IEnumerable<CommentDto>>(query);
+            return await queryDispatcher.SendAsync<GetByCommentIdRequest, IEnumerable<CommentDetailsDto>>(query);
         }
     }
 }

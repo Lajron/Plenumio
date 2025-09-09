@@ -10,6 +10,7 @@ using Plenumio.Application.Queries;
 using Plenumio.Application.Utilities;
 using Plenumio.Core.Entities;
 using Plenumio.Core.Enums;
+using Plenumio.Core.Exceptions;
 using Plenumio.Core.Interfaces;
 using Plenumio.Infrastructure.Persistance;
 using System;
@@ -29,16 +30,24 @@ namespace Plenumio.Application.Services {
             string usernameSlug = SlugGenerator.GenerateUsername(request.Username);
 
             var user = new ApplicationUser {
-                DisplayedName = request.DisplayedName,
+                DisplayedName = request.DisplayedName.Trim(),
                 UserName = usernameSlug,
-                Email = request.Email
+                Email = request.Email.Trim()
             };
 
             var result = await userManager.CreateAsync(user, request.Password);
 
             if (!result.Succeeded) {
-                var errors = string.Join("; ", result.Errors.Select(e => e.Description));
-                throw new ApplicationException($"User wasn't registered: {errors}");
+                var codes = result.Errors.Select(e => e.Code).ToHashSet(StringComparer.OrdinalIgnoreCase);
+                if (codes.Contains("DuplicateUserName"))
+                    throw new ConflictException("Username already taken. Choose a different one.");
+                if (codes.Contains("DuplicateEmail"))
+                    throw new ConflictException("Email already in use.");
+
+                var messages = result.Errors.Select(e => e.Description).ToArray();
+                throw new ValidationException("Registration failed.", new Dictionary<string, string[]> {
+                    ["Identity"] = messages
+                });
             }
 
             return new RegisterUserResponse {
@@ -58,7 +67,10 @@ namespace Plenumio.Application.Services {
             if (!result.Succeeded) return null;
 
             var user = await userManager.FindByNameAsync(request.Username);
-            return new LoginUserResponse { UserId = user!.Id, Username = user.UserName! };
+            return new LoginUserResponse { 
+                UserId = user!.Id, 
+                Username = user.UserName! 
+            };
         }
 
         public async Task LogoutAsync() {
@@ -66,7 +78,7 @@ namespace Plenumio.Application.Services {
         }
 
         public async Task<GetUserProfileResponse?> GetUserProfile(string username, Guid? currentUserId) {
-            GetUserProfileRequest request = new() {
+            var request = new GetUserProfileRequest {
                 Username = username,
                 CurrentUserId = currentUserId
             };

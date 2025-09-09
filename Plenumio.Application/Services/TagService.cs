@@ -20,7 +20,7 @@ namespace Plenumio.Application.Services {
     public class TagService(IUnitOfWork uof, IQueryDispatcher queryDispatcher) : ITagService {
 
         public async Task<GetTagResponse?> GetTagAsync(string name, Guid? userId) {
-            GetTagRequest query = new() {
+            var query = new GetTagRequest {
                 Name = name,
                 UserId = userId
             };

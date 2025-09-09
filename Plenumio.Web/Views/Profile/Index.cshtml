@@ -69,86 +69,57 @@
 
     <vc:trending-users-card current-user-id="@Model.CurrentUserId"></vc:trending-users-card>
 
-    <vc:recently-viewed-posts></vc:recently-viewed-posts>
+    <partial name="_RecentlyViewedPosts" />
 
     <partial name="_Footer" />
 
 </div>
-
 @section Scripts {
     <script>
-        $(document).on('click', '.accept-btn', function () {
-            var container = $(this).closest('.user-relationship-container');
-
+        function postRelationshipAction(url, dataObj, container) {
+            const token = container.find('input[name="__RequestVerificationToken"]').val();
             $.ajax({
-                url: '/Profile/AcceptFollowRequest',
+                url: url,
                 type: 'POST',
-                data: {
-                    __RequestVerificationToken: $('input[name="__RequestVerificationToken"]').val(),
-                    followerUserId: container.data('userid')
-                },
+                data: Object.assign({ __RequestVerificationToken: token }, dataObj),
                 success: function (html) {
-                    container.html(html);
+                    // Replace the WHOLE wrapper so new token & buttons arrive intact
+                    container.replaceWith(html);
                 },
-                error: function () {
-                    window.location.href = `/Login?returnurl=${encodeURIComponent(window.location.pathname)}`;
+                error: function (xhr) {
+                    if (xhr.status === 401) {
+                        window.location.href = `/Login?returnurl=${encodeURIComponent(window.location.pathname)}`;
+                    }
                 }
             });
+        }
+
+        $(document).on('click', '.outgoing-btn', function () {
+            const btn = $(this);
+            const container = btn.closest('.user-relationship-container');
+            let action;
+            switch (btn.data('status')) {
+                case 'Follow':   action = '/Profile/RequestFollow'; break;
+                case 'Pending':  action = '/Profile/CancelFollowRequest'; break;
+                case 'Unfollow': action = '/Profile/UnfollowUser'; break;
+                case 'Declined': action = '/Profile/RequestFollow'; break;
+                default: return;
+            }
+            postRelationshipAction(action, { userId: container.data('userid') }, container);
+        });
+
+        $(document).on('click', '.accept-btn', function () {
+            const container = $(this).closest('.user-relationship-container');
+            postRelationshipAction('/Profile/AcceptFollowRequest', {
+                followerUserId: container.data('userid')
+            }, container);
         });
 
         $(document).on('click', '.decline-btn', function () {
-            var container = $(this).closest('.user-relationship-container');
-
-            $.ajax({
-                url: '/Profile/DeclineFollowRequest',
-                type: 'POST',
-                data: {
-                    __RequestVerificationToken: $('input[name="__RequestVerificationToken"]').val(),
-                    followerUserId: container.data('userid')
-                },
-                success: function (html) {
-                    container.html(html);
-                },
-                error: function () {
-                    window.location.href = `/Login?returnurl=${encodeURIComponent(window.location.pathname)}`;
-                }
-            });
-        });
-    </script>
-    <script>
-        $(document).on('click', '.outgoing-btn', function () {
-            var btn = $(this);
-            var container = btn.closest('.user-relationship-container');
-            var action = '';
-
-            switch (btn.data('status')) {
-                case 'Follow':
-                    action = '/Profile/RequestFollow';
-                    break;
-                case 'Pending':
-                    action = '/Profile/CancelFollowRequest';
-                    break;
-                case 'Unfollow':
-                    action = '/Profile/UnfollowUser';
-                    break;
-                default:
-                    return;
-            }
-
-            $.ajax({
-                url: action,
-                type: 'POST',
-                data: {
-                    __RequestVerificationToken: $('input[name="__RequestVerificationToken"]').val(),
-                    userId: container.data('userid')
-                },
-                success: function (html) {
-                    container.html(html);
-                },
-                error: function () {
-                    window.location.href = `/Login?returnurl=${encodeURIComponent(window.location.pathname)}`;
-                }
-            });
+            const container = $(this).closest('.user-relationship-container');
+            postRelationshipAction('/Profile/DeclineFollowRequest', {
+                followerUserId: container.data('userid')
+            }, container);
         });
     </script>
 }

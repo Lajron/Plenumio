@@ -1,5 +1,4 @@
-﻿using Azure;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Plenumio.Core.Entities;
 using Plenumio.Core.Enums;
 using System;

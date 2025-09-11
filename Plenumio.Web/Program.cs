@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc.Razor;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Plenumio.Application.Extensions;
+using Plenumio.Application.Interfaces;
 using Plenumio.Core.Entities;
 using Plenumio.Core.Interfaces;
 using Plenumio.Infrastructure.Data;
@@ -14,7 +15,8 @@ using Plenumio.Web.Extensions;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-builder.Services.AddControllersWithViews(options => options.Filters.Add<GlobalExceptionFilter>())
+builder.Services.AddControllersWithViews(options => 
+                    options.Filters.Add<GlobalExceptionFilter>())
                 .AddRazorOptions(options => { options.ViewLocationExpanders.Add(new CustomViewLocationExpander()); });
 
 
@@ -27,12 +29,14 @@ builder.Services.AddIdentity<ApplicationUser, IdentityRole<Guid>>(options => opt
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddSignInManager()
                 .AddDefaultTokenProviders();
+
 builder.Services.ConfigureApplicationCookie(options => {
     options.LoginPath = "/Login";
     options.LogoutPath = "/Logout";
     options.AccessDeniedPath = "/Identity/Account/AccessDenied";
 });
 
+// Remove once Identity Scaffolded Pages are yeeted
 builder.Services.AddRazorPages();
 
 builder.Services.AddScoped<IImageService>(sp => {
@@ -40,12 +44,16 @@ builder.Services.AddScoped<IImageService>(sp => {
     return new ImageService(env.WebRootPath);
 });
 
+//Infrastructure
 builder.Services.AddRepositories();
 builder.Services.AddUnitOfWork();
+builder.Services.AddInfrastructureUtilities();
+builder.Services.AddEmailSender();
+
+//Application
 builder.Services.AddApplicationHandlers();
 builder.Services.AddApplicationServices();
 builder.Services.AddSortStrategyServices();
-builder.Services.AddEmailSender();
 
 var app = builder.Build();
 

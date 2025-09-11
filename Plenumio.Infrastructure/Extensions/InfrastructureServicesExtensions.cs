@@ -4,6 +4,10 @@ using Plenumio.Core.Interfaces.Repositories;
 using Plenumio.Infrastructure.Repositories;
 using Plenumio.Infrastructure.Persistance;
 using Plenumio.Infrastructure.Services;
+using Plenumio.Application.Interfaces;
+using Microsoft.AspNetCore.Http;
+using Plenumio.Infrastructure.Utilities.ImageConverters;
+using Plenumio.Infrastructure.Utilities;
 
 namespace Plenumio.Infrastructure.Extensions {
 
@@ -26,6 +30,12 @@ namespace Plenumio.Infrastructure.Extensions {
 
         public static IServiceCollection AddEmailSender(this IServiceCollection services) {
             services.AddTransient<IEmailSender, EmailSender>();
+            return services;
+        }
+
+        public static IServiceCollection AddInfrastructureUtilities(this IServiceCollection services) {
+            services.AddScoped<IImageConverter<IFormFile>, FormFileConverter>();
+            services.AddScoped<ISlugGenerator, SlugGenerator>();
             return services;
         }
 

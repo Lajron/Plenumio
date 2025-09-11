@@ -11,9 +11,9 @@ using Plenumio.Application.DTOs.Posts.Requests;
 using Plenumio.Application.DTOs.Posts.Responses;
 using Plenumio.Application.Interfaces;
 using Plenumio.Application.Services;
-using Plenumio.Application.Utilities;
 using Plenumio.Core.Entities;
 using Plenumio.Core.Enums;
+using Plenumio.Infrastructure.Utilities;
 using Plenumio.Web.Mapping;
 using Plenumio.Web.Models;
 using Plenumio.Web.Models.Comment;
@@ -25,6 +25,7 @@ using System;
 namespace Plenumio.Web.Controllers {
     public class PostController(
             IPostService postService, 
+            IImageConverter<IFormFile> imageConverter,
             UserManager<ApplicationUser> userManager
         ) : Controller {
 
@@ -130,7 +131,7 @@ namespace Plenumio.Web.Controllers {
                 Tags = tags
             };
 
-            var imageFileDtos = ImageConverter.ToImageFileDtos(images);
+            var imageFileDtos = imageConverter.ToImageFileDtos(images);
             var result = await postService.CreatePostAsync(request, userId, imageFileDtos);
 
             return RedirectToAction("Details", "Post", new { slug = result.Slug });
@@ -143,21 +144,62 @@ namespace Plenumio.Web.Controllers {
             Guid userId = Guid.Parse(userManager.GetUserId(User)!);
 
             var post = await postService.GetPostBySlugAsync(slug, userId);
+            if (post is null) return NotFound();
 
-            //var result = new PageVM<EditPostVM> {
-            //    Content = new EditPostVM {
-            //        Id = post?.Id ?? Guid.Empty,
-            //        Title = post?.Title ?? "",
-            //        Content = post?.Content ?? "",
-            //        Type = post?.Type ?? PostType.Standard,
-            //        Privacy = post?.Privacy ?? PrivacyType.Public,
-            //        Tags = post is null ? "" : string.Join(" ", post.Tags.Select(t => t.Name))
-            //    },
-            //    Title = "Edit Post",
-            //    Description = "EDIT POST",
-            //    CurrentUserId = userId
-            //};
-            return View(post);
+            var vm = new EditPostVM {
+                Id = post.Id,
+                Slug = post.Slug,
+                NewTitle = post.Title,
+                NewContent = post.Content,
+                Privacy = post.Privacy,
+                CurrentTags = post.Tags.Select(t => t.ToVM()).ToList(),
+                CurrentImages = post.Images.Select(i => new ImageViewModel { Id = i.Id, Url = i.Url }).ToList()
+            };
+
+            return View(vm);
+        }
+
+        [HttpPost("Post/Details/{slug}/Edit")]
+        [Authorize]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit(string slug, EditPostVM model, IEnumerable<IFormFile> images) {
+            if (!ModelState.IsValid) {
+                // Rehydrate display collections
+                var post = await postService.GetPostBySlugAsync(slug, Guid.Parse(userManager.GetUserId(User)!));
+                if (post is null) return NotFound();
+
+                model = model with {
+                    Slug = post.Slug,
+                    CurrentTags = post.Tags.Select(t => t.ToVM()).ToList(),
+                    CurrentImages = post.Images.Select(i => new ImageViewModel { Id = i.Id, Url = i.Url }).ToList()
+                };
+
+                return View(model);
+            }
+
+            var userId = Guid.Parse(userManager.GetUserId(User)!);
+
+            // Normalize TagsToAdd: split space-separated string(s) into tokens
+            var tagsToAdd = (model.TagsToAdd ?? Array.Empty<string>())
+                .SelectMany(s => (s ?? string.Empty).Split(' ', StringSplitOptions.RemoveEmptyEntries))
+                .Distinct(StringComparer.OrdinalIgnoreCase)
+                .ToArray();
+
+            var request = new UpdatePostRequest {
+                Id = model.Id,
+                NewTitle = string.IsNullOrWhiteSpace(model.NewTitle) ? null : model.NewTitle.Trim(),
+                NewContent = string.IsNullOrWhiteSpace(model.NewContent) ? null : model.NewContent.Trim(),
+                Privacy = model.Privacy, // null => unchanged
+                TagsToRemove = model.TagsToRemove ?? Array.Empty<Guid>(),
+                ImagesToRemove = model.ImagesToRemove ?? Array.Empty<Guid>(),
+                NewImagesToUpload = imageConverter.ToImageFileDtos(images),
+                TagsToAdd = tagsToAdd
+            };
+
+            await postService.UpdatePostAsync(request, userId);
+
+            // Slug doesn't change in UpdatePostAsync; redirect with existing slug
+            return RedirectToAction("Details", "Post", new { slug = model.Slug });
         }
 
 

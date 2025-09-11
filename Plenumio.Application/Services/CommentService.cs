@@ -2,7 +2,6 @@
 using Plenumio.Application.DTOs.Comments;
 using Plenumio.Application.DTOs.Comments.Requests;
 using Plenumio.Application.Interfaces;
-using Plenumio.Application.Queries;
 using Plenumio.Application.Validation;
 using Plenumio.Core.Entities;
 using Plenumio.Core.Exceptions;

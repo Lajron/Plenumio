@@ -1,5 +1,82 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@using Plenumio.Core.Enums
+@model Plenumio.Web.Models.Post.EditPostVM
+
 @{
+    ViewData["Title"] = "Edit Post";
+}
+
+<div class="col-8">
+    <h3>Edit Post</h3>
+
+    <form asp-action="Edit" asp-route-slug="@Model.Slug" method="post" enctype="multipart/form-data">
+        @Html.AntiForgeryToken()
+
+        <input type="hidden" asp-for="Id" />
+        <input type="hidden" asp-for="Slug" />
+
+        <div class="mb-3">
+            <label class="form-label">Title (only for articles)</label>
+            <input asp-for="NewTitle" class="form-control" />
+            <span asp-validation-for="NewTitle" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Content</label>
+            <textarea asp-for="NewContent" class="form-control" rows="6"></textarea>
+            <span asp-validation-for="NewContent" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Privacy</label>
+            <select asp-for="Privacy" class="form-select" asp-items="Html.GetEnumSelectList<PrivacyType>()">
+                <option value="">(leave unchanged)</option>
+            </select>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Current Tags</label>
+            <div class="d-flex flex-wrap gap-2">
+                @foreach (var t in Model.CurrentTags) {
+                    <label class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" name="TagsToRemove" value="@t.Id" />
+                        <span class="badge bg-secondary">@t.Name</span>
+                        <small class="text-muted ms-1">(remove)</small>
+                    </label>
+                }
+            </div>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Add Tags (space separated)</label>
+            <!-- Binds as IEnumerable<string> TagsToAdd (single element); controller splits -->
+            <input name="TagsToAdd" class="form-control" placeholder="tag1 tag2 tag3" />
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Current Images</label>
+            <div class="d-flex flex-wrap gap-3">
+                @foreach (var img in Model.CurrentImages) {
+                    <div class="text-center">
+                        <img src="@img.Url" class="img-thumbnail" style="width:120px;height:120px;object-fit:cover;" />
+                        <div class="form-check mt-1">
+                            <input class="form-check-input" type="checkbox" name="ImagesToRemove" value="@img.Id" id="img-@img.Id" />
+                            <label class="form-check-label" for="img-@img.Id">Remove</label>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Add Images</label>
+            <input type="file" name="images" class="form-control" multiple />
+        </div>
+
+        <button type="submit" class="btn btn-primary">Save changes</button>
+        <a asp-controller="Post" asp-action="Details" asp-route-slug="@Model.Slug" class="btn btn-outline-secondary">Cancel</a>
+    </form>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
 }

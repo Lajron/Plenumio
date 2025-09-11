@@ -17,12 +17,10 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Plenumio.Core\Plenumio.Core.csproj" />
-    <ProjectReference Include="..\Plenumio.Infrastructure\Plenumio.Infrastructure.csproj" />
   </ItemGroup>
 
   <ItemGroup>
     <Folder Include="DTOs\Comments\Responses\" />
-    <Folder Include="Queries\FeedHandlers\" />
   </ItemGroup>
 
 </Project>

@@ -6,13 +6,10 @@ using Plenumio.Application.DTOs.Users;
 using Plenumio.Application.DTOs.Users.Requests;
 using Plenumio.Application.DTOs.Users.Responses;
 using Plenumio.Application.Interfaces;
-using Plenumio.Application.Queries;
-using Plenumio.Application.Utilities;
 using Plenumio.Core.Entities;
 using Plenumio.Core.Enums;
 using Plenumio.Core.Exceptions;
 using Plenumio.Core.Interfaces;
-using Plenumio.Infrastructure.Persistance;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,12 +19,13 @@ using System.Threading.Tasks;
 namespace Plenumio.Application.Services {
     public class UserService(
             IUnitOfWork uof,
+            ISlugGenerator slugGenerator,
             UserManager<ApplicationUser> userManager,
             SignInManager<ApplicationUser> signInManager,
             IQueryDispatcher queryDispatcher
         ) : IUserService {
         public async Task<RegisterUserResponse> CreateUserAsync(RegisterUserRequest request) {
-            string usernameSlug = SlugGenerator.GenerateUsername(request.Username);
+            string usernameSlug = slugGenerator.GenerateUsername(request.Username);
 
             var user = new ApplicationUser {
                 DisplayedName = request.DisplayedName.Trim(),

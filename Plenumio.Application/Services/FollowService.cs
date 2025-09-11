@@ -1,7 +1,6 @@
 ﻿using Plenumio.Application.DTOs.Users.Requests;
 using Plenumio.Application.DTOs.Users.Responses;
 using Plenumio.Application.Interfaces;
-using Plenumio.Application.Queries;
 using Plenumio.Application.Validation;
 using Plenumio.Core.Entities;
 using Plenumio.Core.Enums;

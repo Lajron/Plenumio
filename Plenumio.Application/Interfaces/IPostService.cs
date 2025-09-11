@@ -3,8 +3,6 @@ using Plenumio.Application.DTOs.Comments;
 using Plenumio.Application.DTOs.Posts;
 using Plenumio.Application.DTOs.Posts.Requests;
 using Plenumio.Application.DTOs.Posts.Responses;
-using Plenumio.Application.Queries;
-using Plenumio.Application.Queries.PostHandlers;
 using Plenumio.Application.Services;
 using Plenumio.Core.Enums;
 using Plenumio.Core.Interfaces;
@@ -21,5 +19,6 @@ namespace Plenumio.Application.Interfaces {
         Task<IEnumerable<CommentDetailsDto>> GetPostCommentsAsync(Guid id, int? top = null);
         Task<PostDetailsDto?> GetPostBySlugAsync(string slug, Guid? currentUserId);
         Task<string?> GetPostSlugByIdAsync(Guid id);
+        Task UpdatePostAsync(UpdatePostRequest request, Guid userId);
     }
 }

@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Http;
+using Plenumio.Application.Interfaces;
 using Plenumio.Core.Enums;
 using System;
 using System.Collections.Generic;
@@ -14,7 +15,7 @@ namespace Plenumio.Application.DTOs.Posts.Requests {
         public PrivacyType? Privacy { get; init; }
         public IEnumerable<Guid> TagsToRemove { get; init; } = [];
         public IEnumerable<Guid> ImagesToRemove { get; init; } = [];
-        public IEnumerable<IFormFile> NewImagesToUpload { get; init; } = []; 
+        public IEnumerable<ImageFileDto> NewImagesToUpload { get; init; } = []; 
         public IEnumerable<string> TagsToAdd { get; init; } = []; 
     }
 }

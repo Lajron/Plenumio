@@ -1,4 +1,5 @@
 ﻿using Azure;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Plenumio.Application.DTOs;
@@ -19,6 +20,7 @@ using Plenumio.Core.Interfaces;
 using Plenumio.Infrastructure.Data;
 using Plenumio.Infrastructure.Persistance;
 using Plenumio.Infrastructure.Services;
+using Plenumio.Infrastructure.Specifications;
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
@@ -119,5 +121,59 @@ namespace Plenumio.Application.Services {
         public async Task<string?> GetPostSlugByIdAsync(Guid id) {
             return await uof.Posts.GetSlugById(id);
         }
+
+        public async Task UpdatePostAsync(UpdatePostRequest request, Guid userId) {
+            var postUpdateSpec = new PostUpdateSpecification(
+                request.Id, 
+                userId,
+                request.ImagesToRemove.Any() || request.NewImagesToUpload.Any(),
+                request.TagsToRemove.Any() || request.TagsToAdd.Any()
+            );
+
+            var post = await uof.Posts.FindAsync(postUpdateSpec)
+                ?? throw new NotFoundException("Post not found or you do not have permission to update it.");
+            
+            var imageFolder = $"users/{userId}/posts/{post.Id}";
+            IEnumerable<string> newlyStoredImageUrls = [];
+
+            await uof.ExecuteInTransactionAsync(
+                trySection: async () => {
+                    if (request.NewTitle is not null && request.NewTitle != post.Title) {
+                        post.Title = request.NewTitle;
+                    }
+                    if (request.NewContent is not null && request.NewContent != post.Content) {
+                        post.Content = request.NewContent;
+                    }
+
+                    if (request.Privacy is not null && request.Privacy != post.Privacy) {
+                        post.Privacy = request.Privacy.Value;
+                    }
+
+                    if (request.TagsToRemove.Any())
+                        post.PostTag = post.PostTag
+                            .Where(pt => !request.TagsToRemove.Contains(pt.TagId))
+                            .ToList();
+
+                    if (request.TagsToAdd.Any()) {
+                        var tagMap = request.TagsToAdd
+                            .Select(t => t.TrimStart('#').Trim())
+                            .GroupBy(t => SlugGenerator.GenerateTagSlug(t))
+                            .ToDictionary(g => g.Key, g => g.First());
+                        post.PostTag = await uof.Tags.ResolveTagsAsync(tagMap);
+                    }
+                    },
+                catchSection: async (e) => {
+                    if (newlyStoredImageUrls.Any()) {
+                        await imageService.DeleteImagesAsync(newlyStoredImageUrls);
+                    }
+                    if (e is DbUpdateException) {
+                        throw new ConflictException("Failed to update post due to a persistence conflict.");
+                    }
+                    throw new ValidationException("Post update failed.");
+                }
+            );
+
+
+
     }
 }

@@ -7,6 +7,8 @@ using System.Threading.Tasks;
 
 namespace Plenumio.Core.Interfaces.Repositories {
     public interface IRepository<TEntity> where TEntity: class {
+
+        Task<TEntity?> FindAsync(ISpecification<TEntity> specification);
         Task<TEntity?> FindByIdAsync(Guid id);
         Task<IEnumerable<TEntity>> GetAllAsync();
 

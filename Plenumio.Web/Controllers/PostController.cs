@@ -87,8 +87,14 @@ namespace Plenumio.Web.Controllers {
 
         [HttpGet]
         [Authorize]
-        public IActionResult Create(CreatePostVM model) {
-            return View(model);
+        public IActionResult Create() {
+            var result = new PageVM<CreatePostVM> {
+                Content = new CreatePostVM(),
+                Title = "Create Post",
+                Description = "CREATE POST",
+                CurrentUserId = Guid.Parse(userManager.GetUserId(User)!)
+            };
+            return View(result);
         }
 
         [HttpPost]
@@ -99,9 +105,6 @@ namespace Plenumio.Web.Controllers {
                 ModelState.AddModelError(nameof(model.Title), "Title is required for an article.");
 
             var tags = model.Tags?.Split(' ', StringSplitOptions.RemoveEmptyEntries) ?? [];
-            
-            if (tags.Length == 0)
-                ModelState.AddModelError(nameof(model.Tags), "At least one tag is required.");
 
             if (tags.Length > 5)
                 ModelState.AddModelError(nameof(model.Tags), "You can specify up to 5 tags.");
@@ -110,7 +113,12 @@ namespace Plenumio.Web.Controllers {
                 model.Title = "";
 
             if (!ModelState.IsValid)
-                return View(model);
+                return View(new PageVM<CreatePostVM> {
+                    Content = model,
+                    Title = "Create Post",
+                    Description = "CREATE POST",
+                    CurrentUserId = Guid.Parse(userManager.GetUserId(User)!)
+                });
 
             var userId = Guid.Parse(userManager.GetUserId(User)!);
 
@@ -129,64 +137,31 @@ namespace Plenumio.Web.Controllers {
         }
 
 
+        [HttpGet("Post/Details/{slug}/Edit")]
         [Authorize]
-        public IActionResult CreatePost() {
-            return View(new CreatePostViewModel());
+        public async Task<IActionResult> Edit(string slug) {
+            Guid userId = Guid.Parse(userManager.GetUserId(User)!);
+
+            var post = await postService.GetPostBySlugAsync(slug, userId);
+
+            //var result = new PageVM<EditPostVM> {
+            //    Content = new EditPostVM {
+            //        Id = post?.Id ?? Guid.Empty,
+            //        Title = post?.Title ?? "",
+            //        Content = post?.Content ?? "",
+            //        Type = post?.Type ?? PostType.Standard,
+            //        Privacy = post?.Privacy ?? PrivacyType.Public,
+            //        Tags = post is null ? "" : string.Join(" ", post.Tags.Select(t => t.Name))
+            //    },
+            //    Title = "Edit Post",
+            //    Description = "EDIT POST",
+            //    CurrentUserId = userId
+            //};
+            return View(post);
         }
 
-        [HttpPost]
-        [Authorize]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> CreatePost(CreatePostViewModel model, IEnumerable<IFormFile> images) {
-            if (!ModelState.IsValid) {
-                return View(model);
-            }
 
-            var userId = Guid.Parse(userManager.GetUserId(User)!);
 
-            var request = new CreatePostRequest {
-                Title = "", // empty because standard post has no title
-                Content = model.Content,
-                Type = PostType.Standard,
-                Privacy = model.Privacy,
-                Tags = model.Tags?.Split(' ', StringSplitOptions.RemoveEmptyEntries) ?? []
-            };
 
-            var imageFileDtos = ImageConverter.ToImageFileDtos(images);
-
-            var result = await postService.CreatePostAsync(request, userId, imageFileDtos);
-
-            
-            return RedirectToAction("Details", "Post", new { slug = result.Slug });
-        }
-
-        public IActionResult CreateArticle() {
-            return View(new CreateArticleViewModel());
-        }
-
-        [HttpPost]
-        [Authorize]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> CreateArticle(CreateArticleViewModel model, IEnumerable<IFormFile> images) {
-            if (!ModelState.IsValid)
-                return View(model);
-
-            var userId = Guid.Parse(userManager.GetUserId(User)!);
-
-            // Map ViewModel to DTO
-            var dto = new CreatePostRequest {
-                Title = model.Title,
-                Content= model.Content,
-                Type = PostType.Article, // Article type
-                Privacy = model.Privacy,
-                Tags = model.Tags
-            };
-
-            var imageFileDtos = ImageConverter.ToImageFileDtos(images);
-
-            CreatePostResponse post = await postService.CreatePostAsync(dto, userId, imageFileDtos);
-
-            return RedirectToAction("Index", "Feed");
-        }
     }
 }

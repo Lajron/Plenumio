@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Plenumio.Core.Interfaces;
 using Plenumio.Core.Interfaces.Repositories;
 using Plenumio.Infrastructure.Data;
 using System;
@@ -11,6 +12,21 @@ using System.Threading.Tasks;
 namespace Plenumio.Infrastructure.Repositories {
     public class BaseRepository<TEntity>(ApplicationDbContext db) : IRepository<TEntity> where TEntity : class {
         protected readonly DbSet<TEntity> _dbSet = db.Set<TEntity>();
+
+        public async Task<TEntity?> FindAsync(ISpecification<TEntity> specification) {
+            var query = _dbSet.AsQueryable();
+
+            query = specification.Includes
+                .Aggregate(query, (current, include) => current.Include(include));
+
+            query = specification.IncludeStrings
+                .Aggregate(query, (current, include) => current.Include(include));
+
+            if (specification.Expression != null)
+                query = query.Where(specification.Expression);
+
+            return await query.FirstOrDefaultAsync();
+        }
 
         public async Task<TEntity?> FindByIdAsync(Guid id) {
             return await _dbSet.FindAsync(id);

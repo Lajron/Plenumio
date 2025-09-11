@@ -3,7 +3,7 @@
 <div class="card mb-4 shadow-sm  ">
 
     <div class="card-body">
-
+        <a asp-controller="Post" asp-action="Edit" asp-route-id="@Model.Header.PostId" >Edit</a>"
         <partial name="_PostHeader" model="@Model.Header" />
         <partial name="_PostBody" model="@Model.Body" />
         <partial name="_PostGallery" model="@Model.Images" />

@@ -1,72 +1,122 @@
-﻿<nav class="navbar py-1 border-bottom border-2 border-secondary bg-body">
-    <div class="container-fluid d-flex align-items-center justify-content-between">
-        <a class="navbar-brand me-3 " asp-controller="Feed" asp-action="Index">PLENUMIO</a>
+﻿<nav class="navbar py-0 border-bottom border-2 border-secondary bg-body">
+    <div class="container-fluid">
 
-        <form asp-controller="Search" asp-action="Index" method="get" class="mx-auto col-7" id="searchForm">
-            <div class="input-group w-100">
-                <span class="input-group-text border-0 rounded-start">
-                    <i class="bi bi-search"></i>
-                </span>
-                <input type="text"
-                       class="form-control border-0 rounded-end"
-                       name="search"
-                       id="searchField"
-                       placeholder="Search posts, tags and users"
-                       style="box-shadow: none;" />
+        <div class="row align-items-center w-100">
+
+            <!-- Brand (col-2) -->
+            <div class="col-2">
+                <a class="navbar-brand fw-semibold text-primary" asp-controller="Feed" asp-action="Index">PLENUMIO</a>
             </div>
-        </form>
-        
-        
 
-        <ul class="navbar-nav d-flex flex-row align-items-center gap-2">
-            @if (SignInManager.IsSignedIn(User)) {
-                <li class="nav-item">
-                    <a class="nav-link d-flex align-items-center" href="#">
-                        <i class="bi bi-plus-circle fs-4"></i>
-                        <span class="ms-1">Create</span>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#"><i class="bi bi-chat-left-text fs-4"></i></a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#"><i class="bi bi-bell fs-4"></i></a>
-                </li>
-                <li class="nav-item">
-                    <a id="manage" class="nav-link d-flex align-items-center" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">
-                        <i class="bi bi-person-circle fs-4"></i>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <form id="logoutForm" class="d-inline" asp-controller="Login" asp-action="Logout">
-                        <button type="submit" class="btn btn-link nav-link  p-0 m-0">Logout</button>
-                    </form>
-                </li>
-            } else {
-                <li class="nav-item">
-                    <a class="nav-link  d-flex align-items-center" id="register" asp-controller="Register" asp-action="Index" asp-route-returnurl="@(Context.Request.Path)@(Context.Request.QueryString)">
-                        <i class="bi bi-person-add"></i>
-                        <span class="ms-1">Sign Up</span>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="btn btn-primary d-flex align-items-center" id="login" asp-controller="Login" asp-action="Index" asp-route-returnurl="@(Context.Request.Path)@(Context.Request.QueryString)">
-                        <i class="bi bi-box-arrow-in-right me-1"></i> Login
-                    </a>
-                </li>
-            }
-        </ul>
+            <!-- Search + Nav (col-10) -->
+            <div class="col-10">
+                <div class="row align-items-center">
+
+                    <!-- Search (col-8) -->
+                    <div class="col-8">
+                        <form asp-controller="Search" asp-action="Index" method="get" id="searchForm">
+                            <div class="input-group">
+                                <span class="input-group-text border-0 rounded-start" id="searchIcon">
+                                    <i class="bi bi-search"></i>
+                                </span>
+                                <input type="text" class="form-control border-0 rounded-end"
+                                       name="search" id="searchField"
+                                       placeholder="Search posts, tags and users" />
+                            </div>
+                        </form>
+                    </div>
+
+                    <!-- Nav (col-4) -->
+                    <div class="col-4 d-flex justify-content-end align-items-center">
+                        <ul class="navbar-nav d-flex flex-row align-items-center gap-3 mb-0">
+
+                            @if (SignInManager.IsSignedIn(User)) {
+                                <!-- Create -->
+                                <li class="nav-item">
+                                    <a asp-controller="Post" asp-action="Create" class="btn btn-primary d-flex align-items-center gap-1 fw-semibold">
+                                        <i class="bi bi-plus-circle"></i> Create
+                                    </a>
+                                </li>
+
+                                <!-- Messages -->
+                                <li class="nav-item">
+                                    <a class="nav-link text-primary fs-4" href="#">
+                                        <i class="bi bi-chat-left-text"></i>
+                                    </a>
+                                </li>
+
+                                <!-- Notifications -->
+                                <li class="nav-item">
+                                    <a class="nav-link text-primary fs-4" href="#">
+                                        <i class="bi bi-bell"></i>
+                                    </a>
+                                </li>
+
+                                <!-- Gear -->
+                                <li class="nav-item">
+                                    <a class="nav-link text-primary fs-4" asp-area="Identity" asp-page="/Account/Manage/Index" title="Settings">
+                                        <i class="bi bi-gear"></i>
+                                    </a>
+                                </li>
+
+                                <!-- Logout -->
+                                <li class="nav-item">
+                                    <form id="logoutForm" class="d-inline" asp-controller="Login" asp-action="Logout">
+                                        <button type="submit" class="nav-link text-dark p-0 fs-4" title="Logout">
+                                            <i class="bi bi-box-arrow-right"></i>
+                                        </button>
+                                    </form>
+                                </li>
+
+
+
+
+                            } else {
+                                <!-- Sign Up -->
+                                <li class="nav-item">
+                                    <a class="nav-link d-flex align-items-center" id="register"
+                                       asp-controller="Register" asp-action="Index"
+                                       asp-route-returnurl="@(Context.Request.Path)@(Context.Request.QueryString)">
+                                        <i class="bi bi-person-add"></i><span class="ms-1">Sign Up</span>
+                                    </a>
+                                </li>
+
+                                <!-- Login -->
+                                <li class="nav-item">
+                                    <a class="btn btn-primary d-flex align-items-center" id="login"
+                                       asp-controller="Login" asp-action="Index"
+                                       asp-route-returnurl="@(Context.Request.Path)@(Context.Request.QueryString)">
+                                        <i class="bi bi-box-arrow-in-right me-1"></i> Login
+                                    </a>
+                                </li>
+                            }
+                        </ul>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+
     </div>
 </nav>
 
 <script>
-    document.getElementById('searchForm').addEventListener('submit', function(event) {
+    const searchForm = document.getElementById('searchForm');
+    const searchField = document.getElementById('searchField');
+    const searchIcon = document.getElementById('searchIcon');
+
+    function submitSearch() {
+        const searchValue = searchField.value;
+        window.location.href = `/Search/${encodeURIComponent(searchValue)}`;
+    }
+
+    // Form submit via Enter
+    searchForm.addEventListener('submit', function(event) {
         event.preventDefault();
-
-        const searchValue = document.getElementById('searchField').value;
-
-        const newUrl = `/Search/${encodeURIComponent(searchValue)}`;
-
-        window.location.href = newUrl;
+        submitSearch();
     });
+
+    // Click on search icon
+    searchIcon.addEventListener('click', submitSearch);
 </script>

@@ -14,33 +14,13 @@
 <div class="modal fade" id="createPostModal" tabindex="-1" aria-labelledby="createPostModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-lg">
         <div class="modal-content">
-            <partial name="_CreatePost" model="Model"/>
+            <div class="modal-header">
+                <h5 class="modal-title">Create Post</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <partial name="_CreatePost" model="Model" />
+            </div>
         </div>
     </div>
 </div>
-
-@* <form asp-controller="Post" asp-action="CreatePost" method="post" enctype="multipart/form-data">
-        @Html.AntiForgeryToken()
-
-        <div class="mb-3">
-            <label asp-for="Content" class="form-label"></label>
-            <textarea asp-for="Content" class="form-control" rows="5" placeholder="What's on your mind?"></textarea>
-            <span asp-validation-for="Content" class="text-danger"></span>
-        </div>
-
-        <div class="mb-3">
-            <label asp-for="Privacy" class="form-label"></label>
-            <select asp-for="Privacy" class="form-select" asp-items="Html.GetEnumSelectList<PrivacyType>()"></select>
-        </div>
-
-        <div class="mb-3">
-            <label asp-for="Tags" class="form-label">Tags (comma separated)</label>
-            <input asp-for="Tags" class="form-control" value="@string.Join(',', Model.Tags)" placeholder="Add tags separated by commas" />
-        </div>
-
-        <div class="mb-3">
-            <label class="form-label">Images</label>
-            <input type="file" name="images" class="form-control" multiple />
-        </div>
-
-        <button type="submit" class="btn btn-primary">Post</button> *@

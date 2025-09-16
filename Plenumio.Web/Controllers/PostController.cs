@@ -23,6 +23,7 @@ using Plenumio.Web.Models.Tag;
 using System;
 
 namespace Plenumio.Web.Controllers {
+    [Route("[controller]")]
     public class PostController(
             IPostService postService, 
             IImageConverter<IFormFile> imageConverter,
@@ -38,7 +39,7 @@ namespace Plenumio.Web.Controllers {
             return RedirectToAction(nameof(Details), "Post", new { slug });
         }
 
-        [HttpGet("Post/Details/{slug}")]
+        [HttpGet("Details/{slug}")]
         public async Task<IActionResult> Details(string slug) {
             string? userId = userManager.GetUserId(User);
             Guid? currentUserId = userId is null ? null : Guid.Parse(userId);
@@ -138,7 +139,7 @@ namespace Plenumio.Web.Controllers {
         }
 
 
-        [HttpGet("Post/Details/{slug}/Edit")]
+        [HttpGet("Details/{slug}/Edit")]
         [Authorize]
         public async Task<IActionResult> Edit(string slug) {
             Guid userId = Guid.Parse(userManager.GetUserId(User)!);
@@ -146,60 +147,40 @@ namespace Plenumio.Web.Controllers {
             var post = await postService.GetPostBySlugAsync(slug, userId);
             if (post is null) return NotFound();
 
-            var vm = new EditPostVM {
-                Id = post.Id,
-                Slug = post.Slug,
+            var result = new EditPostVM { 
+                CurrentPost = post.ToSummaryVM(),
                 NewTitle = post.Title,
                 NewContent = post.Content,
                 Privacy = post.Privacy,
-                CurrentTags = post.Tags.Select(t => t.ToVM()).ToList(),
-                CurrentImages = post.Images.Select(i => new ImageViewModel { Id = i.Id, Url = i.Url }).ToList()
             };
 
-            return View(vm);
+            return View(result);
         }
 
-        [HttpPost("Post/Details/{slug}/Edit")]
+        [HttpPost("Details/{slug}/Edit")]
         [Authorize]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(string slug, EditPostVM model, IEnumerable<IFormFile> images) {
-            if (!ModelState.IsValid) {
-                // Rehydrate display collections
-                var post = await postService.GetPostBySlugAsync(slug, Guid.Parse(userManager.GetUserId(User)!));
-                if (post is null) return NotFound();
-
-                model = model with {
-                    Slug = post.Slug,
-                    CurrentTags = post.Tags.Select(t => t.ToVM()).ToList(),
-                    CurrentImages = post.Images.Select(i => new ImageViewModel { Id = i.Id, Url = i.Url }).ToList()
-                };
-
+           
+            if (!ModelState.IsValid)
                 return View(model);
-            }
 
             var userId = Guid.Parse(userManager.GetUserId(User)!);
 
-            // Normalize TagsToAdd: split space-separated string(s) into tokens
-            var tagsToAdd = (model.TagsToAdd ?? Array.Empty<string>())
-                .SelectMany(s => (s ?? string.Empty).Split(' ', StringSplitOptions.RemoveEmptyEntries))
-                .Distinct(StringComparer.OrdinalIgnoreCase)
-                .ToArray();
-
             var request = new UpdatePostRequest {
-                Id = model.Id,
-                NewTitle = string.IsNullOrWhiteSpace(model.NewTitle) ? null : model.NewTitle.Trim(),
-                NewContent = string.IsNullOrWhiteSpace(model.NewContent) ? null : model.NewContent.Trim(),
-                Privacy = model.Privacy, // null => unchanged
-                TagsToRemove = model.TagsToRemove ?? Array.Empty<Guid>(),
-                ImagesToRemove = model.ImagesToRemove ?? Array.Empty<Guid>(),
-                NewImagesToUpload = imageConverter.ToImageFileDtos(images),
-                TagsToAdd = tagsToAdd
+                Id = model.CurrentPost.PostId,
+                NewTitle = model.NewTitle,
+                NewContent = model.NewContent,
+                Privacy = model.Privacy,
+                TagsToRemove = model.TagsToRemove,
+                ImagesToRemove = model.ImagesToRemove,
+                TagsToAdd = model.TagsToAdd?.Split(' ', StringSplitOptions.RemoveEmptyEntries) ?? [],
+                NewImagesToUpload = imageConverter.ToImageFileDtos(images)
             };
 
             await postService.UpdatePostAsync(request, userId);
 
-            // Slug doesn't change in UpdatePostAsync; redirect with existing slug
-            return RedirectToAction("Details", "Post", new { slug = model.Slug });
+            return RedirectToAction("Details", "Post", new { slug = model.CurrentPost.Slug });
         }
 
 

@@ -142,43 +142,43 @@ namespace Plenumio.Application.Services {
                         post.Privacy = request.Privacy.Value;
                     }
 
-                    // Remove tags (PostTag is the join entity)
                     if (request.TagsToRemove.Any()) {
                         var toRemove = post.PostTag
                             .Where(pt => request.TagsToRemove.Contains(pt.TagId))
                             .ToList();
 
                         foreach (var pt in toRemove)
-                            post.PostTag.Remove(pt); // marks pt as Deleted when tracked
+                            post.PostTag.Remove(pt); 
                     }
 
-                    // Add tags (avoid duplicates)
                     if (request.TagsToAdd.Any()) {
                         var newTags = await uof.Tags.ResolveTagsAsync(request.TagsToAdd);
-                        // If ResolveTagsAsync returns PostTag rows, filter out ones already present
+
                         var existingTagIds = post.PostTag.Select(pt => pt.TagId).ToHashSet();
-                        var toAdd = newTags.Where(pt => !existingTagIds.Contains(pt.TagId)).ToList();
-                        if (toAdd.Count > 0)
-                            post.PostTag = post.PostTag.Concat(toAdd).ToList();
+
+                        foreach (var pt in newTags) {
+                            if (!existingTagIds.Contains(pt.TagId)) {
+                                post.PostTag.Add(pt);
+                            }
+                        }
                     }
 
-                    // Remove images (child entities)
                     if (request.ImagesToRemove.Any()) {
                         var imgsToRemove = post.Images
                             .Where(img => request.ImagesToRemove.Contains(img.Id))
                             .ToList();
 
                         foreach (var img in imgsToRemove)
-                            post.Images.Remove(img); // marks image as Deleted when tracked
-
-                        // Optional: also delete files from storage
-                        // await imageService.DeleteImagesAsync(imgsToRemove.Select(i => i.Url));
+                            post.Images.Remove(img);
+                        
+                        await imageService.DeleteImagesAsync(imgsToRemove.Select(i => i.Url));
                     }
 
                     if (request.NewImagesToUpload.Any()) {
                         newlyStoredImageUrls = await imageService.SaveImagesAsync(request.NewImagesToUpload, imageFolder);
                         var newPostImages = newlyStoredImageUrls.Select(url => new PostImage { Url = url }).ToList();
-                        post.Images = post.Images.Concat(newPostImages).ToList();
+                        foreach (var img in newPostImages)
+                            post.Images.Add(img);
                     }
 
                     await uof.CompleteAsync();

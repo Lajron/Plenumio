@@ -25,6 +25,19 @@ namespace Plenumio.Web.Models {
         public IEnumerable<ReactionViewModel> Reactions { get; init; } = [];
     }
 
+    public record PostSummaryVM {
+        public Guid PostId { get; init; }
+        public string Slug { get; init; } = string.Empty;
+        public string Title { get; init; } = string.Empty;
+        public string Content { get; init; } = string.Empty;
+        public IEnumerable<TagSummaryVM> Tags { get; init; } = [];
+        public IEnumerable<ImageViewModel> Images { get; init; } = [];
+        public PrivacyType Privacy { get; init; }
+
+        public PostType Type { get; init; }
+
+    }
+
     public record PostVM {
         public PostType Type { get; init; }
         public PrivacyType Privacy { get; init; }
